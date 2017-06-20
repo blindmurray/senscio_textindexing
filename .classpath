@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/tika-app-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/tika-core-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/tika-parsers-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/lucene-analyzers-common-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/lucene-core-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/lucene-queries-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/lucene-queryparser-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-analyzers-common-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-core-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queries-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queryparser-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-app-1.15.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-core-1.15.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-parsers-1.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

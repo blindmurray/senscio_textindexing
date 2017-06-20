@@ -1,19 +1,14 @@
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Paths;
-import java.util.Iterator;
 
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
@@ -26,30 +21,46 @@ public class Searcher{
 	Query query2;
 	IndexReader indexReader;
 
-	public void searchIndex(String searchString, String indexDir) throws IOException, ParseException {
-		System.out.println("Searching for '" + searchString + "'");
-		Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
-	    indexReader = DirectoryReader.open(indexDirectory);
-	    indexSearcher = new IndexSearcher(indexReader);
-        queryParser = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());
-        query2 = queryParser.parse(searchString);
-		showSearchResults(query2);
-   }
-	@SuppressWarnings("unchecked")
-	public void showSearchResults(Query query) throws IOException{
-		TopDocs hits = indexSearcher.search(query, 100);
-        ScoreDoc[] document = hits.scoreDocs;
-        
-		System.out.println("Total no of hits for content: " + hits.totalHits);
-        for(int i = 0;i <document.length;i++)
-        {                 
-            Document doc = indexSearcher.doc(document[i].doc);      
-            String filePath = doc.get("fullpath");                                      
-            System.out.println(filePath);
+	public void searchIndex(String searchString, String indexDir) throws Exception 
+    {
+        String index = indexDir;
+		//Create lucene searcher. It search over a single IndexReader.
+        IndexSearcher searcher = createSearcher(index);
+         
+        //Search indexed contents using search term
+        TopDocs foundDocs = searchInContent(searchString, searcher);
+         
+        //Total found documents
+        System.out.println("Total Results: " + foundDocs.totalHits);
+         
+        //Let's print out the path of files which have searched term
+        for (ScoreDoc sd : foundDocs.scoreDocs) 
+        {
+            Document d = searcher.doc(sd.doc);
+            System.out.println("Path : "+ d.get("path") + ", Score : " + sd.score);
         }
-	}
-		
-	public Document getDocument(ScoreDoc scoreDoc)  throws CorruptIndexException, IOException {
-		      return indexSearcher.doc(scoreDoc.doc);	
-		   }
+    }
+     
+    private static TopDocs searchInContent(String textToFind, IndexSearcher searcher) throws Exception
+    {
+        //Create search query
+        QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());
+        Query query = qp.parse(textToFind);
+         
+        //search the index
+        TopDocs hits = searcher.search(query, 10);
+        return hits;
+    }
+ 
+    private static IndexSearcher createSearcher(String index) throws IOException 
+    {
+        Directory dir = FSDirectory.open(Paths.get(index));
+         
+        //It is an interface for accessing a point-in-time view of a lucene index
+        IndexReader reader = DirectoryReader.open(dir);
+         
+        //Index searcher
+        IndexSearcher searcher = new IndexSearcher(reader);
+        return searcher;
+    }
 }

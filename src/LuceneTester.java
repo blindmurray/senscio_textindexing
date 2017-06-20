@@ -7,7 +7,7 @@ import org.xml.sax.SAXException;
 
 public class LuceneTester {
    
-   public static void main(String[] args) throws IOException, TikaException, SAXException, ParseException {
+   public static void main(String[] args) throws Exception {
 	   String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 	   String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
 	   Indexer indexer = null;

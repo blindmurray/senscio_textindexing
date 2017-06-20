@@ -1,13 +1,12 @@
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -35,13 +34,14 @@ private IndexWriter writer;
 
    private Document getDocument(File file) throws IOException {
       Document document = new Document();
-
+      try (InputStream stream = Files.newInputStream(file.toPath())) 
+      {
       //index file path
       Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
 
       //index file contents
-      Field contentField = new StringField(LuceneConstants.CONTENTS, readFile(file), Field.Store.YES);
-      
+      Field contentField = new TextField(LuceneConstants.CONTENTS, new String(Files.readAllBytes(file.toPath())), Field.Store.YES);
+
       //index file name
       Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
 
@@ -51,24 +51,6 @@ private IndexWriter writer;
 
       return document;
    }
-public String readFile(File file) {
-	    
-	String allContent=" ";
-    try (FileInputStream fis = new FileInputStream(file)) {
-
-		System.out.println("Total file size to read (in bytes) : "+ fis.available());
-
-		int content;
-		
-		while ((content = fis.read()) != -1) {
-			// convert to char and display it
-			allContent = allContent + (char) content;
-		}
-		
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-    return allContent;
 }
 	
 private void indexFile(File file) throws IOException {
