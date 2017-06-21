@@ -8,8 +8,8 @@ import org.xml.sax.SAXException;
 public class LuceneTester {
    
    public static void main(String[] args) throws Exception {
-	   String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
-	   String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	   String indexDir = "/MICHELLE/txt_index";
+	   String dataDir = "/MICHELLE/txt_data";
 	   Indexer indexer = null;
 	   
 	   File indexDirFile = new File(indexDir);
@@ -17,7 +17,7 @@ public class LuceneTester {
 	   Indexer.createIndex(indexDir, dataDir, indexer);
 	  
 	   Searcher search = new Searcher();
-	   String querystr = "Meeting";
+	   String querystr = "Sales";
 	   search.searchIndex(querystr, indexDir);
    }
    

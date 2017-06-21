@@ -1,7 +1,9 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -12,6 +14,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 import org.apache.tika.exception.TikaException;
 import org.xml.sax.SAXException;
 
@@ -23,7 +26,7 @@ private IndexWriter writer;
       Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
 
       //create the indexer
-      StandardAnalyzer analyzer = new StandardAnalyzer();
+      WhitespaceAnalyzer analyzer = new WhitespaceAnalyzer();
       IndexWriterConfig conf = new IndexWriterConfig(analyzer);
       writer = new IndexWriter(indexDirectory, conf);  
       }
@@ -40,7 +43,10 @@ private IndexWriter writer;
       Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
 
       //index file contents
-      Field contentField = new TextField(LuceneConstants.CONTENTS, new String(Files.readAllBytes(file.toPath())), Field.Store.YES);
+      String content = new String(Files.readAllBytes(file.toPath()));
+      content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
+      System.out.println(content);
+      Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 
       //index file name
       Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
@@ -56,6 +62,11 @@ private IndexWriter writer;
 private void indexFile(File file) throws IOException {
       System.out.println("Indexing "+file.getCanonicalPath());
       Document document = getDocument(file);
+//      String doctext = document.toString();
+//      doctext = doctext.replaceAll("[^\\p{Graph}\n\r\t ]", "");
+//      doctext = doctext.trim();
+//      System.out.println(doctext);
+//      Document document2 = new Document(doctext);
       writer.addDocument(document);
    }
 

@@ -68,7 +68,7 @@ public class Parse {
 	    
 	    //getting the content of the document
 	    String content = handler.toString();
-	    
+	  
 	    //creating text file
 	    System.out.print("Creating file ");
 	    TXT.createTXT(content, filePath);

@@ -6,7 +6,8 @@ import java.io.OutputStreamWriter;
 public class TXT{
 	
 public static void createTXT(String content, String filePath){
-		File f = null;
+	
+	File f = null;
 	      boolean bool = false;
 	      try {
 	    	 filePath = editExtension(filePath);
