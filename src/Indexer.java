@@ -18,47 +18,44 @@ import org.xml.sax.SAXException;
 public class Indexer {
 private IndexWriter writer;
 
-   public Indexer(String indexDir) throws IOException {
-      //this directory will contain the indexes
-      Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
+public Indexer(String indexDir) throws IOException {
+	Directory indexDirectory = FSDirectory.open(Paths.get(indexDir)); //contain the indexes
+	
+	//create the indexer
+	StandardAnalyzer analyzer = new StandardAnalyzer();
+	IndexWriterConfig conf = new IndexWriterConfig(analyzer);
+	writer = new IndexWriter(indexDirectory, conf);  
+}
 
-      //create the indexer
-      StandardAnalyzer analyzer = new StandardAnalyzer();
-      IndexWriterConfig conf = new IndexWriterConfig(analyzer);
-      writer = new IndexWriter(indexDirectory, conf);  
-      }
+public void close() throws CorruptIndexException, IOException {
+	writer.close();
+}
 
-   public void close() throws CorruptIndexException, IOException {
-      writer.close();
-   }
+private Document getDocument(File file) throws IOException {
+	Document document = new Document();
+	try (InputStream stream = Files.newInputStream(file.toPath())) {
+		//index file path
+		Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
 
-   private Document getDocument(File file) throws IOException {
-      Document document = new Document();
-      try (InputStream stream = Files.newInputStream(file.toPath())) 
-      {
-      //index file path
-      Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
+		//index file contents
+		Field contentField = new TextField(LuceneConstants.CONTENTS, new String(Files.readAllBytes(file.toPath())), Field.Store.YES);
 
-      //index file contents
-      Field contentField = new TextField(LuceneConstants.CONTENTS, new String(Files.readAllBytes(file.toPath())), Field.Store.YES);
+		//index file name
+		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
 
-      //index file name
-      Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
+		document.add(contentField);
+		document.add(fileNameField);
+		document.add(filePathField);
 
-      document.add(contentField);
-      document.add(fileNameField);
-      document.add(filePathField);
-
-      return document;
-   }
+		return document;
+	}
 }
 	
 private void indexFile(File file) throws IOException {
-      System.out.println("Indexing "+ file.getCanonicalPath());
-      //call getDocument method
-      Document document = getDocument(file);
-      writer.addDocument(document);
-   }
+	System.out.println("Indexing "+ file.getCanonicalPath());
+	Document document = getDocument(file); //call getDocument method
+	writer.addDocument(document);
+}
 
 static void createIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
     indexer = new Indexer(indexDir);
@@ -74,28 +71,31 @@ static void createIndex(String indexDir, String dataDir, Indexer indexer) throws
  }
 
 public int writeIndex(String dataDirPath, FileFilter filter) throws IOException, TikaException, SAXException {
-      //get all files in the data directory
-      File[] files = new File(dataDirPath).listFiles();
-      File convertedFile = null;
+	//get all files in the data directory
+	File[] files = new File(dataDirPath).listFiles();
+	File convertedFile = null;
       
-      //Check for file type and call appropriate method to convert the file.
-      for (int i = 0; i < files.length; i++) {
-         File file = files[i];
-         //Recalls the Indexer class if the file is a Directory
-         if(file.isDirectory()){
-        	 writeIndex(file.toString(),new TextFileFilter());
-         }
-         //Will index file if file is a .txt file
-         else if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file)){
-        	 indexFile(file);
-         }
-         //Will convert file by calling Parse class if file is a Microsoft Office document
-         else if(TXT.getExtension(file.toString()).matches("xlsx|xls|pps|doc|docx|ppt|pptx")){
+	//Check for file type and call appropriate method to convert the file.
+	for (int i = 0; i < files.length; i++) {
+		File file = files[i];
+		
+		//Recalls the Indexer class if the file is a Directory
+        if(file.isDirectory()){
+        	writeIndex(file.toString(),new TextFileFilter());
+        }
+        
+        //Will index file if file is a .txt file
+        else if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file)){
+        	indexFile(file);
+        }
+        
+        //Will convert file by calling Parse class if file is a Microsoft Office document
+        else if(TXT.getExtension(file.toString()).matches("xlsx|xls|pps|doc|docx|ppt|pptx")){
         	Parse.parseMSOffice(file.toString());
         	convertedFile = new File(TXT.editExtension(file.toString()));
         	if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-                	 indexFile(file);
-                 }
+        		indexFile(file);
+        	}
         }
          //Will convert file by calling Parse class if file is a .pdf
          else if(TXT.getExtension(file.toString()).equals("pdf")){
@@ -104,32 +104,33 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
+         }
         
-      }
-         //Will convert file by calling Parse class if file is a .html
+        //Will convert file by calling Parse class if file is a .html
          else if(TXT.getExtension(file.toString()).equals("html")){
         	 Parse.parseHTML(file.toString());
         	 convertedFile = new File(TXT.editExtension(file.toString()));
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
-      }
-         //Will convert file by calling Parse class if file is a iWorks file
+         }
+        
+        //Will convert file by calling Parse class if file is a iWorks file
          else if(TXT.getExtension(file.toString()).matches("pages|key|numbers")){
         	 Parse.parseIWORKS(file.toString());
         	 convertedFile = new File(TXT.editExtension(file.toString()));
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
-      }
-         //Will convert file by calling Parse class if file is a .rtf
+         }
+        //Will convert file by calling Parse class if file is a .rtf
          else if(TXT.getExtension(file.toString()).equals("rtf")){
         	 Parse.parseRTF(file.toString());
         	 convertedFile = new File(TXT.editExtension(file.toString()));
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
-      }
+         }
          //Will convert file by calling Parse class if file is an Open Office document
          else if(TXT.getExtension(file.toString()).matches("odf|ods|odt")){
         	 Parse.parseRTF(file.toString());
@@ -137,9 +138,9 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
-      }
-   }
-      return writer.numDocs();
+         }
+	}
+	return writer.numDocs();
 
 }
 }

@@ -6,33 +6,34 @@ import java.io.OutputStreamWriter;
 public class TXT{
 	
 public static void createTXT(String content, String filePath){
-		File f = null;
-	      boolean bool = false;
-	      try {
-	    	 // calls editExtension method
-	    	 filePath = editExtension(filePath);
-	    	 System.out.println(filePath);
+	File f = null;
+	boolean bool = false;
+	try {
+		// calls editExtension method
+		filePath = editExtension(filePath);
+		System.out.println(filePath);
 	         
-	    	 // create new file
-	    	  f = new File(filePath);
+		// create new file
+		f = new File(filePath);
 	         
-	    	  // tries to create new file in the system
-	         bool = f.createNewFile();
+		// tries to create new file in the system
+		bool = f.createNewFile();
 	         
-	         // prints
-	         System.out.println("File created: "+bool);
+		// prints
+		System.out.println("File created: "+bool);
 	         
-	         FileOutputStream fos = new FileOutputStream(f);
-	         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+		FileOutputStream fos = new FileOutputStream(f);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 	         
-	         bw.write(content);
-	         bw.close();
+		bw.write(content);
+		bw.close();
 	         
-	      }
-	      catch(Exception e) {
-	         e.printStackTrace();
-	      }
 	}
+	catch(Exception e) {
+		e.printStackTrace();
+	}
+}
+
 public static String editExtension(String file){
     //Splits file path by "/"
 	String[] tokens = file.split("/");
