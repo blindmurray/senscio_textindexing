@@ -33,6 +33,8 @@ public class Parse {
 		
 		//creating text file
 		System.out.print("Creating file ");
+		
+		//call TXT class to create the .txt document
 		TXT.createTXT(content, filePath);
 	}
 	public static void parseMSOffice(String filePath) throws IOException, TikaException, SAXException {
@@ -52,6 +54,8 @@ public class Parse {
 	      
 		//creating text file
 		System.out.print("Creating file ");
+		
+		//call TXT class to create the .txt document
 		TXT.createTXT(content, filePath);
 	   }
 	public static void parseHTML(String filePath) throws IOException, TikaException, SAXException {
@@ -71,6 +75,8 @@ public class Parse {
 	    
 	    //creating text file
 	    System.out.print("Creating file ");
+		
+	    //call TXT class to create the .txt document
 	    TXT.createTXT(content, filePath);
 	}
 	public static void parseIWORKS(String filePath) throws IOException, TikaException, SAXException {
@@ -90,6 +96,8 @@ public class Parse {
 	    
 	    //creating text file
 	    System.out.print("Creating file ");
+	   
+		//call TXT class to create the .txt document
 	    TXT.createTXT(content, filePath);
 	
 	}
@@ -110,25 +118,29 @@ public static void parseRTF(String filePath) throws IOException, TikaException, 
 	    
 	    //creating text file
 	    System.out.print("Creating file ");
+	    
+		//call TXT class to create the .txt document
 	    TXT.createTXT(content, filePath);
 	}
 public static void parseOpenOffice(String filePath) throws IOException, TikaException, SAXException {
 	
-	//detecting the file type
-    BodyContentHandler handler = new BodyContentHandler();
-    Metadata metadata = new Metadata();
-    FileInputStream inputstream = new FileInputStream(filePath);
-    ParseContext pcontext = new ParseContext();
+		//detecting the file type
+    	BodyContentHandler handler = new BodyContentHandler();
+    	Metadata metadata = new Metadata();
+    	FileInputStream inputstream = new FileInputStream(filePath);
+    	ParseContext pcontext = new ParseContext();
     
-    //RTF parser
-    OpenDocumentParser odparser = new OpenDocumentParser();
-    odparser.parse(inputstream, handler, metadata,pcontext);
+    	//RTF parser
+    	OpenDocumentParser odparser = new OpenDocumentParser();
+    	odparser.parse(inputstream, handler, metadata,pcontext);
     
-    //getting the content of the document
-    String content = handler.toString();
+    	//getting the content of the document
+    	String content = handler.toString();
     
-    //creating text file
-    System.out.print("Creating file ");
-    TXT.createTXT(content, filePath);
+    	//creating text file
+    	System.out.print("Creating file ");
+    	
+		//call TXT class to create the .txt document
+    	TXT.createTXT(content, filePath);
 }
 	}

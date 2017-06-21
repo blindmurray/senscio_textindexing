@@ -47,7 +47,7 @@ public class Searcher{
         QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());
         Query query = qp.parse(textToFind);
          
-        //search the index
+        //Search the index
         TopDocs hits = searcher.search(query, 10);
         return hits;
     }

@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-app-1.15.jar"/>
 	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-core-1.15.jar"/>
 	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-parsers-1.15.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-memory-6.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

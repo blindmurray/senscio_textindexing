@@ -9,12 +9,16 @@ public static void createTXT(String content, String filePath){
 		File f = null;
 	      boolean bool = false;
 	      try {
+	    	 // calls editExtension method
 	    	 filePath = editExtension(filePath);
 	    	 System.out.println(filePath);
-	         // create new file
+	         
+	    	 // create new file
 	    	  f = new File(filePath);
-	         // tries to create new file in the system
+	         
+	    	  // tries to create new file in the system
 	         bool = f.createNewFile();
+	         
 	         // prints
 	         System.out.println("File created: "+bool);
 	         
@@ -30,9 +34,14 @@ public static void createTXT(String content, String filePath){
 	      }
 	}
 public static String editExtension(String file){
-    String[] tokens = file.split("/");
+    //Splits file path by "/"
+	String[] tokens = file.split("/");
+	
+	//Split name of document if there are more than one "."
     String[] name = tokens[tokens.length-1].split("\\.");
     String docName = null;
+    
+    //Find the document's name without the file
     for(int i=0;i<tokens.length;i++){
     	if(i==0){
     		file = tokens[i];
@@ -66,6 +75,8 @@ public static String editExtension(String file){
 }
 
 public static String getExtension(String file){
+	
+	//replaces previous extension with a .txt extension
     String[] tokens = file.split("/");
     String[] name = tokens[tokens.length-1].split("\\.");
     String ext = null;
