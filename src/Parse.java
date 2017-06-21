@@ -16,56 +16,63 @@ import org.xml.sax.SAXException;
 
 public class Parse {
 
-	public static void parsePDF(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException{
+public static void parsePDF(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException{
 		
-		//detecting the file type
-		BodyContentHandler handler = new BodyContentHandler(-1);
-		Metadata metadata = new Metadata();
-		FileInputStream inputstream = new FileInputStream(filePath);
-		ParseContext pcontext = new ParseContext();
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler(-1);
+	Metadata metadata = new Metadata();
+	FileInputStream inputstream = new FileInputStream(filePath);
+	ParseContext pcontext = new ParseContext();
 
-		//PDF parser
-		PDFParser pdfparser = new PDFParser(); 
-		pdfparser.parse(inputstream, handler, metadata,pcontext);
+	//PDF parser
+	PDFParser pdfparser = new PDFParser(); 
+	pdfparser.parse(inputstream, handler, metadata,pcontext);
 
-		//getting the content of the document
-		String content = handler.toString();
+	//getting the content of the document
+	String content = handler.toString();
 		
-		//creating text file
-		System.out.print("Creating file ");
-		TXT.createTXT(content, filePath);
-	}
-	public static void parseMSOffice(String filePath) throws IOException, TikaException, SAXException {
+	//creating text file
+	System.out.print("Creating file ");
+		
+	//call TXT class to create the .txt document
+	TXT.createTXT(content, filePath);
+}
+
+public static void parseMSOffice(String filePath) throws IOException, TikaException, SAXException {
 	      
-		//detecting the file type
-		BodyContentHandler handler = new BodyContentHandler();
-		Metadata metadata = new Metadata();
-		FileInputStream inputstream = new FileInputStream(filePath);
-		ParseContext pcontext = new ParseContext();
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler();
+	Metadata metadata = new Metadata();
+	FileInputStream inputstream = new FileInputStream(filePath);
+	ParseContext pcontext = new ParseContext();
+      
+	//OOXml parser
+	OOXMLParser  msofficeparser = new OOXMLParser (); 
+	msofficeparser.parse(inputstream, handler, metadata,pcontext);
 	      
-		//OOXml parser
-		OOXMLParser  msofficeparser = new OOXMLParser (); 
-		msofficeparser.parse(inputstream, handler, metadata,pcontext);
-	      
-		//getting the content of the document
-		String content = handler.toString();
-	      
-		//creating text file
-		System.out.print("Creating file ");
-		TXT.createTXT(content, filePath);
-	   }
-	public static void parseHTML(String filePath) throws IOException, TikaException, SAXException {
+	//getting the content of the document
+	String content = handler.toString();
+
+	//creating text file
+	System.out.print("Creating file ");
+		
+	//call TXT class to create the .txt document
+	TXT.createTXT(content, filePath);
+}
+
+public static void parseHTML(String filePath) throws IOException, TikaException, SAXException {
 	
-		//detecting the file type
-	    BodyContentHandler handler = new BodyContentHandler();
-	    Metadata metadata = new Metadata();
-	    FileInputStream inputstream = new FileInputStream(filePath);
-	    ParseContext pcontext = new ParseContext();
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler();
+    Metadata metadata = new Metadata();
+    FileInputStream inputstream = new FileInputStream(filePath);
+    ParseContext pcontext = new ParseContext();
 	    
-	    //Html parser
-	    HtmlParser htmlparser = new HtmlParser();
-	    htmlparser.parse(inputstream, handler, metadata,pcontext);
+    //Html parser
+    HtmlParser htmlparser = new HtmlParser();
+    htmlparser.parse(inputstream, handler, metadata,pcontext);
 	    
+<<<<<<< HEAD
 	    //getting the content of the document
 	    String content = handler.toString();
 	  
@@ -74,61 +81,82 @@ public class Parse {
 	    TXT.createTXT(content, filePath);
 	}
 	public static void parseIWORKS(String filePath) throws IOException, TikaException, SAXException {
+=======
+    //getting the content of the document
+    String content = handler.toString();
+	    
+    //creating text file
+    System.out.print("Creating file ");
+>>>>>>> 54c0ab9556e285be32c3de7810662e76eda18c95
 		
-		//detecting the file type
-	    BodyContentHandler handler = new BodyContentHandler();
-	    Metadata metadata = new Metadata();
-	    FileInputStream inputstream = new FileInputStream(filePath);
-	    ParseContext pcontext = new ParseContext();
-	    
-	    //iWorks parser
-	    IWorkPackageParser iWorkPackageParser = new IWorkPackageParser();
-	    iWorkPackageParser.parse(inputstream, handler, metadata,pcontext);
-	    
-	    //getting the content of the document
-	    String content = handler.toString();
-	    
-	    //creating text file
-	    System.out.print("Creating file ");
-	    TXT.createTXT(content, filePath);
-	
-	}
-public static void parseRTF(String filePath) throws IOException, TikaException, SAXException {
+    //call TXT class to create the .txt document
+    TXT.createTXT(content, filePath);
+}
+
+public static void parseIWORKS(String filePath) throws IOException, TikaException, SAXException {
 		
-		//detecting the file type
-	    BodyContentHandler handler = new BodyContentHandler();
-	    Metadata metadata = new Metadata();
-	    FileInputStream inputstream = new FileInputStream(filePath);
-	    ParseContext pcontext = new ParseContext();
-	    
-	    //RTF parser
-	    RTFParser rtfparser = new RTFParser();
-	    rtfparser.parse(inputstream, handler, metadata,pcontext);
-	    
-	    //getting the content of the document
-	    String content = handler.toString();
-	    
-	    //creating text file
-	    System.out.print("Creating file ");
-	    TXT.createTXT(content, filePath);
-	}
-public static void parseOpenOffice(String filePath) throws IOException, TikaException, SAXException {
-	
 	//detecting the file type
-    BodyContentHandler handler = new BodyContentHandler();
+	BodyContentHandler handler = new BodyContentHandler();
     Metadata metadata = new Metadata();
     FileInputStream inputstream = new FileInputStream(filePath);
     ParseContext pcontext = new ParseContext();
-    
-    //RTF parser
-    OpenDocumentParser odparser = new OpenDocumentParser();
-    odparser.parse(inputstream, handler, metadata,pcontext);
-    
+	    
+    //iWorks parser
+    IWorkPackageParser iWorkPackageParser = new IWorkPackageParser();
+    iWorkPackageParser.parse(inputstream, handler, metadata,pcontext);
+	    
     //getting the content of the document
     String content = handler.toString();
-    
+	    
     //creating text file
     System.out.print("Creating file ");
+		
+    //call TXT class to create the .txt document
     TXT.createTXT(content, filePath);
+	
 }
-	}
+
+public static void parseRTF(String filePath) throws IOException, TikaException, SAXException {
+	
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler();
+	Metadata metadata = new Metadata();
+	FileInputStream inputstream = new FileInputStream(filePath);
+	ParseContext pcontext = new ParseContext();
+	    
+	//RTF parser
+	RTFParser rtfparser = new RTFParser();
+	rtfparser.parse(inputstream, handler, metadata,pcontext);
+	    
+	//getting the content of the document
+	String content = handler.toString();
+		    
+	//creating text file
+	System.out.print("Creating file ");
+			
+	//call TXT class to create the .txt document
+	TXT.createTXT(content, filePath);
+}
+
+public static void parseOpenOffice(String filePath) throws IOException, TikaException, SAXException {
+	
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler();
+	Metadata metadata = new Metadata();
+	FileInputStream inputstream = new FileInputStream(filePath);
+	ParseContext pcontext = new ParseContext();
+    
+	//OpenOffice parser
+	OpenDocumentParser odparser = new OpenDocumentParser();
+	odparser.parse(inputstream, handler, metadata,pcontext);
+    
+	//getting the content of the document
+	String content = handler.toString();
+    
+	//creating text file
+	System.out.print("Creating file ");
+    	
+	//call TXT class to create the .txt document
+	TXT.createTXT(content, filePath);
+}
+}
