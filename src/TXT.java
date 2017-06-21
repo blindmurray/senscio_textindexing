@@ -6,12 +6,27 @@ import java.io.OutputStreamWriter;
 public class TXT{
 	
 public static void createTXT(String content, String filePath){
+<<<<<<< HEAD
+	
+	File f = null;
+	      boolean bool = false;
+	      try {
+	    	 filePath = editExtension(filePath);
+	    	 System.out.println(filePath);
+	         // create new file
+	    	  f = new File(filePath);
+	         // tries to create new file in the system
+	         bool = f.createNewFile();
+	         // prints
+	         System.out.println("File created: "+bool);
+=======
 	File f = null;
 	boolean bool = false;
 	try {
 		// calls editExtension method
 		filePath = editExtension(filePath);
 		System.out.println(filePath);
+>>>>>>> 54c0ab9556e285be32c3de7810662e76eda18c95
 	         
 		// create new file
 		f = new File(filePath);

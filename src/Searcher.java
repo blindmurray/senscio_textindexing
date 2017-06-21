@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -37,10 +38,18 @@ public void searchIndex(String searchString, String indexDir) throws Exception {
 	}
 }
      
+<<<<<<< HEAD
+    private static TopDocs searchInContent(String textToFind, IndexSearcher searcher) throws Exception
+    {
+        //Create search query
+        QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new WhitespaceAnalyzer());
+        Query query = qp.parse("+"+textToFind);
+=======
 private static TopDocs searchInContent(String textToFind, IndexSearcher searcher) throws Exception {
 	//Create search query
 	QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());
 	Query query = qp.parse(textToFind);
+>>>>>>> 54c0ab9556e285be32c3de7810662e76eda18c95
          
 	//Search the index
 	TopDocs hits = searcher.search(query, 10);

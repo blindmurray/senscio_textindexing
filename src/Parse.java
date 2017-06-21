@@ -72,11 +72,22 @@ public static void parseHTML(String filePath) throws IOException, TikaException,
     HtmlParser htmlparser = new HtmlParser();
     htmlparser.parse(inputstream, handler, metadata,pcontext);
 	    
+<<<<<<< HEAD
+	    //getting the content of the document
+	    String content = handler.toString();
+	  
+	    //creating text file
+	    System.out.print("Creating file ");
+	    TXT.createTXT(content, filePath);
+	}
+	public static void parseIWORKS(String filePath) throws IOException, TikaException, SAXException {
+=======
     //getting the content of the document
     String content = handler.toString();
 	    
     //creating text file
     System.out.print("Creating file ");
+>>>>>>> 54c0ab9556e285be32c3de7810662e76eda18c95
 		
     //call TXT class to create the .txt document
     TXT.createTXT(content, filePath);

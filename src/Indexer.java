@@ -2,7 +2,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -18,14 +18,16 @@ import org.xml.sax.SAXException;
 public class Indexer {
 private IndexWriter writer;
 
-public Indexer(String indexDir) throws IOException {
-	Directory indexDirectory = FSDirectory.open(Paths.get(indexDir)); //contain the indexes
-	
-	//create the indexer
-	StandardAnalyzer analyzer = new StandardAnalyzer();
-	IndexWriterConfig conf = new IndexWriterConfig(analyzer);
-	writer = new IndexWriter(indexDirectory, conf);  
-}
+   public Indexer(String indexDir) throws IOException {
+      //this directory will contain the indexes
+      Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
+
+      //create the indexer
+      WhitespaceAnalyzer analyzer = new WhitespaceAnalyzer();
+      IndexWriterConfig conf = new IndexWriterConfig(analyzer);
+      writer = new IndexWriter(indexDirectory, conf);  
+      }
+
 
 public void close() throws CorruptIndexException, IOException {
 	writer.close();
@@ -36,11 +38,14 @@ private Document getDocument(File file) throws IOException {
 	try (InputStream stream = Files.newInputStream(file.toPath())) {
 		//index file path
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
-
+        
 		//index file contents
-		Field contentField = new TextField(LuceneConstants.CONTENTS, new String(Files.readAllBytes(file.toPath())), Field.Store.YES);
-
-		//index file name
+        String content = new String(Files.readAllBytes(file.toPath()));
+        content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
+        System.out.println(content);
+        Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
+		
+        //index file name
 		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
 
 		document.add(contentField);
@@ -52,10 +57,12 @@ private Document getDocument(File file) throws IOException {
 }
 	
 private void indexFile(File file) throws IOException {
+
 	System.out.println("Indexing "+ file.getCanonicalPath());
 	Document document = getDocument(file); //call getDocument method
 	writer.addDocument(document);
 }
+
 
 static void createIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
     indexer = new Indexer(indexDir);
