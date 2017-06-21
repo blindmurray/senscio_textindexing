@@ -38,14 +38,14 @@ private Document getDocument(File file) throws IOException {
 	try (InputStream stream = Files.newInputStream(file.toPath())) {
 		//index file path
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
-        
+		
 		//index file contents
         String content = new String(Files.readAllBytes(file.toPath()));
         content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
         System.out.println(content);
         Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 		
-        //index file name
+		//index file name
 		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, file.getName(), Field.Store.YES);
 
 		document.add(contentField);
