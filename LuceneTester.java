@@ -1,14 +1,16 @@
 import java.io.File;
-import java.io.InputStream;
+/*	import java.io.InputStream;
+	import java.util.Scanner;
 
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
+	import com.jcraft.jsch.ChannelSftp;
+	import com.jcraft.jsch.JSch;
+	import com.jcraft.jsch.Session;
+*/
 
 public class LuceneTester {
 public static void main(String[] args) throws Exception {
 	
-	/*String user = "root";
+/*	String user = "root";
     String password = "s3nsci0";
     String host = "10.0.55.90";
     int port=22;
@@ -47,10 +49,13 @@ public static void main(String[] args) throws Exception {
 	   
 	//Call the Indexer.java file and create an indexer
 	Indexer.createIndex(indexDir, dataDir, indexer);
+	
+	//Ask for the string you are searching for in the files
+	System.out.println("What would you like to search for?");
 	Searcher search = new Searcher();
-	   
-	//The string you are searching for in the files
-	String querystr = "the Meeting";
+	Scanner scanner = new Scanner(System.in);
+	String querystr = scanner.nextLine();
+
 	   
 	//Call Searcher class to search for the string
 	search.searchIndex(querystr, indexDir);
