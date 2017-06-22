@@ -1,7 +1,6 @@
 import java.io.File;
+import java.util.Scanner;
 /*	import java.io.InputStream;
-	import java.util.Scanner;
-
 	import com.jcraft.jsch.ChannelSftp;
 	import com.jcraft.jsch.JSch;
 	import com.jcraft.jsch.Session;
