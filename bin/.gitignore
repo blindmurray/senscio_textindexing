@@ -1,13 +1,5 @@
-/GUI.class
-/SearchGUI.html
-/SearchGUI.class
 /Client$1.class
-/Client$AudioListener.class
-/Client$Capture.class
 /Client$EnterListener.class
 /Client$IncomingReader.class
-/Client$NameListener.class
-/Client$Playback.class
-/Client$SendButtonListener.class
-/Client.class
 /Client$searchButtonListener.class
+/Client.class
