@@ -28,7 +28,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -127,6 +129,7 @@ public class searchButtonListener implements ActionListener{
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
+		scrollToBottom(qScroller);
 	outgoing.setText("");
 	outgoing.requestFocus();	
 	}
@@ -139,10 +142,32 @@ public class EnterListener implements KeyListener{
 		// TODO Auto-generated method stub
 		if (arg0.getKeyCode()==KeyEvent.VK_ENTER){ 
 			try{
-				scrollToBottom(qScroller);
+				incoming.append("-----------------------------------\n");
+				String indexDir = "/MICHELLE/txt_index";
+				//Input path of location for the directory that has all of the files
+				//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+			    String dataDir = "/MICHELLE/txt_data";
+				Indexer indexer = null;
+				   
+				File indexDirFile = new File(indexDir);
+				   
+				/*Call clean.java class to clear all of the files created in the index 
+				 * directory from previous runs
+				 */
+				clean.deleteFolderContents(indexDirFile);
+				   
+				//Call the Indexer.java file and create an indexer
+				Indexer.createIndex(indexDir, dataDir, indexer);
+				   
+				//The string you are searching for in the files
+				String querystr = outgoing.getText();
+				   
+				//Call Searcher class to search for the string
+				searchIndex(querystr, indexDir);
 			} catch (Exception ex){
 				ex.printStackTrace();
 			}
+			scrollToBottom(qScroller);
 		outgoing.setText("");
 		outgoing.requestFocus();	
 		}
