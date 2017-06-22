@@ -17,12 +17,6 @@ public static void createTXT(String content, String filePath){
 		// create new file
 		f = new File(filePath);
 	         
-		// tries to create new file in the system
-		bool = f.createNewFile();
-	         
-		// prints
-		System.out.println("File created: "+bool);
-	         
 		FileOutputStream fos = new FileOutputStream(f);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 	         

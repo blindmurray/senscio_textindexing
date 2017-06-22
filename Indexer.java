@@ -56,10 +56,9 @@ private Document getDocument(File file) throws IOException {
 }
 	
 private void indexFile(File file) throws IOException {
-
-	System.out.println("Indexing "+ file.getCanonicalPath());
 	Document document = getDocument(file); //call getDocument method
 	writer.addDocument(document);
+
 }
 
 
@@ -80,77 +79,42 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
 	//get all files in the data directory
 	File[] files = new File(dataDirPath).listFiles();
 	File convertedFile = null;
-      
+	
 	//Check for file type and call appropriate method to convert the file.
 	for (int i = 0; i < files.length; i++) {
 		File file = files[i];
-		
-		//Recalls the Indexer class if the file is a Directory
-		if(TXT.getExtension(file.toString()).matches("zip|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png")){
+		System.out.println(file.toString());
+		//will not index files with these extensions
+		if(TXT.getExtension(file.toString()).matches("zip|graffle|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png|vsd")){
 
 		}
+		//Recalls the Indexer class if the file is a Directory
 		else if(file.isDirectory()){
         	writeIndex(file.toString(),new TextFileFilter());
         }
-        
-        //Will index file if file is a .txt file
+		//Will index file if file is a .txt file
         else if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file)){
         	indexFile(file);
         }
-        
-        //Will convert file by calling Parse class if file is a Microsoft Office document
-        else if(TXT.getExtension(file.toString()).matches("xlsx|xls|pps|doc|docx|ppt|pptx")){
-        	Parse.parseMSOffice(file.toString());
-        	convertedFile = new File(TXT.editExtension(file.toString()));
-        	if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-        		indexFile(file);
-        	}
+		//Will convert file by calling Parse class if file is a iWorks file
+        else if(TXT.getExtension(file.toString()).matches("pages|key|numbers")){
+       	 Parse.parseIWORKS(file.toString());
+       	 convertedFile = new File(TXT.editExtension(file.toString()));
+       	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+           	 indexFile(file);
+            }
+       	 convertedFile.delete();
+
         }
-         //Will convert file by calling Parse class if file is a .pdf
-         else if(TXT.getExtension(file.toString()).equals("pdf")){
-        	 Parse.parsePDF(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }
-        
-        //Will convert file by calling Parse class if file is a .html
-         else if(TXT.getExtension(file.toString()).equals("html")){
-        	 Parse.parseHTML(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }
-        
-        //Will convert file by calling Parse class if file is a iWorks file
-         else if(TXT.getExtension(file.toString()).matches("pages|key|numbers")){
-        	 Parse.parseIWORKS(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }
-        //Will convert file by calling Parse class if file is a .rtf
-         else if(TXT.getExtension(file.toString()).equals("rtf")){
-        	 Parse.parseRTF(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }
-         //Will convert file by calling Parse class if file is an Open Office document
-         else if(TXT.getExtension(file.toString()).matches("odf|ods|odt")){
-        	 Parse.parseRTF(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }
-         else{
-        	 
-         }
+		//Will parse all other files
+		else{
+       	 Parse.parse(file.toString());
+       	 convertedFile = new File(TXT.editExtension(file.toString()));
+       	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+           	 indexFile(file);
+            }
+       	 convertedFile.delete();
+        }
 	}
 	return writer.numDocs();
 

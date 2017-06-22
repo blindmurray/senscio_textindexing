@@ -31,6 +31,7 @@ public static void main(String[] args) throws Exception {
         }
     catch(Exception e){System.err.print(e);}
 */
+
     //Input path of location for the index
 	//String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
     String indexDir = "/var/www/library/index";
@@ -41,23 +42,26 @@ public static void main(String[] args) throws Exception {
 	   
 	File indexDirFile = new File(indexDir);
 	   
-	/*Call clean.java class to clear all of the files created in the index 
-	 * directory from previous runs
-	 */
+	//Call clean class to clear all of the files created in the index directory from previous runs
+
 	clean.deleteFolderContents(indexDirFile);
 	   
 	//Call the Indexer.java file and create an indexer
 	Indexer.createIndex(indexDir, dataDir, indexer);
 	
 	//Ask for the string you are searching for in the files
-	System.out.println("What would you like to search for?");
-	Searcher search = new Searcher();
-	Scanner scanner = new Scanner(System.in);
-	String querystr = scanner.nextLine();
-
-	   
-	//Call Searcher class to search for the string
-	search.searchIndex(querystr, indexDir);
+	 while (true) {
+		 System.out.println("What would you like to search for? If you do not want to search for anything, please type 'quit'");
+		 Scanner scanner = new Scanner(System.in);
+		 Searcher search = new Searcher();
+		 String querystr = scanner.nextLine();
+		 if(querystr.equals("quit")){
+			 break;
+		 }
+		 else{
+			 search.searchIndex(querystr, indexDir);  //Call Searcher class to search for the string
+		 }
+	 }
    }
    
 }
