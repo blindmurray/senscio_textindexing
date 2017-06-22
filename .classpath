@@ -2,18 +2,17 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-analyzers-common-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-core-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-expressions-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-memory-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queries-6.6.0.jar"/>
 	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queryparser-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-analyzers-common-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-core-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-expressions-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-memory-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-queries-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-queryparser-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/lucene-suggest-6.6.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/tika-app-1.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/tika-core-1.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/tika-parsers-1.15.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/commons-net-3.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-suggest-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-app-1.15.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-core-1.15.jar"/>
+	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-parsers-1.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

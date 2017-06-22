@@ -42,7 +42,6 @@ private Document getDocument(File file) throws IOException {
 		//index file contents
         String content = new String(Files.readAllBytes(file.toPath()));
         content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
-        System.out.println(content);
         Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 		
 		//index file name
@@ -87,7 +86,10 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
 		File file = files[i];
 		
 		//Recalls the Indexer class if the file is a Directory
-        if(file.isDirectory()){
+		if(TXT.getExtension(file.toString()).matches("zip|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png")){
+
+		}
+		else if(file.isDirectory()){
         	writeIndex(file.toString(),new TextFileFilter());
         }
         
@@ -145,6 +147,9 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
         	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
             	 indexFile(file);
              }
+         }
+         else{
+        	 
          }
 	}
 	return writer.numDocs();

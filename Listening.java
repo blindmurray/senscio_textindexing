@@ -16,7 +16,7 @@ public class Listening
     String host = "10.0.55.90";
     int port=22;
 
-    String remoteFile="10.0.55.90/var/ww/Library/Internal%20Document%20Repository/ibis-one-pager.pdf";
+    String remoteFile="10.0.55.90/var/ww/Library/Internal%20Document%20Repository/";
 
     try
         {
@@ -31,15 +31,6 @@ public class Listening
         ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
         sftpChannel.connect();
         System.out.println("SFTP Channel created.");
-
-
-        InputStream out= null;
-        out= sftpChannel.get(remoteFile);
-        BufferedReader br = new BufferedReader(new InputStreamReader(out));
-        String line;
-        while ((line = br.readLine()) != null)
-            System.out.println(line);
-        br.close();
         }
     catch(Exception e){System.err.print(e);}
     }

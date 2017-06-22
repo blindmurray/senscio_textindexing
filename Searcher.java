@@ -33,7 +33,7 @@ public void searchIndex(String searchString, String indexDir) throws Exception {
 	//Print out the path of files which have searched term
 	for (ScoreDoc sd : foundDocs.scoreDocs) {
 		Document d = searcher.doc(sd.doc);
-		System.out.println("Path : "+ d.get("path") + ", Score : " + sd.score);
+		System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score);
 	}
 }
      

@@ -48,7 +48,7 @@ public static void parseMSOffice(String filePath) throws IOException, TikaExcept
       
 	//OOXml parser
 	OOXMLParser  msofficeparser = new OOXMLParser (); 
-	msofficeparser.parse(inputstream, handler, metadata,pcontext);
+	msofficeparser.parse(inputstream, handler, metadata, pcontext);
 	      
 	//getting the content of the document
 	String content = handler.toString();
