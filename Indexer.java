@@ -1,8 +1,13 @@
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -23,7 +28,7 @@ private IndexWriter writer;
       Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
 
       //create the indexer
-      WhitespaceAnalyzer analyzer = new WhitespaceAnalyzer();
+      Analyzer analyzer = new StandardAnalyzer();
       IndexWriterConfig conf = new IndexWriterConfig(analyzer);
       writer = new IndexWriter(indexDirectory, conf);  
       }
@@ -40,8 +45,9 @@ private Document getDocument(File file) throws IOException {
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
 		
 		//index file contents
-        String content = new String(Files.readAllBytes(file.toPath()));
+        String content = new String(Files.readAllBytes(file.toPath()),"UTF-8");
         content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
+
         Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 		
 		//index file name
@@ -106,6 +112,15 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
        	 convertedFile.delete();
 
         }
+        else if(TXT.getExtension(file.toString()).matches("xls|xlsx")){
+          	 Parse.parseIWORKS(file.toString());
+          	 convertedFile = new File(TXT.editExtension(file.toString()));
+          	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+              	 indexFile(file);
+               }
+          	 convertedFile.delete();
+
+           }
 		//Will parse all other files
 		else{
        	 Parse.parse(file.toString());

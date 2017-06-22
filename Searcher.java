@@ -1,7 +1,13 @@
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
+import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.standard.ClassicAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -12,6 +18,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
 
 public class Searcher{
 	IndexSearcher indexSearcher;
@@ -36,7 +43,7 @@ public void searchIndex(String searchString, String indexDir) throws Exception {
 		System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score);
 	}
 }
-     
+
 private static TopDocs searchInContent(String textToFind, IndexSearcher searcher) throws Exception{
 	//Create search query
 	QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new WhitespaceAnalyzer());
@@ -46,7 +53,7 @@ private static TopDocs searchInContent(String textToFind, IndexSearcher searcher
 	TopDocs hits = searcher.search(query, 10);
 	return hits;
 }
- 
+
 private static IndexSearcher createSearcher(String index) throws IOException {
 	Directory dir = FSDirectory.open(Paths.get(index));
          
