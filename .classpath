@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="referenced_libraries/tika-app-1.15.jar"/>
 	<classpathentry kind="lib" path="referenced_libraries/tika-core-1.15.jar"/>
 	<classpathentry kind="lib" path="referenced_libraries/tika-parsers-1.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dxia/Downloads/pdfbox-app-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

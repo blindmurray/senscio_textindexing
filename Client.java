@@ -1,3 +1,9 @@
+//utf-encoding -- some pdfs and excels (the ones that aren't encoded in utf 8)
+//are not showing up properly
+//need to put whole file into string
+//
+
+
 import java.io.*;
 import java.net.*;
 import java.nio.file.Paths;
