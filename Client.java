@@ -2,8 +2,7 @@
 //are not showing up properly
 //need to put whole file into string
 //
-
-
+//gina's branch does not have client class
 import java.io.*;
 import java.net.*;
 import java.nio.file.Paths;
@@ -85,11 +84,6 @@ public class Client extends JPanel implements ActionListener{
 		frame.setSize(600, 500);
 		frame.setVisible(true);
 		mainPanel.setBackground(Color.BLACK);
-		Thread readerThread = new Thread(new IncomingReader());
-		readerThread.start();
-		
-		
-		
 	}
 public class searchButtonListener implements ActionListener{
 	public void actionPerformed(ActionEvent event){
@@ -168,18 +162,6 @@ public class EnterListener implements KeyListener{
 	}
 }
 
-public class IncomingReader implements Runnable{
-	public void run() {
-		String message;
-		try {
-			while((message = reader.readLine()) != null) {
-				System.out.println("read " + message);
-				incoming.append(message + "\n");
-				scrollToBottom(qScroller);
-			}
-		} catch(Exception ex) {ex.printStackTrace();}
-	}
-}
 private void scrollToBottom(JScrollPane scrollPane) {
     JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
     AdjustmentListener downScroller = new AdjustmentListener() {

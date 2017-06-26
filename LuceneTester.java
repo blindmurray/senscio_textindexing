@@ -32,10 +32,10 @@ public static void main(String[] args) throws Exception {
 */
     //Input path of location for the index
 	//String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
-    String indexDir = "/var/www/library/index";
+    String indexDir = "file name here";
 	//Input path of location for the directory that has all of the files
 	//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
-    String dataDir = "/var/www/library/Internal Document Repository";
+    String dataDir = "file name here";
 	Indexer indexer = null;
 	   
 	File indexDirFile = new File(indexDir);
