@@ -28,6 +28,7 @@
 	//this would be a lot to account for -- especially with 15 word searches or something
 import java.io.File;
 import java.io.InputStream;
+import java.util.Scanner;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -60,10 +61,10 @@ public static void main(String[] args) throws Exception {
 */
     //Input path of location for the index
 	//String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
-    String indexDir = "file name here";
+    String indexDir = "/var/www/library/index";
 	//Input path of location for the directory that has all of the files
 	//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
-    String dataDir = "file name here";
+    String dataDir = "/var/www/library/Internal Document Repository";
 	Indexer indexer = null;
 	   
 	File indexDirFile = new File(indexDir);
@@ -78,7 +79,8 @@ public static void main(String[] args) throws Exception {
 	Searcher search = new Searcher();
 	   
 	//The string you are searching for in the files
-	String querystr = "the Meeting";
+    Scanner sc = new Scanner(System.in);
+    String querystr = sc.nextLine();
 	   
 	//Call Searcher class to search for the string
 	search.searchIndex(querystr, indexDir);
