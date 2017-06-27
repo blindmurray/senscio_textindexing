@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/commons-lang3-3.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/commons-net-3.6.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/curvesapi-1.04.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/guava-19.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-analyzers-common-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-core-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-expressions-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-memory-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-queries-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-queryparser-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/lucene-suggest-6.6.0.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-examples-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-excelant-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-ooxml-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-ooxml-schemas-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/poi-scratchpad-3.16.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/taglibs-standard-impl-1.2.5.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/tika-app-1.15.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/tika-core-1.15.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/tika-parsers-1.15.jar"/>
+	<classpathentry kind="lib" path="/Search/WebContent/WEB-INF/lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-codec-1.10.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-lang3-3.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/commons-net-3.6.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/curvesapi-1.04.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/guava-19.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/jsch-0.1.54.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/jstl-1.2.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-analyzers-common-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-core-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-expressions-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-memory-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queries-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-queryparser-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/lucene-suggest-6.6.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-examples-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-excelant-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-ooxml-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-ooxml-schemas-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/poi-scratchpad-3.16.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/taglibs-standard-impl-1.2.5.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-app-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-core-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/tika-parsers-1.15.jar"/>
-	<classpathentry kind="lib" path="/Users/Gina/Documents/OneDrive/GitHub/senscio_textindexing/referenced_libraries/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
