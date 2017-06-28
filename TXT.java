@@ -10,8 +10,6 @@ public class TXT{
 		try {
 			// calls editExtension method
 			filePath = editExtension(filePath);
-
-			// create new file
 			f = new File(filePath);
 
 			// tries to create new file in the system
@@ -47,5 +45,10 @@ public class TXT{
 		String[] name = tokens[tokens.length-1].split("\\.");
 		String ext = name[name.length -1];
 		return ext;
+	}
+	public static String getFileName(String file){
+		String[] tokens = file.split("\\\\");
+		String name = tokens[tokens.length -1];
+		return name;
 	}
 }

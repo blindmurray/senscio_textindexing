@@ -102,6 +102,7 @@ public class Indexer {
 				convertedFile = new File(TXT.editExtension(file.toString()));
 				if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
 					indexFile(file);
+					convertedFile.delete();
 				}
 			}
 			//Will convert file by calling Parse class if file is a iWorks file
