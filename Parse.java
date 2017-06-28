@@ -7,8 +7,6 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.iwork.IWorkPackageParser;
-import org.apache.tika.parser.microsoft.ooxml.OOXMLParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
@@ -28,7 +26,7 @@ public class Parse {
 
 		//getting the content of the document
 		String content = handler.toString();
-		//content = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(content);
+
 		//call TXT class to create the .txt document
 		TXT.createTXT(content, filePath);
 	}
