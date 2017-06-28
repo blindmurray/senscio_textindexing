@@ -23,6 +23,7 @@ public class TXT{
 
 			bw.write(content);
 			bw.close();
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();

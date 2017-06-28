@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -28,7 +29,8 @@ public class Searcher{
 		searchString = searchString.toLowerCase();
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
 		String[] queries = searchString.split(" ");
-		System.out.print(queries[0] + " / " + queries[1]);
+		String n = Arrays.toString(queries);
+		System.out.println(n);
 		QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());	
 		String sq = "contents:(+";
 		for(String q:queries){
@@ -38,7 +40,6 @@ public class Searcher{
 		sq += ")";
 		Query query = qp.parse(sq);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
-		System.out.println(booleanQuery.toString());
 		//Create Lucene searcher. It searches over a single IndexReader.
 		IndexSearcher searcher = createSearcher(indexDir);
 
@@ -54,6 +55,7 @@ public class Searcher{
 		for (ScoreDoc sd : foundDocs.scoreDocs) {
 			Document d = searcher.doc(sd.doc);
 			results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+			System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 		}
 		return results;
 	}

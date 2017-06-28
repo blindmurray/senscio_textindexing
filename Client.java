@@ -126,11 +126,12 @@ public class EnterListener implements KeyListener{
 		// TODO Auto-generated method stub
 		if (arg0.getKeyCode()==KeyEvent.VK_ENTER){ 
 			try{
+				
 				incoming.append("-----------------------------------\n");
-				String indexDir = "/MICHELLE/txt_index";
-				//Input path of location for the directory that has all of the files
-				//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
-			    String dataDir = "/MICHELLE/txt_data";
+				String indexDir = "/Users/Gina/Documents/OneDrive/txt_data";
+				//String indexDir = "/var/www/Library/index";
+				String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+			    //String dataDir = "/var/www/Library/Internal Document Repository";
 				Indexer indexer = null;
 				   
 				File indexDirFile = new File(indexDir);

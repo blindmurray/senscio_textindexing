@@ -34,14 +34,16 @@ public class Indexer {
 		try (InputStream stream = Files.newInputStream(file.toPath())) {
 			//index file path
 			Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
+			
 			//index file contents
-			String content = new String(Files.readAllBytes(file.toPath()));
+			String content = new String(Files.readAllBytes(file.toPath())); 
+			
 			//content = CharMatcher.INVISIBLE.replaceFrom(content, "");
 			content = CharMatcher.ASCII.retainFrom(content);
 			content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
 			content = content.replaceAll("[\\t\\n\\r]", " ");
-			//("\\P{Print}", "");
-			//("[^\\p{Graph}\n\r\t ]", "");
+			System.out.println(content);
+			
 			Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 
 			//index file name
@@ -78,6 +80,7 @@ public class Indexer {
 		//Check for file type and call appropriate method to convert the file.
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
+			System.out.println(file.toString());
 			//Recalls the Indexer class if the file is a Directory
 			if(TXT.getExtension(file.toString()).matches("zip|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png")){
 			}
@@ -88,31 +91,17 @@ public class Indexer {
 			else if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file) && TXT.getExtension(file.toString()).equals("txt")){
 				indexFile(file);
 			}
-			//Will convert file by calling Parse class if file is a Microsoft Office document
-			/*else if(TXT.getExtension(file.toString()).matches("xlsx|xls|pps|doc|docx|ppt|pptx")){
-        	Parse.parseMS(file.toString());
-        	convertedFile = new File(TXT.editExtension(file.toString()));
-        	if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-        		indexFile(file);
-        	}
-        }*/
+
 			//Will convert file by calling Parse class if file is not .txt
 			else if(TXT.getExtension(file.toString()).matches("pdf|html|rtf|odf|ods|odt|xlsx|xls|pps|doc|docx|ppt|pptx|pages|key|numbers")){
 				Parse.parse(file.toString());
 				convertedFile = new File(TXT.editExtension(file.toString()));
 				if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-					indexFile(file);
+					indexFile(convertedFile);
 					convertedFile.delete();
 				}
 			}
-			//Will convert file by calling Parse class if file is a iWorks file
-			/*else if(TXT.getExtension(file.toString()).matches("pages|key|numbers")){
-        	 Parse.parseIWORKS(file.toString());
-        	 convertedFile = new File(TXT.editExtension(file.toString()));
-        	 if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
-            	 indexFile(file);
-             }
-         }*/
+			
 			else{
 			}
 		}
