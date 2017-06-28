@@ -28,7 +28,7 @@ public class Parse {
 
 		//getting the content of the document
 		String content = handler.toString();
-		content = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(content);
+		//content = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(content);
 		//call TXT class to create the .txt document
 		TXT.createTXT(content, filePath);
 	}

@@ -35,11 +35,12 @@ public class Indexer {
 			//index file path
 			Field filePathField = new StringField(LuceneConstants.FILE_PATH, file.getAbsolutePath(), Field.Store.YES);
 			//index file contents
-			String content = new String(Files.readAllBytes(file.toPath()));
+			String content = new String(Files.readAllBytes(file.toPath())); 
 			//content = CharMatcher.INVISIBLE.replaceFrom(content, "");
 			content = CharMatcher.ASCII.retainFrom(content);
 			content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
 			content = content.replaceAll("[\\t\\n\\r]", " ");
+			System.out.println(content);
 			//("\\P{Print}", "");
 			//("[^\\p{Graph}\n\r\t ]", "");
 			Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
@@ -78,6 +79,7 @@ public class Indexer {
 		//Check for file type and call appropriate method to convert the file.
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
+			System.out.println(file.toString());
 			//Recalls the Indexer class if the file is a Directory
 			if(TXT.getExtension(file.toString()).matches("zip|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png")){
 			}
