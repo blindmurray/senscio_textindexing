@@ -1,8 +1,3 @@
-//utf-encoding -- some pdfs and excels (the ones that aren't encoded in utf 8)
-//are not showing up properly
-//need to put whole file into string
-//
-//gina's branch does not have client class
 import java.io.*;
 import java.net.*;
 import java.nio.file.Paths;
@@ -86,81 +81,82 @@ public class Client extends JPanel implements ActionListener{
 		mainPanel.setBackground(Color.BLACK);
 	}
 public class searchButtonListener implements ActionListener{
-	public void actionPerformed(ActionEvent event){
+
+public void actionPerformed(ActionEvent event){
+	try{
+		incoming.append("-----------------------------------\n");
+		String indexDir = "/MICHELLE/txt_index";
+		String dataDir = "/MICHELLE/txt_data";
+		Indexer indexer = null;
+			   
+		File indexDirFile = new File(indexDir);
+			   
+		/*Call clean.java class to clear all of the files created in the index 
+		 * directory from previous runs
+		 */
+		TextFileFilter.clear(indexDirFile);
+			   
+		//Call the Indexer.java file and create an indexer
+		Indexer.createIndex(indexDir, dataDir, indexer);
+			   
+		//The string you are searching for in the files
+		String querystr = outgoing.getText();
+		   
+		//Call Searcher class to search for the string
+		searchIndex(querystr, indexDir);
+	} catch (Exception ex){
+		ex.printStackTrace();
+	}
+	scrollToBottom(qScroller);
+	outgoing.setText("");
+	outgoing.requestFocus();	
+}
+}
+public class EnterListener implements KeyListener{
+
+public void keyPressed(KeyEvent e) {		  
+}
+@Override
+
+public void keyReleased(KeyEvent arg0) {
+
+	// TODO Auto-generated method stub
+	if (arg0.getKeyCode()==KeyEvent.VK_ENTER){ 
 		try{
 			incoming.append("-----------------------------------\n");
 			String indexDir = "/MICHELLE/txt_index";
-			//Input path of location for the directory that has all of the files
-			//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
-		    String dataDir = "/MICHELLE/txt_data";
+			String dataDir = "/MICHELLE/txt_data";
 			Indexer indexer = null;
-			   
+				   
 			File indexDirFile = new File(indexDir);
 			   
 			/*Call clean.java class to clear all of the files created in the index 
 			 * directory from previous runs
 			 */
-			clean.deleteFolderContents(indexDirFile);
-			   
+			TextFileFilter.clear(indexDirFile);
+				   
 			//Call the Indexer.java file and create an indexer
 			Indexer.createIndex(indexDir, dataDir, indexer);
-			   
+				   
 			//The string you are searching for in the files
 			String querystr = outgoing.getText();
-			   
+				   
 			//Call Searcher class to search for the string
 			searchIndex(querystr, indexDir);
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
+	
 		scrollToBottom(qScroller);
-	outgoing.setText("");
-	outgoing.requestFocus();	
-	}
-}
-public class EnterListener implements KeyListener{
-    public void keyPressed(KeyEvent e) {		  
-    }
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		if (arg0.getKeyCode()==KeyEvent.VK_ENTER){ 
-			try{
-				
-				incoming.append("-----------------------------------\n");
-				String indexDir = "/Users/Gina/Documents/OneDrive/txt_data";
-				//String indexDir = "/var/www/Library/index";
-				String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
-			    //String dataDir = "/var/www/Library/Internal Document Repository";
-				Indexer indexer = null;
-				   
-				File indexDirFile = new File(indexDir);
-				   
-				/*Call clean.java class to clear all of the files created in the index 
-				 * directory from previous runs
-				 */
-				clean.deleteFolderContents(indexDirFile);
-				   
-				//Call the Indexer.java file and create an indexer
-				Indexer.createIndex(indexDir, dataDir, indexer);
-				   
-				//The string you are searching for in the files
-				String querystr = outgoing.getText();
-				   
-				//Call Searcher class to search for the string
-				searchIndex(querystr, indexDir);
-			} catch (Exception ex){
-				ex.printStackTrace();
-			}
-			scrollToBottom(qScroller);
 		outgoing.setText("");
 		outgoing.requestFocus();	
-		}
 	}
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+}
+
+@Override
+public void keyTyped(KeyEvent arg0) {
+	// TODO Auto-generated method stub
+}
 }
 
 private void scrollToBottom(JScrollPane scrollPane) {
@@ -175,6 +171,7 @@ private void scrollToBottom(JScrollPane scrollPane) {
     };
     verticalBar.addAdjustmentListener(downScroller);
 }
+
 public void searchIndex(String searchString, String indexDir) throws Exception {
 	String index = indexDir;
 	//Create Lucene searcher. It search over a single IndexReader.
@@ -213,14 +210,12 @@ private static IndexSearcher createSearcher(String index) throws IOException {
 	IndexSearcher searcher = new IndexSearcher(reader);
 	return searcher;
 }
-@Override
+
 public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
-	
 }
 
   /**
    * Reads data from the input channel and writes to the output stream
    */
-
 }

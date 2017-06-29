@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -24,44 +23,39 @@ public class Searcher{
 	IndexReader indexReader;
 	
 	public Searcher(){
+		
 	}
-	public ArrayList<String> searchIndex(String searchString, String indexDir) throws Exception {
+
+	public ArrayList<String> searchIndex(String searchString, String indexDir, int num) throws Exception {
 		searchString = searchString.toLowerCase();
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-		String[] queries = searchString.split(" ");
-		String n = Arrays.toString(queries);
-		System.out.println(n);
 		QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());	
-		String sq = "contents:(+";
-		for(String q:queries){
-			sq += q + " +";
-		}
-		sq = sq.substring(0, sq.length()-2);
-		sq += ")";
-		Query query = qp.parse(sq);
+		
+		Query query = qp.parse(searchString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
 		//Create Lucene searcher. It searches over a single IndexReader.
 		IndexSearcher searcher = createSearcher(indexDir);
 
 		//Search indexed contents using search term
-		TopDocs foundDocs = searchInContent(searchString, searcher, booleanQuery);
+		TopDocs foundDocs = searchInContent(searchString, searcher, booleanQuery, num);
 
 		//Total found documents
 
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits);
 		//Print out the path of files which have searched term
-
+		
 		for (ScoreDoc sd : foundDocs.scoreDocs) {
 			Document d = searcher.doc(sd.doc);
 			results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 			System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 		}
+		
 		return results;
 	}
-	private static TopDocs searchInContent(String textToFind, IndexSearcher searcher, BooleanQuery.Builder booleanQuery) throws Exception{
+	private static TopDocs searchInContent(String textToFind, IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
 		//Search the index
-		TopDocs hits = searcher.search(booleanQuery.build(), 10);
+		TopDocs hits = searcher.search(booleanQuery.build(), num);
 		return hits;
 	}
 	private static IndexSearcher createSearcher(String index) throws IOException {
