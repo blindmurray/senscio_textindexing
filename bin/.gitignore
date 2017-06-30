@@ -1,4 +1,8 @@
+/.classpath
+/.project
+/README.md
 /referenced_libraries/
+/test-project/
 /Client$1.class
 /Client$EnterListener.class
 /Client$searchButtonListener.class
@@ -8,9 +12,7 @@
 /LuceneTester.class
 /Parse.class
 /Searcher.class
+/Server_Socket.class
 /TXT.class
 /TextFileFilter.class
-/clean.class
 /UpdateIndex.class
-/meeting/
-/Server_Socket.class

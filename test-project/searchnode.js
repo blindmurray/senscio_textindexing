@@ -20,13 +20,21 @@ function requesthandler (request, response){
     });
 } 
 function route(request, response, data, path){
+    results = "";
     if(data.length>0){
     	client.write(data + "\n");
-        console.log('data recieved:'+ data);
-        response.writeHead (200, {'Content-Type': 'text/html', 'content-Length': data.length});
-        response.write(data);
+      console.log('data recieved:'+ data);
+      client.on('data', function(data) {
+        
+        results = data.toString();
+        console.log("received:"+ results +"\n");
+      //client.end(); 
+        response.write(results);
         response.end();
         data = "";
+      });
+      // response.writeHead (200, {'Content-Type': 'text/plain', 'content-Length': data.length});
+      
     }
     var p = path.lastIndexOf("."); 
     var ext = "";
@@ -45,11 +53,11 @@ function route(request, response, data, path){
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function() { //'connect' listener
 	console.log('client connected');
-	client.on('data', function(data) {
+	/*client.on('data', function(data) {
 		console.log("received:"+ data.toString() +"\n");
 
 	//client.end();
-	});
+	});*/
 	client.on('end', function() {
 		console.log('client disconnected');
 	});

@@ -1,5 +1,16 @@
 //need to receive search text in searchnode, then send to server
-//see below
+/* different types of queries (phrase, etc)
+ * file upload
+ * 		drag and drop, choose directory to save in
+ * renaming files (searching titles)
+ * narrow down by extension
+ * HTML HTML HTML HTML HTML
+ * gina's number 774-285-1474 
+ * output of data -- get it to print out on webpage, in html rather than alert
+ * transfer data from node js to html/javascript
+ * formidable to process forms for file upload
+ * 
+ */
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -46,7 +57,7 @@ public static void main(String[] args) {
 						}
 						}
 					//put reading info functionality here
-					os.println("fromserver " + message); 	
+					os.println(message); 	
 					line = "";
 					//see above line, use to return info
 					//when it gets to server, alert results
