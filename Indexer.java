@@ -100,12 +100,8 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
 	for (int i = 0; i < files.length; i++) {
 		File file = files[i];
 			
-		//ignore specific extensions
-		if(TXT.getExtension(file.toString()).matches("zip|java|jar|mp4|mp3|dat|msg|xlw|mpp|xml|jpg|jpeg|png")){
-		}	
-		
 		//Recalls the Indexer class if the file is a Directory
-		else if(file.isDirectory()){
+		if(file.isDirectory()){
 			writeIndex(file.toString(),new TextFileFilter());
 		}
 				
@@ -122,8 +118,7 @@ public int writeIndex(String dataDirPath, FileFilter filter) throws IOException,
 				indexFile(convertedFile, file);
 				convertedFile.delete();
 			}
-		}
-				
+		}	
 		else{
 		}
 	}

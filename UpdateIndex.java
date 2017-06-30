@@ -15,9 +15,5 @@ public static void add(String filePath, String indexDir) throws IOException, Tik
 	Indexer indexer = null;
 	Indexer.addIndex(indexDir, filePath, indexer);
 	System.out.println("New Document(s) Added");
-	
 }
-
-
-
 }

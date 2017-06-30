@@ -12,22 +12,23 @@ import org.xml.sax.SAXException;
 
 public class Parse {
 	//autodetects file type and call TXT class to create txt file
-	public static void parse(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException{
 
-		//detecting the file type
-		BodyContentHandler handler = new BodyContentHandler(-1);
-		Metadata metadata = new Metadata();
-		FileInputStream inputstream = new FileInputStream(filePath);
-		ParseContext pcontext = new ParseContext();
+public static void parse(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException{
 
-		//PDF parser
-		Parser parser = new AutoDetectParser(); 
-		parser.parse(inputstream, handler, metadata,pcontext);
+	//detecting the file type
+	BodyContentHandler handler = new BodyContentHandler(-1);
+	Metadata metadata = new Metadata();
+	FileInputStream inputstream = new FileInputStream(filePath);
+	ParseContext pcontext = new ParseContext();
 
-		//getting the content of the document
-		String content = handler.toString();
+	//PDF parser
+	Parser parser = new AutoDetectParser(); 
+	parser.parse(inputstream, handler, metadata,pcontext);
 
-		//call TXT class to create the .txt document
-		TXT.createTXT(content, filePath);
-	}
+	//getting the content of the document
+	String content = handler.toString();
+		
+	//call TXT class to create the .txt document
+	TXT.createTXT(content, filePath);
+}
 }
