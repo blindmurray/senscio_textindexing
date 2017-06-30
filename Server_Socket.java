@@ -12,6 +12,7 @@ public static String line;
 public static DataInputStream is;
 public static PrintStream os;
 	 
+@SuppressWarnings("deprecation")
 public static void main(String[] args) {
 	
 	try {
@@ -28,6 +29,7 @@ public static void main(String[] args) {
 				 while(true){
 					line = is.readLine();
 					if(!line.isEmpty()){
+						System.out.println("true");
 						String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 						String querystr= null;
 						try {  
