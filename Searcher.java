@@ -41,13 +41,13 @@ public class Searcher{
 		//Total found documents
 
 		ArrayList<String> results = new ArrayList<String>();
-		results.add("Total Results: "+ foundDocs.totalHits);
+		results.add("Total Results: "+ foundDocs.totalHits +"\n");
 		//Print out the path of files which have searched term
 		
 		for (ScoreDoc sd : foundDocs.scoreDocs) {
 			Document d = searcher.doc(sd.doc);
 			results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
-			System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+			//System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 		}
 		
 		return results;
