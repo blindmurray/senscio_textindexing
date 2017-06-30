@@ -20,5 +20,4 @@ public static void clear(File folder) {
 		}
 	}
 }
-
 }
