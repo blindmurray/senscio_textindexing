@@ -32,9 +32,9 @@ function route(request, response, data, path){
         response.write(results);
         response.end();
         data = "";
+
       });
       // response.writeHead (200, {'Content-Type': 'text/plain', 'content-Length': data.length});
-      
     }
     var p = path.lastIndexOf("."); 
     var ext = "";
