@@ -27,6 +27,7 @@ function route(request, response, data, path){
         response.write(data);
         response.end();
         data = "";
+
     }
     var p = path.lastIndexOf("."); 
     var ext = "";
