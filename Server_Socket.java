@@ -15,7 +15,7 @@ public static PrintStream os;
 public static void main(String[] args) {
 	
 	try {
-		ssock = new ServerSocket(1221);
+		ssock = new ServerSocket(port);
 		System.out.println("SockServer waiting for connections on 1221...");
 		while( true ){ 
 			try {
