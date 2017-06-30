@@ -29,16 +29,14 @@ public static void main(String[] args) {
 				 while(true){
 					line = is.readLine();
 					if(!line.isEmpty()){
-						System.out.println("true");
+						System.out.println(line);
 						String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
-						String querystr= null;
 						try {  
-							//The string you are searching for in the files
-							querystr = line;								
-							System.out.println(querystr);
+							//The string you are searching for in the files							
+							System.out.println(line);
 							//Call Searcher class to search for the string
 							Searcher s = new Searcher();
-							stuff = s.searchIndex(querystr, indexDir, 20);
+							stuff = s.searchIndex(line, indexDir, 20);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

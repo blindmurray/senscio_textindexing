@@ -15,6 +15,7 @@ function b1click(){
 		xhr.setRequestHeader("Content-Type","text/plain");
 		xhr.send(data);
 		console.dir(data);
+		
 }
 
 function b2click(){

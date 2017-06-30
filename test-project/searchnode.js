@@ -24,8 +24,9 @@ function route(request, response, data, path){
     	client.write(data + "\n");
         console.log('data recieved:'+ data);
         response.writeHead (200, {'Content-Type': 'text/html', 'content-Length': data.length});
-        response.write("hello " + data);
+        response.write(data);
         response.end();
+        data = "";
     }
     var p = path.lastIndexOf("."); 
     var ext = "";
@@ -55,7 +56,6 @@ var client = net.connect({port: 1221}, function() { //'connect' listener
 })
 var c = 0;
 console.log("sending "+c); 
-client.write(c + " - hello world \n");
 
 	/*var timeout = setTimeout( function(){clearInterval(interval); 
 		client.write("bye"); 
