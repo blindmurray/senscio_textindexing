@@ -25,7 +25,6 @@ public class Searcher{
 	public Searcher(){
 		
 	}
-
 	public ArrayList<String> searchIndex(String searchString, String indexDir, int num) throws Exception {
 		searchString = searchString.toLowerCase();
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
@@ -58,6 +57,7 @@ public class Searcher{
 		TopDocs hits = searcher.search(booleanQuery.build(), num);
 		return hits;
 	}
+	
 	private static IndexSearcher createSearcher(String index) throws IOException {
 		Directory dir = FSDirectory.open(Paths.get(index));
 
