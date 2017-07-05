@@ -3,12 +3,9 @@
 /README.md
 /referenced_libraries/
 /test-project/
-/Client$1.class
-/Client$EnterListener.class
-/Client$searchButtonListener.class
-/Client.class
 /Indexer.class
 /LuceneConstants.class
+/txt_index/
 /LuceneTester.class
 /Parse.class
 /Searcher.class
@@ -16,4 +13,3 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/txt_index/

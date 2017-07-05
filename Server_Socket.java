@@ -9,7 +9,9 @@
  * output of data -- get it to print out on webpage, in html rather than alert
  * transfer data from node js to html/javascript
  * formidable to process forms for file upload
- * 
+ * get css file to import properly
+ * instead of document.write overwriting everything, have it appear in that web page
+ * duplicated files?? only w/ other index
  */
 import java.io.*;
 import java.net.*;
@@ -40,7 +42,7 @@ public static void main(String[] args) {
 				 while(true){
 					line = is.readLine();
 					if(!line.isEmpty()){
-						String indexDir = "txt_index";
+						String indexDir = "/MICHELLE/txt_index";
 
 						try {  
 							//The string you are searching for in the files							
@@ -52,12 +54,14 @@ public static void main(String[] args) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						message = "Search: " + line + "<br>";
 						for(String st: stuff){
-							message = message + st + "\n";
+							message = message + st + "<br>";
 						}
 						}
 					//put reading info functionality here
-					os.println(message); 	
+					 
+					os.println(message);
 					line = "";
 					//see above line, use to return info
 					//when it gets to server, alert results

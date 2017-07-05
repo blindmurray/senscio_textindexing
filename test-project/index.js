@@ -4,7 +4,7 @@ function b1click(){
 	xhr.onload =function(){
 		if (xhr.readyState===4) {
 			if (xhr.status===200) {
-				alert ("success: " + xhr.responseText);
+				document.write(xhr.responseText);
 			}
 			else{
 				alert ("error: " + xhr.responseText);

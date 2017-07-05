@@ -4,20 +4,36 @@ var url = require('url');
 var fs = require('fs');
 var svr = http.createServer(requesthandler);
 svr.listen(8888);
+var formidable = require('formidable');
 console.log('server created');
 
 function requesthandler (request, response){ 
-	var postdata = "";
-	var path = url.parse(request.url).pathname;
-	request.setEncoding("utf8");
-	request.addListener("data", function(postDataChunk){ 
-		postdata += postDataChunk;
-	});
+	if(request.url == '/fileupload'){
+		var form = new formidable.IncomingForm();
+		form.parse(request, function(err, fields, files){
+			var oldpath = files.filetoupload.path;
+      		var newpath = 'C:/MICHELLE/' + files.filetoupload.name;
+      		fs.rename(oldpath, newpath, function (err) {
+        		if (err) throw err;
+        		response.write('File uploaded and moved!');
+        		response.end();
+      		});
+      	});
+	}
+	else{
+		var postdata = "";
+		var path = url.parse(request.url).pathname;
+		request.setEncoding("utf8");
+		request.addListener("data", function(postDataChunk){ 
+			postdata += postDataChunk;
+		});
     // end of any data sent with he HTTP request, go to our request handler and return a webpage:                                                              
-    request.addListener("end", function() {    
-        route(request, response, postdata, path);
+	    request.addListener("end", function() {    
+	        route(request, response, postdata, path);
         //client.write(postdata + "\n");
-    });
+		});
+	}
+	
 } 
 function route(request, response, data, path){
     results = "";
@@ -55,7 +71,6 @@ var client = net.connect({port: 1221}, function() { //'connect' listener
 	console.log('client connected');
 	/*client.on('data', function(data) {
 		console.log("received:"+ data.toString() +"\n");
-
 	//client.end();
 	});*/
 	client.on('end', function() {

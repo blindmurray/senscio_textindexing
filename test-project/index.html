@@ -2,7 +2,7 @@
 <head> 
 	<title> mytest</title>
 	<script type = "text/javascript" src="/index.js"></script>
-	<link rel = "stylesheet" type = "text/css" href = "myStyle.css" />	
+	<link rel = "stylesheet" type = "text/css" href = "style.css" />	
 </head>
 <body>
 <div class="news">
@@ -19,14 +19,18 @@
 	<div>	
 		<span class="upload">Upload a Document</span>
 		<br>
-		<input type="file" id="t6" class="v5"/>
-		<br/>
-		<button id='b2' onclick='b2click()'>Submit</button>
+		<form action='fileupload' method='post' enctype='multipart/form-data'>
+			<input type="file" name='filetoupload' id="t6" class="v5"/>
+			<br/>
+			<input type='submit'>Submit</input>
+		</form>
 		<br>
 		<div class="c1">
-			<input type="text" id="t1" class="v1"/>
-			<br/>
-			<button id='b1' onclick='b1click()'/>
+			
+				<input type="text" id="t1" class="v1"/>
+				<br/>
+				<button id='b1' onclick='b1click()'/>
+			
 		</div> 		
 	</div>
 	<div class="foot">

@@ -149,7 +149,6 @@ button {
 	font-size: 20px;
 	font-family: "Century Gothic",Times;
 	line-height: 0.25;
-	appearance: none;
 	box-shadow: none;
 	border-radius: 0;
 }
@@ -160,7 +159,6 @@ input#file {
 	font-size: 20px;
 	font-family: "Century Gothic",Times;
 	line-height: 0.25;
-	appearance: none;
 	box-shadow: none;
 	border-radius: 0;
 }
