@@ -1,17 +1,24 @@
-//need to receive search text in searchnode, then send to server
-/* different types of queries (phrase, etc)
+/*need to receive search text in searchnode, then send to server
+ * different types of queries (phrase, etc)
  * file upload
  * 		drag and drop, choose directory to save in
  * renaming files (searching titles)
- * narrow down by extension
- * HTML HTML HTML HTML HTML
+ * narrow search down by extension
+ * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
- * output of data -- get it to print out on webpage, in html rather than alert
  * transfer data from node js to html/javascript
- * formidable to process forms for file upload
  * get css file to import properly
- * instead of document.write overwriting everything, have it appear in that web page
+ * instead of document.write overwriting everything, 
+ * have it appear in that web page (with same format as search page)
  * duplicated files?? only w/ other index
+ * add instructions for search
+ 	* don't use punctuation 
+ 	* search for key words only
+ 	* if using extensions, list with periods, NO SPACES
+ 	* maybe use drop down menu instead
+ 	* 
+ * 
+ * 
  */
 import java.io.*;
 import java.net.*;
@@ -41,6 +48,13 @@ public static void main(String[] args) {
 				 String message = "";
 				 while(true){
 					line = is.readLine();
+					System.out.println(line);
+					String[] ar = line.split(",");
+					line = ar[0];
+					String ext = "";
+					if(ar.length>1){
+						ext = ar[1];
+					}
 					if(!line.isEmpty()){
 						String indexDir = "/MICHELLE/txt_index";
 
@@ -49,7 +63,7 @@ public static void main(String[] args) {
 							System.out.println(line);
 							//Call Searcher class to search for the string
 							Searcher s = new Searcher();
-							stuff = s.searchIndex(line, indexDir, 20);
+							stuff = s.searchIndex(line, indexDir, 20, ext);
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

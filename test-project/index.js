@@ -1,5 +1,7 @@
 function b1click(){
-	var data = document.getElementById("t1").value;
+	var searchquery = document.getElementById("t1").value;
+	var exten = document.getElementById("t2").value;
+	var data = searchquery + "," + exten;
 	var xhr = ajax();
 	xhr.onload =function(){
 		if (xhr.readyState===4) {
