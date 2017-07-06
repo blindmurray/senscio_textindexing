@@ -44,16 +44,23 @@ public class Searcher{
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");
 		//Print out the path of files which have searched term
-		if(extensions.length()>0){
+		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
+			System.out.print(exts[0]);
 			for (ScoreDoc sd : foundDocs.scoreDocs) {
 				Document d = searcher.doc(sd.doc);
 				for(String ext: exts){
-					if(ext == TXT.getExtension(d.get(LuceneConstants.FILE_NAME))){
+					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 						results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 						//System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 					}
 				}
+			}
+		}
+		else{
+			for(ScoreDoc sd: foundDocs.scoreDocs){
+				Document d = searcher.doc(sd.doc);
+				results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 			}
 		}
 		return results;

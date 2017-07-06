@@ -49,12 +49,14 @@ public static void main(String[] args) {
 				 while(true){
 					line = is.readLine();
 					System.out.println(line);
-					String[] ar = line.split(",");
+					String[] ar = line.split("~s@");
 					line = ar[0];
 					String ext = "";
 					if(ar.length>1){
 						ext = ar[1];
+						System.out.println(ext);
 					}
+					
 					if(!line.isEmpty()){
 						String indexDir = "/MICHELLE/txt_index";
 

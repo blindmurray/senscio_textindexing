@@ -1,7 +1,7 @@
 function b1click(){
 	var searchquery = document.getElementById("t1").value;
 	var exten = document.getElementById("t2").value;
-	var data = searchquery + "," + exten;
+	var data = searchquery + "~s@" + exten;
 	var xhr = ajax();
 	xhr.onload =function(){
 		if (xhr.readyState===4) {
@@ -13,11 +13,10 @@ function b1click(){
 			}
 		}
 	}
-		xhr.open ("POST", "/", true);
-		xhr.setRequestHeader("Content-Type","text/plain");
-		xhr.send(data);
-		console.dir(data);
-		
+	xhr.open ("POST", "/", true);
+	xhr.setRequestHeader("Content-Type","text/plain");
+	xhr.send(data);
+	console.dir(data);		
 }
 
 function b2click(){

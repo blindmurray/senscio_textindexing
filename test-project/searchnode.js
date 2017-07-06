@@ -8,41 +8,44 @@ var formidable = require('formidable');
 console.log('server created');
 
 function route(request, response, data, path){
-    results = "";
-    var p = path.lastIndexOf("."); 
-   	var ext = "";
-    if(data.length>0){
-    	client.write(data + "\n");
-      console.log('data recieved:'+ data);
-      client.on('data', function(data) {
-        
-        results = data.toString();
-        console.log("received:"+ results +"\n");
-      //client.end(); 
-        response.write(results);
-        response.end();
-        data = "";
+	results = "";
+	var p = path.lastIndexOf("."); 
+	var ext = "";
+	if(data.length>0){
+		client.write(data + "\n");
+		console.log('data recieved:'+ data);
+		client.on('data', function(data) {
+		
+			results = data.toString();
+			console.log("received:"+ results +"\n");
+			//client.end(); 
+			response.write(results);
+			response.end();
+			data = "";
 
-      });
-      // response.writeHead (200, {'Content-Type': 'text/plain', 'content-Length': data.length});
-    	
-    }
+	  });
+	  // response.writeHead (200, {'Content-Type': 'text/plain', 'content-Length': data.length});
+		
+	}
 	else if (p > -1){
-    	ext = path.slice(p+1);
-       	if (ext=="html"|| ext=="htm" || ext=="js" ||ext=="css"){
-       		var fn = path.slice(1);
-       		fs.readFile (fn, function (err, content){
-       			response.writeHead (200, {'Content-Type': 'text/html', 'content-Length': content.length});
-       			response.write(content);
-       			response.end();
+		ext = path.slice(p+1);
+		if (ext=="html"|| ext=="htm" || ext=="js" ||ext=="css"){
+			var fn = path.slice(1);
+			fs.readFile (fn, function (err, content){
+				response.writeHead (200, {'Content-Type': 'text/html', 'content-Length': content.length});
+				response.write(content);
+				setTimeout(function endit(){
+					response.end();
+				}, 0);
+				
 			});
-       	}
+		}
 	}	
-    
+	
   
-  	else{
-  		response.end();
-  	}
+	else{
+		response.end();
+	}
 }
 
 function requesthandler (request, response){ 
@@ -51,13 +54,15 @@ function requesthandler (request, response){
 			var form = new formidable.IncomingForm();
 			form.parse(request, function(err, fields, files){
 				var oldpath = files.filetoupload.path;
-    	  		var newpath = 'C:/MICHELLE/' + files.filetoupload.name;
-      			fs.rename(oldpath, newpath, function (err) {
-        			if (err) throw err;
-        			response.write('File uploaded and moved!');
-      				response.end();
-    	  		});
-      		});
+				var newpath = 'C:/MICHELLE/' + files.filetoupload.name;
+				fs.rename(oldpath, newpath, function (err) {
+					if (err) throw err;
+					response.write('File uploaded and moved!');
+					setTimeout(function endit(){
+						response.end();
+					}, 0);
+				});
+			});
 
 		break;
 		default:
@@ -67,10 +72,10 @@ function requesthandler (request, response){
 			request.addListener("data", function(postDataChunk){ 
 				postdata += postDataChunk;
 			});
-    // end of any data sent with he HTTP request, go to our request handler and return a webpage:                                                              
-	    	request.addListener("end", function() {    
-	        	route(request, response, postdata, path);
-        //client.write(postdata + "\n");
+	// end of any data sent with he HTTP request, go to our request handler and return a webpage:                                                              
+			request.addListener("end", function() {    
+				route(request, response, postdata, path);
+		//client.write(postdata + "\n");
 			});
 			
 		break;
