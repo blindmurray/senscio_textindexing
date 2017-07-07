@@ -1,9 +1,12 @@
 /*need to receive search text in searchnode, then send to server
  * different types of queries (phrase, etc)
  * file upload
- * 		drag and drop, choose directory to save in
+ 	* drag and drop, choose directory to save in
+ 		* https://www.sitepoint.com/html5-file-drag-and-drop/
+ 		* https://css-tricks.com/drag-and-drop-file-uploading/
+ 	* warning when saving to place that has file of same name
  * renaming files (searching titles)
- * narrow search down by extension
+ * narrow search down by extension (more testing)
  * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
  * transfer data from node js to html/javascript

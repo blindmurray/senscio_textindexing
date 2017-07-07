@@ -44,6 +44,7 @@ public class Searcher{
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");
 		//Print out the path of files which have searched term
+		System.out.println(extensions.length());
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
 			System.out.print(exts[0]);

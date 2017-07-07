@@ -1,11 +1,8 @@
-/.classpath
-/.project
-/README.md
 /referenced_libraries/
 /test-project/
+/txt_index/
 /Indexer.class
 /LuceneConstants.class
-/txt_index/
 /LuceneTester.class
 /Parse.class
 /Searcher.class
