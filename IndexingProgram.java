@@ -26,16 +26,11 @@ public static void main(String[] args) throws Exception {
 	/*Call clean.java class to clear all of the files created in the index 
 	 * directory from previous runs
 	 */
-	Scanner sc = new Scanner(System.in);
-	System.out.println("Would you like to re-index the repository? (yes or no)");
 	
-	if(sc.nextLine().equals("yes")){
-		TextFileFilter.clear(indexDirFile);
-		Indexer.createIndex(indexDir, dataDir, indexer);
-	}
+	TextFileFilter.clear(indexDirFile);
+	Indexer.createIndex(indexDir, dataDir, indexer);
 
 	/*Searcher search = new Searcher();
-	
 	boolean a = true;
 	while (a == true) {
 		System.out.println("What would you like to search for? If you would like to stop, please type 'q'.");

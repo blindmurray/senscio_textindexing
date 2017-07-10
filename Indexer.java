@@ -43,7 +43,7 @@ private Document getDocument(File newFile, File oldFile) throws IOException {
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
 		Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);
 		Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
-		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, newFile.getName(), Field.Store.YES);
+		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, oldFile.getName(), Field.Store.YES);
 
 		document.add(contentField);
 		document.add(extField);
