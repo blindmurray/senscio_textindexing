@@ -6,7 +6,7 @@ function b1click() {
 	xhr.onload = function () {
 		if (xhr.readyState === 4) {
 			if (xhr.status === 200) {
-				document.write(xhr.responseText);
+				document.getElementById("demo").innerHTML = xhr.responseText;
 			} else {
 				alert("error: " + xhr.responseText);
 			}
