@@ -1,27 +1,21 @@
-/*need to receive search text in searchnode, then send to server
- * different types of queries (phrase, etc)
+/* different types of queries (phrase, etc)
  * file upload
  	* drag and drop, choose directory to save in
  		* https://www.sitepoint.com/html5-file-drag-and-drop/
  		* https://css-tricks.com/drag-and-drop-file-uploading/
+ 		* #fail
  	* warning when saving to place that has file of same name
  * renaming files (searching titles)
- * narrow search down by extension (more testing)
  * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
  * transfer data from node js to html/javascript
- * get css file to import properly
- * instead of document.write overwriting everything, 
- * have it appear in that web page (with same format as search page)
  * duplicated files?? only w/ other index
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
  	* if using extensions, list with periods, NO SPACES
  	* maybe use drop down menu instead
- 	* 
- * 
- * 
+ * weird thing-search received times=which number search it is
  */
 import java.io.*;
 import java.net.*;

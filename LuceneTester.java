@@ -47,7 +47,7 @@ public static void main(String[] args) throws Exception {
         else{
         	System.out.println("How many hits would you like to see?");
         	int n = m.nextInt();
-        	search.searchIndex(querystr, indexDir, n);
+        	search.searchIndex(querystr, indexDir, n, "");
         }
 
     }
