@@ -1,6 +1,4 @@
-/referenced_libraries/
-/test-project/
-/txt_index/
+/.DS_Store
 /Indexer.class
 /LuceneConstants.class
 /LuceneTester.class
@@ -10,3 +8,5 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
+/test-project/
+/IndexingProgram.class

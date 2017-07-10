@@ -10,7 +10,7 @@
 import java.io.File;
 import java.util.Scanner;
 
-public class LuceneTester {
+public class IndexingProgram {
 @SuppressWarnings("resource")
 
 public static void main(String[] args) throws Exception {
@@ -34,7 +34,7 @@ public static void main(String[] args) throws Exception {
 		Indexer.createIndex(indexDir, dataDir, indexer);
 	}
 
-	Searcher search = new Searcher();
+	/*Searcher search = new Searcher();
 	
 	boolean a = true;
 	while (a == true) {
@@ -47,10 +47,11 @@ public static void main(String[] args) throws Exception {
         else{
         	System.out.println("How many hits would you like to see?");
         	int n = m.nextInt();
-        	search.searchIndex(querystr, indexDir, n);
+        	System.out.println("What extension?");
+        	String extensions = m.nextLine();
+        	search.searchIndex(querystr, indexDir, n, extensions);
         }
-
-    }
+    }*/
    }
    
 }
