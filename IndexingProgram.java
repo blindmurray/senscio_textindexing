@@ -42,9 +42,13 @@ public static void main(String[] args) throws Exception {
         else{
         	System.out.println("How many hits would you like to see?");
         	int n = m.nextInt();
+<<<<<<< HEAD:LuceneTester.java
+        	search.searchIndex(querystr, indexDir, n, "");
+=======
         	System.out.println("What extension?");
         	String extensions = m.nextLine();
         	search.searchIndex(querystr, indexDir, n, extensions);
+>>>>>>> 007650790fc8eeb2434d3f5896bcfa9627d86031:IndexingProgram.java
         }
     }*/
    }
