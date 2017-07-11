@@ -3,8 +3,8 @@ function prepareList() {
  .click( function(event) {
  if (this == event.target) {
 	 	 $(this).toggleClass('collapsed');
-$(this).toggleClass('expanded');
-	 $(this).children('ul').toggle('medium');
+		$(this).toggleClass('expanded');
+	 	$(this).children('ul').toggle('medium');
  }
  return false;
  })

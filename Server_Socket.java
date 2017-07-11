@@ -6,9 +6,7 @@
  		* #fail
  	* warning when saving to place that has file of same name
  * renaming files (searching titles) https://www.w3schools.com/nodejs/nodejs_filesystem.asp
- * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
- * transfer data from node js to html/javascript
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
@@ -25,6 +23,7 @@
 	* 
 	* 
  * DirectoryReader -- need to trigger it if someone updates a folder
+ * at some point, go through and add try catches so the program keeps running in case of error
  */
 import java.io.*;
 import java.net.*;
