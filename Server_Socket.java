@@ -5,7 +5,7 @@
  		* https://css-tricks.com/drag-and-drop-file-uploading/
  		* #fail
  	* warning when saving to place that has file of same name
- * renaming files (searching titles)
+ * renaming files (searching titles) https://www.w3schools.com/nodejs/nodejs_filesystem.asp
  * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
  * transfer data from node js to html/javascript
@@ -16,6 +16,7 @@
  	* if using extensions, list with periods, NO SPACES
  	* maybe use drop down menu instead
  * weird thing-search received times=which number search it is
+ * spellcheck and synonym search
  */
 import java.io.*;
 import java.net.*;

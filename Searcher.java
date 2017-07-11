@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -15,6 +16,13 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+
+import edu.mit.jwi.Dictionary;
+import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISynset;
+import edu.mit.jwi.item.IWord;
+import edu.mit.jwi.item.IWordID;
+import edu.mit.jwi.item.POS;
 
 public class Searcher{
 
@@ -82,5 +90,43 @@ public class Searcher{
 		//Index searcher
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
+	}
+	public ArrayList<String> synonymfind(String synword) {
+		ArrayList<String> syns = new ArrayList<String>();
+		try {
+
+	        URL url = new URL("file", null, "WordNet\\2.1\\dict");
+
+
+	        Dictionary dict = new Dictionary(url);
+	        try {
+	            dict.open();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+
+	        }
+
+	        IIndexWord idxWord = dict.getIndexWord(synword, POS.ADJECTIVE);
+	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+	        	IWordID wordID = idxWord.getWordIDs().get(i);
+	        	IWord word = dict.getWord(wordID);
+	        	ISynset synset = word.getSynset();
+		        for (IWord w : synset.getWords()) {
+		            if(!w.getLemma().equals(synword)){
+		        		System.out.println(w.getLemma());
+		        		syns.add(w.getLemma());
+		            }
+		        }
+	        }
+	        
+
+	        
+	        //Adding Related Words to List of Realted Words
+	        
+
+
+	    } catch (Exception e) {
+	    }
+	    return syns;
 	}
 }
