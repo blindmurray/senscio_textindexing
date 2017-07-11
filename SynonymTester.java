@@ -7,7 +7,7 @@ public class SynonymTester {
 		Searcher s = new Searcher();
 		s.synonymfind("smart");
 		try {
-			ArrayList<String> results = s.searchIndex("application machine", "C:\\MICHELLE\\txt_index", 10, "");
+			ArrayList<String> results = s.searchIndex("declaration", "C:\\MICHELLE\\txt_index", 10, "");
 			System.out.print(results);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

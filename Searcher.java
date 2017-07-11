@@ -36,16 +36,32 @@ public class Searcher{
 	}
 	public ArrayList<String> searchIndex(String searchString, String indexDir, int num, String extensions) throws Exception {
 		searchString = searchString.toLowerCase();
+		String[] terms = searchString.split("\\.");
+		//use OR in parentheses for each term's synonyms
+		String queryString = "";
+		for (String term: terms){
+			ArrayList<String> synonyms = synonymfind(term);
+			queryString += "(" + term;
+			if(synonyms.size()>0){
+				for(String syn: synonyms){
+					queryString += " OR " + syn;
+				}
+			}
+			queryString += ") AND ";
+		}
+		
+		queryString = queryString.substring(0, queryString.length()-5);
+		System.out.println(queryString);
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
 		QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());	
 
-		Query query = qp.parse(searchString);
+		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
 		//Create Lucene searcher. It searches over a single IndexReader.
 		IndexSearcher searcher = createSearcher(indexDir);
 
 		//Search indexed contents using search term
-		TopDocs foundDocs = searchInContent(searchString, searcher, booleanQuery, num);
+		TopDocs foundDocs = searchInContent(searcher, booleanQuery, num);
 
 		//Total found documents
 
@@ -75,7 +91,7 @@ public class Searcher{
 		return results;
 	}
 
-	private static TopDocs searchInContent(String textToFind, IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
+	private static TopDocs searchInContent(IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
 		//Search the index
 		TopDocs hits = searcher.search(booleanQuery.build(), num);
 		return hits;
@@ -106,14 +122,13 @@ public class Searcher{
 
 	        }
 
-	        IIndexWord idxWord = dict.getIndexWord(synword, POS.ADJECTIVE);
+	        IIndexWord idxWord = dict.getIndexWord(synword, POS.NOUN);
 	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
 	        	IWordID wordID = idxWord.getWordIDs().get(i);
 	        	IWord word = dict.getWord(wordID);
 	        	ISynset synset = word.getSynset();
 		        for (IWord w : synset.getWords()) {
 		            if(!w.getLemma().equals(synword)){
-		        		System.out.println(w.getLemma());
 		        		syns.add(w.getLemma());
 		            }
 		        }
