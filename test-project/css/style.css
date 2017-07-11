@@ -133,7 +133,7 @@ a{
 
 button {
 	display: inline-block;
-	margin-left:100px;
+	margin-top:15px;
 	padding: 15px 20px;
 	font-size: 20px;
 	font-family: "Century Gothic",Times;
@@ -230,6 +230,21 @@ input#file {
 	right:0;
 	background-color: white;
 	width:100%;
+}
+
+.collapsibleList li{
+  list-style-image : url('button.png');
+  cursor           : auto;
+}
+
+li.collapsibleListOpen{
+  list-style-image : url('button-open.png');
+  cursor           : pointer;
+}
+
+li.collapsibleListClosed{
+  list-style-image : url('button-closed.png');
+  cursor           : pointer;
 }
 
 
