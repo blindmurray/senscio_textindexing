@@ -58,7 +58,7 @@ public static void main(String[] args) {
 					}
 					
 					if(!line.isEmpty()){
-						String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+						String indexDir = "C:/MICHELLE/txt_index";
 
 						try {  
 							//The string you are searching for in the files							

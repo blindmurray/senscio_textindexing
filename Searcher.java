@@ -88,6 +88,7 @@ public class Searcher{
 				results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 			}
 		}
+		System.out.println(results);
 		return results;
 	}
 
