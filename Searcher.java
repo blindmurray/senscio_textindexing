@@ -112,7 +112,7 @@ public class Searcher{
 		ArrayList<String> syns = new ArrayList<String>();
 		try {
 
-	        URL url = new URL("file", null, "WordNet\\2.1\\dict");
+	        URL url = new URL("file", null, "WordNet/2.1/dict");
 
 
 	        Dictionary dict = new Dictionary(url);

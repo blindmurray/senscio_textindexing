@@ -21,6 +21,10 @@
  * give option for exact phrase search (use quotes??)
  * make things pretty
 	* remove score and "Path: " when returning results
+	* 
+	* 
+	* 
+ * DirectoryReader -- need to trigger it if someone updates a folder
  */
 import java.io.*;
 import java.net.*;
