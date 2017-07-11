@@ -39,6 +39,7 @@ private Document getDocument(File newFile, File oldFile) throws IOException {
 		content = CharMatcher.ASCII.retainFrom(content);
 		content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
 		content = content.replaceAll("[\\t\\n\\r]", " ");
+		content = content.toLowerCase();
 		
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
 		Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);

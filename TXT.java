@@ -21,7 +21,6 @@ public static void createTXT(String content, String filePath){
 
 		FileOutputStream fos = new FileOutputStream(f);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-		content.toLowerCase();
 		bw.write(content);
 		bw.close();	
 	}
