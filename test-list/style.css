@@ -3,6 +3,7 @@
  /********************/
 
 #menu {
+	list-style: none;
  padding: 0;
  margin: 0;
  }
@@ -19,7 +20,6 @@
  }
 
 #expList ul, li {
-
  margin:0;
  padding:0;
  cursor: pointer;
@@ -44,20 +44,21 @@
 
 
 /* Collapsed state for list element */
-li{
-	list-style-image: url(images/folder.png);
+
+li:empty {
+    list-style-image:url(images/folder.png);
 }
 li .collapsed {
     list-style-image: url(images/expand.png);
+    cursor: pointer;
  }
  /* Expanded state for list element
  /* NOTE: This class must be located UNDER the collapsed one */
  li .expanded {
     list-style-image:url(images/collapse.png);
+    cursor: pointer;
  }
- span .expanded{
- 	list-style-image:url(images/folder.png);
- }
+ 
  #expList {
  clear: both;
  }
