@@ -36,7 +36,7 @@ public class Searcher{
 	}
 	public ArrayList<String> searchIndex(String searchString, String indexDir, int num, String extensions) throws Exception {
 		searchString = searchString.toLowerCase();
-		String[] terms = searchString.split("\\.");
+		String[] terms = searchString.split(" ");
 		//use OR in parentheses for each term's synonyms
 		String queryString = "";
 		for (String term: terms){
@@ -88,6 +88,7 @@ public class Searcher{
 				results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 			}
 		}
+		System.out.println(results);
 		return results;
 	}
 
@@ -134,11 +135,41 @@ public class Searcher{
 		        }
 	        }
 	        
-
+	        idxWord = dict.getIndexWord(synword, POS.ADJECTIVE);
+	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+	        	IWordID wordID = idxWord.getWordIDs().get(i);
+	        	IWord word = dict.getWord(wordID);
+	        	ISynset synset = word.getSynset();
+		        for (IWord w : synset.getWords()) {
+		            if(!w.getLemma().equals(synword)){
+		        		syns.add(w.getLemma());
+		            }
+		        }
+	        }
 	        
-	        //Adding Related Words to List of Realted Words
+	        idxWord = dict.getIndexWord(synword, POS.ADVERB);
+	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+	        	IWordID wordID = idxWord.getWordIDs().get(i);
+	        	IWord word = dict.getWord(wordID);
+	        	ISynset synset = word.getSynset();
+		        for (IWord w : synset.getWords()) {
+		            if(!w.getLemma().equals(synword)){
+		        		syns.add(w.getLemma());
+		            }
+		        }
+	        }//Adding Related Words to List of Realted Words
 	        
-
+	        idxWord = dict.getIndexWord(synword, POS.VERB);
+	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+	        	IWordID wordID = idxWord.getWordIDs().get(i);
+	        	IWord word = dict.getWord(wordID);
+	        	ISynset synset = word.getSynset();
+		        for (IWord w : synset.getWords()) {
+		            if(!w.getLemma().equals(synword)){
+		        		syns.add(w.getLemma());
+		            }
+		        }
+	        }
 
 	    } catch (Exception e) {
 	    }

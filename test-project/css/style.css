@@ -1,3 +1,11 @@
+.c1{
+	display:block;
+}
+#t1{
+	margin-top:20px;
+	margin-left:20px;
+}
+
 
  /* Top Navigation Bar */
 .nav ul {
@@ -178,27 +186,6 @@ input#file {
 	padding-bottom:100px;
 }
 
-#filedrag
-{
-	display: none;
-	font-weight: bold;
-	text-align: center;
-	padding: 1em 0;
-	margin: 1em 0;
-	color: #555;
-	border: 2px dashed #555;
-	border-radius: 7px;
-	cursor: default;
-}
-
-#filedrag.hover
-{
-	color: #f00;
-	border-color: #f00;
-	border-style: solid;
-	box-shadow: inset 0 3px 4px #888;
-}
-
 /*Personal*/
 
 .upload{
@@ -210,6 +197,9 @@ input#file {
 
 /*Footer*/
 #text, #email{
+	color:black;
+	text-decoration: none;
+	font-weight: normal;
 	z-index: -1;
 }
 
@@ -224,7 +214,7 @@ input#file {
 }
 
 .foot{
-	position:fixed;
+	position:absolute;
 	bottom:0;
 	left:0;
 	right:0;

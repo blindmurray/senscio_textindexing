@@ -1,6 +1,6 @@
 /* different types of queries (phrase, etc)
  * file upload
- 	* drag and drop, choose directory to save in
+ 	* drag and drop, choose directory to save in (dropdown folder hierarchy)
  		* https://www.sitepoint.com/html5-file-drag-and-drop/
  		* https://css-tricks.com/drag-and-drop-file-uploading/
  		* #fail
@@ -9,14 +9,18 @@
  * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
  * transfer data from node js to html/javascript
- * duplicated files?? only w/ other index
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
  	* if using extensions, list with periods, NO SPACES
- 	* maybe use drop down menu instead
+ 	* maybe use drop down menu instead for extensions
  * weird thing-search received times=which number search it is
- * spellcheck and synonym search
+ * spellcheck
+ * reindex all files with lowercase only
+ * show part of file where the searched word is, like google does
+ * give option for exact phrase search (use quotes??)
+ * make things pretty
+	* remove score and "Path: " when returning results
  */
 import java.io.*;
 import java.net.*;
@@ -56,7 +60,7 @@ public static void main(String[] args) {
 					}
 					
 					if(!line.isEmpty()){
-						String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+						String indexDir = "C:/MICHELLE/txt_index";
 
 						try {  
 							//The string you are searching for in the files							

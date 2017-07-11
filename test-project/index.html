@@ -2,8 +2,9 @@
 <html>
    <head>
       <meta charset="utf-8">
-      <title> mytest</title>
-      <link rel="stylesheet" type="text/css" href="css/style.css"/>
+      <title>mytest</title>
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
    </head>
    <body>
       <div class="news">
@@ -21,28 +22,28 @@
             <span class="upload">Upload a Document</span>
             <br>
             <form action='fileupload' method='post' enctype='multipart/form-data'>
-               <input type="file" name='filetoupload' id="t6" class="v5"/>
+               <input type="file" name='filetoupload' id="t6" class="v5">
                <br>
-               <input type='submit' value='Submit'/>
+               <input type='submit' value='Submit'>
             </form>
             <br>
             <div class="c1">
-               <div>Term(s): </div><input type="text" id="t1" class="v1"/>
-               <div>Extension(s): </div><input type='text' id="t2"/>
+               <div>Term(s): </div><input type="text" id="t1" class="v1">
+               <div>Extension(s): </div><input type='text' id="t2">
                <br>
                <button id='b1' onclick='b1click()'>Search</button>
-               <br/>
+               <br>
                <p id="demo">Results:</p>
             </div>
          </div>
-         </div>
-         <div class="foot">
-            <p id="text">Senscio Systems, Inc.<br>
-               1740 Massachusetts Ave<br>
-               Boxborough, MA 01719<br>
-               (978) 635-9090
-            </p>
-         </div>
       </div>
+      <div class="foot">
+         <p id="text">Senscio Systems, Inc.<br>
+            1740 Massachusetts Ave<br>
+            Boxborough, MA 01719<br>
+            (978) 635-9090
+         </p>
+      </div>
+      <script type="text/javascript" src="/index.js"></script>
    </body>
 </html>
