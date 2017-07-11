@@ -9,14 +9,16 @@
  * HTML HTML HTML HTML HTML (make stuff pretty)
  * gina's number 774-285-1474 
  * transfer data from node js to html/javascript
- * duplicated files?? only w/ other index
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
  	* if using extensions, list with periods, NO SPACES
- 	* maybe use drop down menu instead
+ 	* maybe use drop down menu instead for extensions
  * weird thing-search received times=which number search it is
- * spellcheck and synonym search
+ * spellcheck
+ * reindex all files with lowercase only
+ * show part of file where the searched word is, like google does
+ * give option for exact phrase search (use quotes??)
  */
 import java.io.*;
 import java.net.*;
