@@ -1,0 +1,341 @@
+.c1{
+	display:block;
+}
+
+
+ /* Top Navigation Bar */
+.nav ul {
+	list-style: none;
+	background-color: #444;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	top: 0;
+	right: 0;
+	left: 0;
+	position: fixed;
+	z-index: 9999;
+}
+
+.nav li {
+	font-family:"Century Gothic";
+	font-size:1.3em;
+	line-height:40px;
+	height: 40px;
+	border-bottom: 1px solid #888;
+	width:100%;
+}
+.nav a {
+	text-decoration: none;
+	color: #f7f7f7;
+	display: block;
+	transition: .2s background-color;
+}
+.nav a:hover {
+	background-color:#dfe1e6;
+	color:#444;
+	text-align:center
+}
+.nav a.active {
+	background-color: #f7f7f7;
+	color: #444;
+	cursor: default;
+}
+@media screen and (min-width: 420px) {
+	.nav li {
+		width: 150px;
+		border-bottom: none;
+		height: 50px;
+		line-height: 50px;
+		font-size: 1.4em;
+		display: inline-block;
+		padding-left: 10px;
+		padding-right: 10px;
+		margin-right: -4px;
+	}
+}
+/* Side Navigation Bar */
+.leftnav ul {
+	list-style: none;
+	background-color: #f7f7f7;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	position: fixed;
+	z-index: 9999;
+	left:0;
+	top: 28%;	
+	width: auto;
+	height: auto;
+	border-right: 4px #9FC1E5 solid;
+	border-top: 4px #9FC1E5 solid;
+	border-bottom: 4px #9FC1E5 solid;
+}
+.leftnav li {
+	position: relative;
+	list-style: none;
+	width: auto;
+	font-family:"Century Gothic";
+	font-size: 1.2em;
+	line-height: 40px;
+	height: 40px;
+}
+.leftnav a {
+	text-decoration: none;
+	color: #444;
+	display: block;
+	transition: .2s background-color;
+}
+.leftnav a:hover {
+	background-color: #dfe1e6;
+	color: #444;
+	text-align: center;
+}
+.leftnav a.active {
+	background-color: #9FC1E5;
+	color: #444;
+	cursor: default;
+}
+
+/*General HTML*/
+html { 
+	background: url(images/pineapple.jpg) no-repeat center center fixed; 
+	background-size: cover;
+	padding-right: 70px;
+	padding-left: 70px;
+	padding-top: 8%;
+	padding-bottom: 10%;
+	position: relative;
+}
+#special{
+	padding-bottom: 120px;
+}
+	
+body{
+	background-color: #f7f7f7;
+	padding-right: 2%;
+	padding-left: 2%;
+	padding-top: 30px;		
+	padding-bottom: 2%;
+	border-radius: 25px;
+	font-family:"Century Gothic", Times ;
+	color: #444;
+}
+
+p, label {
+	font-size: 18px;
+	padding-right:50px;
+	padding-left:50px;
+}
+
+a{
+	text-decoration:none;
+	color: #444;	
+	font-weight: bold;
+	font-family: "Century Gothic", Times ;
+}
+
+button {
+	display: inline-block;
+	margin-top:15px;
+	padding: 15px 20px;
+	font-size: 20px;
+	font-family: "Century Gothic",Times;
+	line-height: 0.25;
+	box-shadow: none;
+	border-radius: 0;
+}
+input#file {
+	display: inline-block;
+	margin-left:100px;
+	padding: 15px 20px;
+	font-size: 20px;
+	font-family: "Century Gothic",Times;
+	line-height: 0.25;
+	box-shadow: none;
+	border-radius: 0;
+}
+
+/*Index*/
+#meindex{
+	padding-right:50px;
+	padding-left:60px;
+	padding-bottom:30px;
+	padding-top: 5px;
+	float:right;
+	height: 70%;
+	width: auto;
+	max-width:320px;
+	max-height:320px;
+}
+
+#welcome{
+	color: #444;
+	font-size: 60px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#intro{
+	text-align:left; 
+	padding-top: 6%; 
+	padding-bottom:100px;
+}
+
+/*Personal*/
+
+.title{
+	font-size: 30px;
+	padding-left: 25px;
+	color: #444
+}
+
+
+/*Footer*/
+#text, #email{
+	color:black;
+	text-decoration: none;
+	font-weight: normal;
+	z-index: -1;
+}
+
+#text{
+	float:left;
+}
+
+#logoBottom{
+	float: right;
+	text-decoration:underline;
+	width:200px;
+}
+
+.foot{
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	background-color: white;
+	width:100%;
+}
+
+
+/*Pop-up modal box*/
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#menu {
+	list-style: none;
+ padding: 0;
+ margin: 0;
+ }
+
+.clear {
+ clear: both;
+ }
+
+/********************/
+ /* EXPANDABLE LIST  */
+ /********************/
+ #listContainer{
+ margin-top:15px;
+ }
+
+#myModal #expList ul, li {
+ margin:0;
+ padding:0;
+ cursor: pointer;
+ }
+ #myModal #expList p {
+ margin:0;
+ display:block;
+ }
+#myModal #expList p:hover {
+ background-color:#00A6FF;
+ color:white;
+ padding-left:5px;
+ width: 40px;
+ }
+#myModal #expList li {
+ line-height:140%;
+ text-indent:0px;
+ background-position: 1px 8px;
+ padding-left: 20px;
+ background-repeat: no-repeat;
+ }
+
+
+/* Collapsed state for list element */
+
+#myModal #expList li {
+    list-style-image:url(../images/folder.png);
+}
+#myModal #expList li .collapsed {
+    list-style-image: url(../images/expand.png);
+    cursor: pointer;
+ }
+ /* Expanded state for list element
+ /* NOTE: This class must be located UNDER the collapsed one */
+ #myModal #expList li .expanded {
+    list-style-image:url(../images/collapse.png);
+    cursor: pointer;
+ }
+ 
+ #myModal #expList {
+ clear: both;
+ }
+
+.listControl{
+ margin-bottom: 15px;
+ }
+
+ .listControl a {
+ border: 1px solid #555555;
+ color: #555555;
+ cursor: pointer;
+ height: 1.5em;
+ line-height: 1.5em;
+ margin-right: 5px;
+ padding: 4px 10px;
+ }
+
+ .listControl a:hover {
+ background-color:#555555;
+ color:#222222;
+ font-weight:normal;
+ }
