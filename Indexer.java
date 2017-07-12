@@ -28,7 +28,6 @@ public void reindex() throws IOException, TikaException, SAXException{
 	File indexDirFile = new File(indexDir);
 	TextFileFilter.clear(indexDirFile);
 	createIndex(indexDir, dataDir, indexer);
-
 }
 
 public Indexer(String indexDir) throws IOException {
