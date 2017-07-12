@@ -157,7 +157,7 @@ public class Searcher{
 		        		syns.add(w.getLemma());
 		            }
 		        }
-	        }//Adding Related Words to List of Realted Words
+	        }//Adding Related Words to List of Related Words
 	        
 	        idxWord = dict.getIndexWord(synword, POS.VERB);
 	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){

@@ -6,6 +6,7 @@
       <link rel="stylesheet" type="text/css" href="css/style.css">
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="java.js"></script>
    </head>
    <body>
       <div class="news">
@@ -18,44 +19,21 @@
             </ul>
          </div>
          <!--div here-->
-         <br>
-<ul id="expList">
-         <li>folder1
-            <ul>
-               <li>coolthings
-                  <ul></ul>
-               </li>
-            </ul>
-         </li>
-         <li>folder2
-            <ul></ul>
-         </li>
-      </ul>         <div>
+         <br>       
+         <div>
             <span class="title">Upload a Document</span>
             <br>
-            <form action='fileupload' method='post' enctype='multipart/form-data'>
                <input type="file" name='filetoupload' id="t6" class="v5">
                <br>
                <input type="button" id="myBtn" value="Choose Location">
                <div id="myModal" class="modal">
                   <div class="modal-content">
+                  <ul id="expList"><li>Patients<ul><li>CMaine - CMMC<ul><li>Contracts<ul></ul></li><li>Welcome Packet<ul></ul></li></ul></li><li>CSP<ul></ul></li><li>Document Templates<ul></ul></li><li>Dow Rummel<ul></ul></li><li>Eldercare Networks - ECN<ul></ul></li><li>LOIs in Progress<ul></ul></li><li>Rural Health - RHCI<ul><li>Client Services<ul></ul></li><li>RHCI Provider Survey Pre<ul></ul></li><li>RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY<ul></ul></li></ul></li><li>South Dakota Parent Connection - SDPC<ul></ul></li></ul></li></ul>
+
                   <span class="close">&times;</span>
-                  <ul id="expList">
-         <li>folder1
-            <ul>
-               <li>coolthings
-                  <ul></ul>
-               </li>
-            </ul>
-         </li>
-         <li>folder2
-            <ul></ul>
-         </li>
-      </ul>
                   </div>
                </div>
                <input type='submit' value='Submit'>
-            </form>
             <br>
          </div>
       </div>
@@ -73,46 +51,6 @@
          var span = document.getElementsByClassName("close")[0];
          btn.onclick = function() {
             modal.style.display = "block";
-            function prepareList() {
-console.log("loaded");
- $('#expList').find('li:has(ul)')
- .click( function(event) {
- if (this == event.target) {
-       $(this).toggleClass('collapsed');
-      $(this).toggleClass('expanded');
-      $(this).children('ul').toggle('medium');
- }
- return false;
- })
- .addClass('collapsed')
- .children('ul').hide();
-
-//Hack to add links inside the cv
- $('#expList a').unbind('click').click(function() {
-    window.open($(this).attr('href'));
-    return false;
- });
-
-//Create the button funtionality
- $('#expandList')
- .unbind('click')
- .click( function() {
-   $('.collapsed').children('ul').show('medium');
- })
-   $('#collapseList')
- .unbind('click')
- .click( function() {
-   $('.expanded').children('ul').hide('medium');
- })
-
-};
-
-/**************************************************************/
- /* Functions to execute on loading the document               */
- /**************************************************************/
- $(document).ready( function() {
-   prepareList()
- });
          }
          span.onclick = function() {
             modal.style.display = "none";
@@ -122,6 +60,7 @@ console.log("loaded");
                  modal.style.display = "none";
              }
          }
+
       </script>
    </body>
 </html>

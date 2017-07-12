@@ -276,22 +276,22 @@ input#file {
  margin-top:15px;
  }
 
-#expList ul, li {
+#myModal #expList ul, li {
  margin:0;
  padding:0;
  cursor: pointer;
  }
- #expList p {
+ #myModal #expList p {
  margin:0;
  display:block;
  }
- #expList p:hover {
+#myModal #expList p:hover {
  background-color:#00A6FF;
  color:white;
  padding-left:5px;
  width: 40px;
  }
- #expList li {
+#myModal #expList li {
  line-height:140%;
  text-indent:0px;
  background-position: 1px 8px;
@@ -302,21 +302,21 @@ input#file {
 
 /* Collapsed state for list element */
 
-li:empty {
-    list-style-image:url(images/folder.png);
+#myModal #expList li:empty {
+    list-style-image:url(/images/folder.png);
 }
-li .collapsed {
-    list-style-image: url(images/expand.png);
+#myModal #expList li .collapsed {
+    list-style-image: url(/images/expand.png);
     cursor: pointer;
  }
  /* Expanded state for list element
  /* NOTE: This class must be located UNDER the collapsed one */
- li .expanded {
-    list-style-image:url(images/collapse.png);
+ #myModal #expList li .expanded {
+    list-style-image:url(/images/collapse.png);
     cursor: pointer;
  }
  
- #expList {
+ #myModal #expList {
  clear: both;
  }
 

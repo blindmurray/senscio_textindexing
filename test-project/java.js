@@ -1,6 +1,5 @@
 function prepareList() {
-console.log("loaded");
- $('#expList').find('li:has(ul)')
+ $('#myModal #expList').find('li:has(ul)')
  .click( function(event) {
  if (this == event.target) {
 	 	 $(this).toggleClass('collapsed');
