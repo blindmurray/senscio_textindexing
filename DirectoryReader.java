@@ -4,7 +4,7 @@ public class DirectoryReader {
 	static String html = "";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		File folder = new File("C:/MICHELLE/txtfiles");
+		File folder = new File("/var/www/library/Internal Document Repository");
 		listFilesForFolder(folder);
 		html += "";
 		System.out.println(html);

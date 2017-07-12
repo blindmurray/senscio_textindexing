@@ -1,7 +1,5 @@
-/.classpath
-/.project
-/README.md
 /referenced_libraries/
+/test-list/
 /test-project/
 /Indexer.class
 /IndexingProgram.class
@@ -12,7 +10,4 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/SynonymTester.class
-/WordNet/
-/test-list/
 /DirectoryReader.class

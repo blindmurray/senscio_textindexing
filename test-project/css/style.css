@@ -1,10 +1,6 @@
 .c1{
 	display:block;
 }
-#t1{
-	margin-top:20px;
-	margin-left:20px;
-}
 
 
  /* Top Navigation Bar */
@@ -188,7 +184,7 @@ input#file {
 
 /*Personal*/
 
-.upload{
+.title{
 	font-size: 30px;
 	padding-left: 25px;
 	color: #444
@@ -222,19 +218,124 @@ input#file {
 	width:100%;
 }
 
-.collapsibleList li{
-  list-style-image : url('button.png');
-  cursor           : auto;
+
+/*Pop-up modal box*/
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-li.collapsibleListOpen{
-  list-style-image : url('button-open.png');
-  cursor           : pointer;
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
 
-li.collapsibleListClosed{
-  list-style-image : url('button-closed.png');
-  cursor           : pointer;
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
+#menu {
+	list-style: none;
+ padding: 0;
+ margin: 0;
+ }
+
+.clear {
+ clear: both;
+ }
+
+/********************/
+ /* EXPANDABLE LIST  */
+ /********************/
+ #listContainer{
+ margin-top:15px;
+ }
+
+#expList ul, li {
+ margin:0;
+ padding:0;
+ cursor: pointer;
+ }
+ #expList p {
+ margin:0;
+ display:block;
+ }
+ #expList p:hover {
+ background-color:#00A6FF;
+ color:white;
+ padding-left:5px;
+ width: 40px;
+ }
+ #expList li {
+ line-height:140%;
+ text-indent:0px;
+ background-position: 1px 8px;
+ padding-left: 20px;
+ background-repeat: no-repeat;
+ }
+
+
+/* Collapsed state for list element */
+
+li:empty {
+    list-style-image:url(images/folder.png);
+}
+li .collapsed {
+    list-style-image: url(images/expand.png);
+    cursor: pointer;
+ }
+ /* Expanded state for list element
+ /* NOTE: This class must be located UNDER the collapsed one */
+ li .expanded {
+    list-style-image:url(images/collapse.png);
+    cursor: pointer;
+ }
+ 
+ #expList {
+ clear: both;
+ }
+
+.listControl{
+ margin-bottom: 15px;
+ }
+
+ .listControl a {
+ border: 1px solid #555555;
+ color: #555555;
+ cursor: pointer;
+ height: 1.5em;
+ line-height: 1.5em;
+ margin-right: 5px;
+ padding: 4px 10px;
+ }
+
+ .listControl a:hover {
+ background-color:#555555;
+ color:#222222;
+ font-weight:normal;
+ }

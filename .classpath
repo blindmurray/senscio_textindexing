@@ -31,6 +31,6 @@
 	<classpathentry kind="lib" path="referenced_libraries/tika-parsers-1.15.jar"/>
 	<classpathentry kind="lib" path="referenced_libraries/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/dxia/Documents/GitHub/senscio_textindexing/referenced_libraries/edu.mit.jwi_2.4.0.jar"/>
+	<classpathentry kind="lib" path="referenced_libraries/edu.mit.jwi_2.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta charset="utf-8">
+      <title>mytest</title>
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+      <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+   </head>
+   <body>
+      <div class="news">
+         <div class="nav">
+            <ul>
+               <li><a href="index.html">Home</a></li>
+               <li><a class="active" href="upload.html">Upload</a></li>
+               <li><a href="search.html">Search</a></li>
+               <li><a href="http://www.sensciosystems.com">Senscio</a></li>
+            </ul>
+         </div>
+         <!--div here-->
+         <br>
+         <div>
+            <span class="title">Upload a Document</span>
+            <br>
+            <form action='fileupload' method='post' enctype='multipart/form-data'>
+               <input type="file" name='filetoupload' id="t6" class="v5">
+               <br>
+               <input type="button" id="myBtn" value="Choose Location">
+               <div id="myModal" class="modal">
+                  <div class="modal-content">
+                  <span class="close">&times;</span>
+                  <ul id="explist"><li>Patients<ul><li>South Dakota Parent Connection - SDPC<ul><li>pdfs to txts<ul></ul></li><li>Old versions<ul></ul></li></ul></li><li>Eldercare Networks - ECN<ul><li>pdf to txt<ul></ul></li></ul></li><li>LOIs in Progress<ul></ul></li><li>CSP<ul></ul></li><li>CMaine - CMMC<ul><li>Contracts<ul></ul></li><li>Welcome Packet<ul></ul></li></ul></li><li>Dow Rummel<ul></ul></li><li>Document Templates<ul><li>Older Versions<ul></ul></li></ul></li><li>Rural Health - RHCI<ul><li>Client Services<ul></ul></li></ul></li></ul></li><li>CareStation Engineering<ul><li>Analytics<ul><li>PopulationRepts<ul></ul></li></ul></li><li>API Documentation<ul></ul></li><li>Inventory<ul></ul></li><li>WebPortal<ul></ul></li><li>Warbler<ul><li>Purchase Orders<ul></ul></li><li>TSR-Technical Specification Requirements<ul></ul></li><li>RFQ-Request For Quote<ul></ul></li><li>Quotes<ul><li>Racer<ul></ul></li><li>Case<ul></ul></li></ul></li></ul></li><li>Hubble<ul></ul></li><li>pdfs to txt<ul></ul></li><li>Hardware Specifications<ul><li>pdf to txt<ul></ul></li></ul></li></ul></li><li>Ibis Update Notes<ul><li>WebPortal<ul></ul></li></ul></li><li>Personal Background<ul></ul></li><li>Business<ul><li>Bussiness Development<ul><li>OptumCare<ul></ul></li><li>Prospects<ul><li>Hospitals<ul></ul></li><li>Optum<ul></ul></li><li>Joslin<ul></ul></li><li>UAE<ul></ul></li><li>CIGNA<ul></ul></li><li>Avera<ul></ul></li><li>Biopharma<ul></ul></li></ul></li><li>Fund Raising<ul><li>Series A<ul><li>Modeling<ul></ul></li><li>Old Versions<ul><li>PowerPoint PDFs<ul></ul></li></ul></li><li>PowerPoints<ul></ul></li><li>Investor Notes<ul></ul></li></ul></li></ul></li><li>GeneralPresentations<ul><li>png to txt<ul></ul></li></ul></li></ul></li><li>Templates and Master Copies<ul><li>Company Forms<ul></ul></li></ul></li><li>Software Specifications<ul></ul></li><li>Operations<ul><li>IbisCare Service<ul><li>Operations Report<ul></ul></li><li>Call Center TImeline.oplx<ul><li>QuickLook<ul></ul></li></ul></li></ul></li><li>Reporting<ul></ul></li><li>Inventory<ul></ul></li><li>Document Export 2014-03-27<ul></ul></li><li>CC Ref Guide<ul></ul></li></ul></li><li>Health Facilitation<ul><li>Training<ul></ul></li><li>HIPAA<ul></ul></li><li>Processes<ul></ul></li><li>FormsLetters<ul></ul></li><li>Documentation Project<ul></ul></li><li>Codes<ul><li>Proposals<ul></ul></li><li>NPI<ul></ul></li><li>Certification<ul></ul></li><li>Telemonitoring Codes<ul></ul></li><li>Home Health Agency<ul></ul></li><li>Chronic Care Service Codes<ul></ul></li></ul></li></ul></li><li>Marketing<ul><li>Website<ul></ul></li><li>Senscio November Conference<ul></ul></li><li>Senscio graphic assets<ul></ul></li><li>Collateral Library<ul><li>Press Releases<ul></ul></li><li>Working Templates<ul><li>Older Versions<ul></ul></li><li>Ibis and Senscio overviews<ul></ul></li></ul></li><li>Conference Collateral<ul><li>Senscio November Conference<ul></ul></li><li>Product Collateral<ul></ul></li></ul></li><li>Collateral 2017<ul></ul></li><li>Blogs<ul></ul></li><li>Customer Stories<ul></ul></li></ul></li><li>Advertisement Opps<ul></ul></li></ul></li></ul></li><li>Protocols<ul><li>Hyperglycemia<ul></ul></li><li>Hypoglycemia<ul></ul></li><li>Fluid Retention<ul></ul></li><li>Episodic Hypertension<ul></ul></li><li>COPD<ul></ul></li></ul></li><li>RHCI Monthly Summaries<ul></ul></li></ul>
+[root@development library]# 
+
+</p>
+                  </div>
+               </div>
+               <input type='submit' value='Submit'>
+            </form>
+            <br>
+         </div>
+      </div>
+      <div class="foot">
+         <p id="text">Senscio Systems, Inc.<br>
+            1740 Massachusetts Ave<br>
+            Boxborough, MA 01719<br>
+            (978) 635-9090
+         </p>
+      </div>
+      <script type="text/javascript" src="/index.js"></script>
+      <script>
+      
+         var modal = document.getElementById('myModal');
+         var btn = document.getElementById("myBtn");
+         var span = document.getElementsByClassName("close")[0];
+         btn.onclick = function() {
+            modal.style.display = "block";
+         }
+         span.onclick = function() {
+            modal.style.display = "none";
+         }
+         window.onclick = function(event) {
+             if (event.target == modal) {
+                 modal.style.display = "none";
+             }
+         }
+
+      </script>
+   </body>
+</html>
