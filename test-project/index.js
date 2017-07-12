@@ -3,7 +3,7 @@
 function b1click() {
 	"use strict";
 	var exten = document.getElementById("t2").value;
-	var data = document.getElementById("t1").value + "~s@" + exten;
+	var data = "@^*~" + document.getElementById("t1").value + "~s@" + exten;
 	var xhr = ajax();
 	xhr.onload = function () {
 		if (xhr.readyState === 4) {
@@ -18,12 +18,6 @@ function b1click() {
 	xhr.setRequestHeader("Content-Type", "text/plain");
 	xhr.send(data);
 	console.dir(data);
-}
-function b2click() {
-	"use strict";
-	var fileName = document.getElementById("t6").value;
-	fileName = fileName.replace("C:\\fakepath\\", "");
-	alert(fileName);
 }
 function ajax() {
 	"use strict";

@@ -23,6 +23,7 @@
          <div>
             <span class="title">Upload a Document</span>
             <br>
+               <form action='fileupload' method='post' enctype='multipart/form-data'>
                <input type="file" name='filetoupload' id="t6" class="v5">
                <br>
                <input type="button" id="myBtn" value="Choose Location">
@@ -36,6 +37,8 @@
                   </div>
                </div>
                <input type='submit' value='Submit'>
+               Please make sure your file name is readable. Put spaces between words and dashes between dates. 
+            </form>
             <br>
          </div>
       </div>
@@ -46,7 +49,6 @@
             (978) 635-9090
          </p>
       </div>
-      <script type="text/javascript" src="/index.js"></script>
       <script>
          var modal = document.getElementById('myModal');
          var btn = document.getElementById("myBtn");

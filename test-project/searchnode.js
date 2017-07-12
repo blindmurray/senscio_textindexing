@@ -60,6 +60,7 @@ function requesthandler(request, response) {
 	"use strict";
 	switch (request.url) {
 	case "/fileupload":
+
 		var form = new formidable.IncomingForm();
 		form.parse(request, function (err, fields, files) {
 			var oldpath = files.filetoupload.path;

@@ -1,8 +1,6 @@
-/referenced_libraries/
-/test-list/
 /test-project/
+/DirectoryReader.class
 /Indexer.class
-/IndexingProgram.class
 /LuceneConstants.class
 /Parse.class
 /Searcher.class
@@ -10,7 +8,4 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/DirectoryReader.class
-/.DS_Store
-/runProgram.class
 /index.class
