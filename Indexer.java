@@ -18,6 +18,18 @@ import com.google.common.base.CharMatcher;
 public class Indexer {
 
 private IndexWriter writer;
+public void reindex() throws IOException, TikaException, SAXException{
+	//String indexDir = "C:/MICHELLE/txt_index";
+    String indexDir = "/var/www/library/index";
+	//String dataDir = "C:/MICHELLE/txt_data";
+    String dataDir = "/var/www/library/Internal Document Repository";
+	Indexer indexer = null;
+	   
+	File indexDirFile = new File(indexDir);
+	TextFileFilter.clear(indexDirFile);
+	createIndex(indexDir, dataDir, indexer);
+
+}
 
 public Indexer(String indexDir) throws IOException {
 	//this directory will contain the indexes
