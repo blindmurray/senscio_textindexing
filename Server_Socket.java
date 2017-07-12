@@ -6,7 +6,6 @@
  		* #fail
  	* warning when saving to place that has file of same name
  * renaming files (searching titles) https://www.w3schools.com/nodejs/nodejs_filesystem.asp
- * gina's number 774-285-1474 
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
@@ -14,14 +13,8 @@
  	* maybe use drop down menu instead for extensions
  * weird thing-search received times=which number search it is
  * spellcheck
- * reindex all files with lowercase only
  * show part of file where the searched word is, like google does
  * give option for exact phrase search (use quotes??)
- * make things pretty
-	* remove score and "Path: " when returning results
-	* 
-	* 
-	* 
  * DirectoryReader -- need to trigger it if someone updates a folder
  * at some point, go through and add try catches so the program keeps running in case of error
  */
@@ -63,8 +56,8 @@ public static void main(String[] args) {
 					}
 					
 					if(!line.isEmpty()){
-						String indexDir = "C:/MICHELLE/txt_index";
-
+						//String indexDir = "C:/MICHELLE/txt_index";
+						String indexDir = "/var/www/library/Internal Document Repository";
 						try {  
 							//The string you are searching for in the files							
 							System.out.println(line);
