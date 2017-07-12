@@ -13,10 +13,21 @@ public class DirectoryReader {
 	public static void listFilesForFolder(File folder) {
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
+				int count = 0;
+				for(File files :fileEntry.listFiles()){
+					if(files.isDirectory()){
+						count ++;
+					}
+				}
+				if(count>0){
 				html += "<li>" + fileEntry.getName();
 				html += "<ul>";
 				listFilesForFolder(fileEntry);
 				html+= "</li>";
+				}
+				else{
+					html += "<li>" + fileEntry.getName() + "</li>";
+				}
 			} 
 		}
 		html += "</ul>";
