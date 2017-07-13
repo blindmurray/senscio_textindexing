@@ -1,6 +1,10 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +22,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.json.JSONObject;
 
 import edu.mit.jwi.Dictionary;
 import edu.mit.jwi.item.IIndexWord;
@@ -37,8 +42,9 @@ public class Searcher{
 	public Searcher(){
 
 	}
-	public ArrayList<String> searchIndex(String searchString, String indexDir, int num, String extensions) throws Exception {
-		searchString = searchString.toLowerCase();
+	public ArrayList<String> searchIndex(JSONObject json, String indexDir, int num) throws Exception {
+		String searchString = json.getString("searchterm").toLowerCase();
+
 		String[] terms = searchString.split(" ");
 		//use OR in parentheses for each term's synonyms
 		String queryString = "";
@@ -52,11 +58,11 @@ public class Searcher{
 			}
 			queryString += ") AND ";
 		}
-		
+
 		queryString = queryString.substring(0, queryString.length()-5);
 		System.out.println(queryString);
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-		
+
 		HashMap<String,Float> boosts = new HashMap<String,Float>();
 		boosts.put("title", 2.0f);
 		boosts.put("keywords", 1.0f);
@@ -76,7 +82,9 @@ public class Searcher{
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");
 		//Print out the path of files which have searched term
-		System.out.println(extensions.length());
+		String dateFrom = json.getString("dateFrom").replace("-", "");
+		String dateTo = json.getString("dateTo").replace("-", "");
+		String extensions = json.getString("exten");
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
 			System.out.print(exts[0]);
@@ -84,8 +92,23 @@ public class Searcher{
 				Document d = searcher.doc(sd.doc);
 				for(String ext: exts){
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
-						results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
-						//System.out.println("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+
+						if(dateFrom.length()==0 || dateTo.length()==0){
+							results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+						}
+						else{
+							File f = new File(d.get(LuceneConstants.FILE_PATH));
+							LocalDate ldt = Instant.ofEpochMilli(f.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
+							String date = Integer.toString(ldt.getYear());
+							if(ldt.getMonthValue() < 10){
+								date += "0";
+							}
+							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
+							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
+								results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+							}
+						}
+
 					}
 				}
 			}
@@ -93,7 +116,21 @@ public class Searcher{
 		else{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
-				results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+				if(dateFrom.length()==0 || dateTo.length()==0){
+					results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+				}
+				else{
+					File f = new File(d.get(LuceneConstants.FILE_PATH));
+					LocalDate ldt = Instant.ofEpochMilli(f.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
+					String date = Integer.toString(ldt.getYear());
+					if(ldt.getMonthValue() < 10){
+						date += "0";
+					}
+					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
+					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
+						results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+					}
+				}
 			}
 		}
 		System.out.println(results);
@@ -120,34 +157,37 @@ public class Searcher{
 		ArrayList<String> syns = new ArrayList<String>();
 		try {
 
-	        URL url = new URL("file", null, "WordNet/2.1/dict");
+			URL url = new URL("file", null, "WordNet/2.1/dict");
 
 
-	        Dictionary dict = new Dictionary(url);
-	        try {
-	            dict.open();
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
+			Dictionary dict = new Dictionary(url);
+			try {
+				dict.open();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 
-	        }
+			}
 
-	        
-	        for(int x = 0; x < 4; x++){
-	        	IIndexWord idxWord = dict.getIndexWord(synword, pos[x]);
-		        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
-		        	IWordID wordID = idxWord.getWordIDs().get(i);
-		        	IWord word = dict.getWord(wordID);
-		        	ISynset synset = word.getSynset();
-			        for (IWord w : synset.getWords()) {
-			            if(!w.getLemma().equals(synword)){
-			        		syns.add(w.getLemma());
-			            }
-			        }
-		        }
-	        }
 
-	    } catch (Exception e) {
-	    }
-	    return syns;
+			for(int x = 0; x < 4; x++){
+				IIndexWord idxWord = dict.getIndexWord(synword, pos[x]);
+				for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+					IWordID wordID = idxWord.getWordIDs().get(i);
+					IWord word = dict.getWord(wordID);
+					ISynset synset = word.getSynset();
+					for (IWord w : synset.getWords()) {
+						if(!w.getLemma().equals(synword)){
+							syns.add(w.getLemma());
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+		}
+		return syns;
+	}
+	public void filter(){
+
 	}
 }

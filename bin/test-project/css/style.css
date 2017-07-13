@@ -303,15 +303,12 @@ input#file {
 
 #myModal #expList li {
     list-style-image:url(../images/folder.png);
+<<<<<<< HEAD
+=======
 }
-#myModal #expList ul li:hover{
-	background-color:#d3d3d3;
-}
-#myModal #expList li ul:hover{
-	background-color:white;
-}
-#myModal #expList ul li ul li:hover{
-	background-color:white;
+#myModal #expList li>span:hover {
+   background-color: lightgray;   
+>>>>>>> 246a39d0b9df617f888f6d3ca8ca362fbba91a78
 }
 #myModal #expList li .collapsed {
     list-style-image: url(../images/expand.png);

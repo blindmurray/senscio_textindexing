@@ -17,17 +17,8 @@ function route(request, response, data, path) {
 		client.on("data", function (data) {
 			results = data.toString();
 			console.log("received:" + results + "\n");
-			//client.end();
-
 			response.end(results);
-			/*response.write(results, function () {
-				setTimeout(function endit() {
-					response.end();
-				}, 0);
-				data = "";
-			});*/
 		});
-		// response.writeHead(200, {'Content-Type': 'text/plain', 'content-Length': data.length});
 	} else if (p > -1) {
 		ext = path.slice(p + 1);
 		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css") {

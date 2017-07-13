@@ -37,11 +37,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	//static String indexDir = "C:/MICHELLE/txt_index";
-	static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+	static String indexDir = "C:/MICHELLE/txt_index";
+	//static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	//static String dataDir = "C:/MICHELLE/txt_data";
-	static String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	static String dataDir = "C:/MICHELLE/txt_data";
+	//static String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
@@ -67,19 +67,15 @@ public class Server_Socket {
 						JSONObject json = new JSONObject(line);
 						if(!line.isEmpty()){
 							if(json.getString("id").equals("search")){
-								String searchterm = json.getString("searchterm");
-								String ext = json.getString("exten");
-								try {  
-									//The string you are searching for in the files							
-									System.out.println(searchterm);
+								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(searchterm, indexDir, 20, ext);
+									stuff = s.searchIndex(json, indexDir, 20);
 								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								message = "Search: " + searchterm + "<br>";
+								message = "Search: " + json.getString("searchterm") + "<br>";
 								for(String st: stuff){
 									message = message + st + "<br>";
 								}
