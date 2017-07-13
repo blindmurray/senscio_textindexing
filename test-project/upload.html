@@ -27,17 +27,18 @@
                <form action='fileupload' method='post' enctype='multipart/form-data'>
                <input type="file" name='filetoupload' id="t6" class="v5">
                <br>
-               <input type="button" id="myBtn" value="Choose Location">
+               <input type="button" id="myBtn" value="Choose Location"><span id="chosenFolder"></span>
                <div id="myModal" class="modal">
                   <div class="modal-content">
 <ul id="expList"><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients">Patients</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC">CMaine - CMMC</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC/Contracts">Contracts</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC/Welcome Packet">Welcome Packet</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CSP">CSP</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Document Templates">Document Templates</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Dow Rummel">Dow Rummel</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Eldercare Networks - ECN">Eldercare Networks - ECN</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/LOIs in Progress">LOIs in Progress</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI">Rural Health - RHCI</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/Client Services">Client Services</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/RHCI Provider Survey Pre">RHCI Provider Survey Pre</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY">RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/South Dakota Parent Connection - SDPC">South Dakota Parent Connection - SDPC</span></li></ul></li></ul>
 
                      <br>
-
+                     <input type="button" value="Choose Location" onclick = "onChooseLocation()">
                   <span class="close">&times;</span>
                   <br>
                   </div>
                </div>
+               <br>
                <input type='submit' value='Submit'>
                Please make sure your file name is readable. Put spaces between words and dashes between dates. 
             </form>

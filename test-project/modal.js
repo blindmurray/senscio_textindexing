@@ -7,7 +7,13 @@ function triggerSelect(clicked_ID){
 		p.style.fontWeight = 'normal';
 	}
    	oldId = clicked_ID;
-}
+};
+
+function onChooseLocation(){
+	document.getElementById("chosenFolder").innerHTML = oldId;
+	var close = document.getElementsByClassName("close")[0];
+	modal.style.display = "none";
+};
 
 function prepareList() {
  $('#myModal #expList').find('li:has(ul)')
