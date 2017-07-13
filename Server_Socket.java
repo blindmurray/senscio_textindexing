@@ -37,11 +37,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	static String indexDir = "C:/MICHELLE/txt_index";
-	//static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+	//static String indexDir = "C:/MICHELLE/txt_index";
+	static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	static String dataDir = "C:/MICHELLE/txt_data";
-	//static String indexDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	//static String dataDir = "C:/MICHELLE/txt_data";
+	static String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
