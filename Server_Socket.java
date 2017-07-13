@@ -17,6 +17,8 @@
  * give option for exact phrase search (use quotes??)
  * DirectoryReader -- need to trigger it if someone updates a folder
  * at some point, go through and add try catches so the program keeps running in case of error
+ * folder change ability + alert to reread directory and send html to js
+ * client.write not working for file upload
  */
 import java.io.*;
 import java.net.*;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.tika.exception.TikaException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 public class Server_Socket {
@@ -61,27 +64,22 @@ public class Server_Socket {
 					while(true){
 						line = is.readLine();
 						System.out.println(line);
+						JSONObject json = new JSONObject(line);
 						if(!line.isEmpty()){
-							if(line.substring(0, 4).equals("@^*~")){
-								line = line.substring(4);
-								String[] ar = line.split("~s@");
-								line = ar[0];
-								String ext = "";
-								if(ar.length>1){
-									ext = ar[1];
-									System.out.println(ext);
-								}
+							if(json.getString("id").equals("search")){
+								String searchterm = json.getString("searchterm");
+								String ext = json.getString("exten");
 								try {  
 									//The string you are searching for in the files							
-									System.out.println(line);
+									System.out.println(searchterm);
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(line, indexDir, 20, ext);
+									stuff = s.searchIndex(searchterm, indexDir, 20, ext);
 								} catch (Exception e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								message = "Search: " + line + "<br>";
+								message = "Search: " + searchterm + "<br>";
 								for(String st: stuff){
 									message = message + st + "<br>";
 								}
@@ -97,7 +95,7 @@ public class Server_Socket {
 
 
 							}
-							else if(line.equals("~~*^")){
+							else if(json.getString("id").equals("upload")){
 								System.out.println("hello1");
 								TextFileFilter.clear(indexDirFile);
 								try {
@@ -109,10 +107,11 @@ public class Server_Socket {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								os.println("done");
 								System.out.println("indexed");
 							}
 							//when we implement folder changing/adding/deleting on the website
-							else if(line.equals("*^*^")){
+							else if(json.getString("id").equals("folderchange")){
 								String html = "<ul id=\"expList\">";
 								listFilesForFolder(new File(dataDir), html);
 						}
