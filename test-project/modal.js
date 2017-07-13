@@ -10,7 +10,7 @@ function triggerSelect(clicked_ID){
 };
 
 function onChooseLocation(){
-	document.getElementById("chosenFolder").innerHTML = oldId;
+	document.getElementById("chosenFolder").value = oldId;
 	var close = document.getElementsByClassName("close")[0];
 	modal.style.display = "none";
 };

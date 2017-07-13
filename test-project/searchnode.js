@@ -54,6 +54,7 @@ function requesthandler(request, response) {
 
 		var form = new formidable.IncomingForm();
 		form.parse(request, function (err, fields, files) {
+			var newthing = fields.get();
 			var oldpath = files.filetoupload.path;
 			var newpath = oldId + files.filetoupload.name;
 			fs.rename(oldpath, newpath, function (err) {
