@@ -30,6 +30,7 @@ public class Searcher{
 	QueryParser queryParser;
 	Query query2;
 	IndexReader indexReader;
+	final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
 
 	public Searcher(){
 
@@ -123,51 +124,18 @@ public class Searcher{
 
 	        }
 
-	        IIndexWord idxWord = dict.getIndexWord(synword, POS.NOUN);
-	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
-	        	IWordID wordID = idxWord.getWordIDs().get(i);
-	        	IWord word = dict.getWord(wordID);
-	        	ISynset synset = word.getSynset();
-		        for (IWord w : synset.getWords()) {
-		            if(!w.getLemma().equals(synword)){
-		        		syns.add(w.getLemma());
-		            }
-		        }
-	        }
 	        
-	        idxWord = dict.getIndexWord(synword, POS.ADJECTIVE);
-	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
-	        	IWordID wordID = idxWord.getWordIDs().get(i);
-	        	IWord word = dict.getWord(wordID);
-	        	ISynset synset = word.getSynset();
-		        for (IWord w : synset.getWords()) {
-		            if(!w.getLemma().equals(synword)){
-		        		syns.add(w.getLemma());
-		            }
-		        }
-	        }
-	        
-	        idxWord = dict.getIndexWord(synword, POS.ADVERB);
-	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
-	        	IWordID wordID = idxWord.getWordIDs().get(i);
-	        	IWord word = dict.getWord(wordID);
-	        	ISynset synset = word.getSynset();
-		        for (IWord w : synset.getWords()) {
-		            if(!w.getLemma().equals(synword)){
-		        		syns.add(w.getLemma());
-		            }
-		        }
-	        }//Adding Related Words to List of Related Words
-	        
-	        idxWord = dict.getIndexWord(synword, POS.VERB);
-	        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
-	        	IWordID wordID = idxWord.getWordIDs().get(i);
-	        	IWord word = dict.getWord(wordID);
-	        	ISynset synset = word.getSynset();
-		        for (IWord w : synset.getWords()) {
-		            if(!w.getLemma().equals(synword)){
-		        		syns.add(w.getLemma());
-		            }
+	        for(int x = 0; x < 4; x++){
+	        	IIndexWord idxWord = dict.getIndexWord(synword, pos[x]);
+		        for(int i = 0; i<idxWord.getWordIDs().size(); i++){
+		        	IWordID wordID = idxWord.getWordIDs().get(i);
+		        	IWord word = dict.getWord(wordID);
+		        	ISynset synset = word.getSynset();
+			        for (IWord w : synset.getWords()) {
+			            if(!w.getLemma().equals(synword)){
+			        		syns.add(w.getLemma());
+			            }
+			        }
 		        }
 	        }
 
