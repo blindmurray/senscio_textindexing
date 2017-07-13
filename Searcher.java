@@ -2,11 +2,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
@@ -54,7 +56,12 @@ public class Searcher{
 		queryString = queryString.substring(0, queryString.length()-5);
 		System.out.println(queryString);
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-		QueryParser qp = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());	
+		
+		HashMap<String,Float> boosts = new HashMap<String,Float>();
+		boosts.put("title", 2.0f);
+		boosts.put("keywords", 1.0f);
+
+		MultiFieldQueryParser qp = new MultiFieldQueryParser(new String[] {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME}, new StandardAnalyzer(), boosts);	
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);

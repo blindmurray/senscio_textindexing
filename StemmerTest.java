@@ -9,5 +9,4 @@ public class StemmerTest {
 		stemmer.stem();
 		System.out.println(stemmer.getCurrent());
 	}
-
 }
