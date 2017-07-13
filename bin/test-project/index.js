@@ -6,9 +6,8 @@ function b1click() {
 	var exten = document.getElementById("t2").value;
 	var dateFrom = document.getElementById("t3").value;
 	var dateTo = document.getElementById("t4").value;
-	var data = [searchterm, exten, dateFrom, dateTo];
-	//var data = "@^*~" + document.getElementById("t1").value + "~s@" + exten + "~t@" + dateFrom + dateTo;
-	console.log(data[0]);
+	var jobj = {"id":"search", "searchterm":searchterm, "exten":exten, "dateFrom":dateFrom, "dateTo": dateTo};
+	var data = JSON.stringify(jobj);
 	var xhr = ajax();
 	xhr.onload = function () {
 		if (xhr.readyState === 4) {
