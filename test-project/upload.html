@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
    <head>
       <meta charset="utf-8">
       <title>mytest</title>
       <link rel="stylesheet" type="text/css" href="css/style.css">
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="java.js"></script>
+      <script type="text/javascript" src="modal.js"></script>
       <link rel="shortcut icon" href="">
    </head>
    <body>
@@ -30,11 +30,12 @@
                <input type="button" id="myBtn" value="Choose Location">
                <div id="myModal" class="modal">
                   <div class="modal-content">
-                  <ul id="expList"><li><span>Patients</span><ul><li><span>CMaine - CMMC</span><ul><li><span>Contracts</span></li><li><span>Welcome Packet</span></li></ul></li><li><span>CSP</span></li><li><span>Document Templates</span></li><li><span>Dow Rummel</span></li><li><span>Eldercare Networks - ECN</span></li><li><span>LOIs in Progress</span></li><li><span>Rural Health - RHCI</span><ul><li><span>Client Services</span></li><li><span>RHCI Provider Survey Pre</span></li><li><span>RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY</span></li></ul></li><li><span>South Dakota Parent Connection - SDPC</span></li></ul></li></ul>
+<ul id="expList"><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients">Patients</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC">CMaine - CMMC</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC/Contracts">Contracts</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CMaine - CMMC/Welcome Packet">Welcome Packet</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/CSP">CSP</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Document Templates">Document Templates</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Dow Rummel">Dow Rummel</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Eldercare Networks - ECN">Eldercare Networks - ECN</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/LOIs in Progress">LOIs in Progress</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI">Rural Health - RHCI</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/Client Services">Client Services</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/RHCI Provider Survey Pre">RHCI Provider Survey Pre</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/Rural Health - RHCI/RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY">RHCI-Close 3.pdf.sb-a0a050bf-VOo6RY</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/OneDrive/txt_data/Patients/South Dakota Parent Connection - SDPC">South Dakota Parent Connection - SDPC</span></li></ul></li></ul>
 
-
+                     <br>
 
                   <span class="close">&times;</span>
+                  <br>
                   </div>
                </div>
                <input type='submit' value='Submit'>

@@ -1,3 +1,14 @@
+var oldId = 10;
+function triggerSelect(clicked_ID){
+	var el = document.getElementById(clicked_ID);
+    el.style.fontWeight = 'bold';
+    if(oldId != 10){
+		var p = document.getElementById(oldId);
+		p.style.fontWeight = 'normal';
+	}
+   	oldId = clicked_ID;
+}
+
 function prepareList() {
  $('#myModal #expList').find('li:has(ul)')
  .click( function(event) {
