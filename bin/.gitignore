@@ -1,9 +1,3 @@
-/.classpath
-/.project
-/README.md
-/WordNet/
-/referenced_libraries/
-/test-project/
 /DirectoryReader.class
 /Index.class
 /Indexer.class
@@ -11,7 +5,11 @@
 /Parse.class
 /Searcher.class
 /Server_Socket.class
+/StemmerTest.class
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/StemmerTest.class
+/WordNet/
+/referenced_libraries/
+/test-project/
+/.DS_Store

@@ -7,11 +7,11 @@ public class DirectoryReader {
 		// TODO Auto-generated method stub
 		File folder = new File("/Users/Gina/Documents/OneDrive/txt_data");
 		html += "<ul id=\"expList\">";
-		listFilesForFolder(folder, html);
+		listFilesForFolder(folder);
 		System.out.println(html);
 	}
 
-	public static void listFilesForFolder(File folder, String html) {
+	public static void listFilesForFolder(File folder) {
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
 				int count = 0;
@@ -21,13 +21,13 @@ public class DirectoryReader {
 					}
 				}
 				if(count>0){
-				html += "<li>" + fileEntry.getName();
+				html += "<li>" + "<span>" + fileEntry.getName() + "</span>";
 				html += "<ul>";
-				listFilesForFolder(fileEntry, html);
+				listFilesForFolder(fileEntry);
 				html+= "</li>";
 				}
 				else{
-					html += "<li>" + fileEntry.getName() + "</li>";
+					html += "<li>" + "<span>" + fileEntry.getName() + "</span>"+ "</li>";
 				}
 			} 
 		}
@@ -38,7 +38,7 @@ public class DirectoryReader {
 		Date modDate = new Date(f.lastModified());
 		if(modDate.after(lastcheck)){
 			String html = "<ul id=\"expList\">";
-			listFilesForFolder(f, html);
+			listFilesForFolder(f);
 			System.out.println(html);
 			return new Date();
 		}
