@@ -302,16 +302,16 @@ input#file {
 /* Collapsed state for list element */
 
 #myModal #expList li {
-    list-style-image:url(images/folder.png);
+    list-style-image:url(../images/folder.png);
 }
 #myModal #expList li .collapsed {
-    list-style-image: url(images/expand.png);
+    list-style-image: url(../images/expand.png);
     cursor: pointer;
  }
  /* Expanded state for list element
  /* NOTE: This class must be located UNDER the collapsed one */
  #myModal #expList li .expanded {
-    list-style-image:url(images/collapse.png);
+    list-style-image:url(../images/collapse.png);
     cursor: pointer;
  }
  
