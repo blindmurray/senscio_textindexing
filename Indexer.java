@@ -20,9 +20,11 @@ public class Indexer {
 private IndexWriter writer;
 public void reindex() throws IOException, TikaException, SAXException{
 	//String indexDir = "C:/MICHELLE/txt_index";
-    String indexDir = "/var/www/library/index";
+	String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+	//String indexDir = "/var/www/library/index";
 	//String dataDir = "C:/MICHELLE/txt_data";
-    String dataDir = "/var/www/library/Internal Document Repository";
+	String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	//String dataDir = "/var/www/library/Internal Document Repository";
 	Indexer indexer = null;
 	   
 	File indexDirFile = new File(indexDir);
