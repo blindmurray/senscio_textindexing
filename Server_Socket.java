@@ -27,6 +27,9 @@ import java.util.Date;
 
 import org.apache.tika.exception.TikaException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xml.sax.SAXException;
 
 public class Server_Socket {
@@ -125,7 +128,11 @@ public class Server_Socket {
 							//when we implement folder changing/adding/deleting on the website
 							else if(json.getString("id").equals("folderchange")){
 								String html = "<ul id=\"expList\">";
-								listFilesForFolder(new File(dataDir), html);
+								html = listFilesForFolder(new File(dataDir), html);
+								File uploadhtml = new File("test-project/upload.html");
+								Document doc = Jsoup.parse(uploadhtml, "UTF-8");
+								Element exptree = doc.select("#exptree").first();
+								exptree.html(html);
 						}
 						}
 						if (line.equals("bye")){ 
@@ -143,7 +150,7 @@ public class Server_Socket {
 			System.out.println(e);
 		}   	
 	} //main	
-	public static void listFilesForFolder(File folder, String html) {
+	public static String listFilesForFolder(File folder, String html) {
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
 				int count = 0;
@@ -153,17 +160,18 @@ public class Server_Socket {
 					}
 				}
 				if(count>0){
-					html += "<li>" + fileEntry.getName();
-					html += "<ul>";
-					listFilesForFolder(fileEntry, html);
-					html+= "</li>";
+				html += "<li>" + "<span>" + fileEntry.getName() + "</span>";
+				html += "<ul>";
+				html = listFilesForFolder(fileEntry, html);
+				html+= "</li>";
 				}
 				else{
-					html += "<li>" + fileEntry.getName() + "</li>";
+					html += "<li>" + "<span>" + fileEntry.getName() + "</span>"+ "</li>";
 				}
 			} 
 		}
 		html += "</ul>";
+		return html;
 	}
 
 	public static void directoryChangeCheck(File f){

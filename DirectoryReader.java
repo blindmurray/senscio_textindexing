@@ -2,16 +2,15 @@ import java.io.File;
 import java.util.Date;
 
 public class DirectoryReader {
-	static String html = "";
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		File folder = new File("/Users/Gina/Documents/OneDrive/txt_data");
-		html += "<ul id=\"expList\">";
-		listFilesForFolder(folder);
+		File folder = new File("C:/MICHELLE");
+		String html = "<ul id=\"expList\">";
+		html = listFilesForFolder(folder, html);
 		System.out.println(html);
 	}
 
-	public static void listFilesForFolder(File folder) {
+	public static String listFilesForFolder(File folder, String html) {
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
 				int count = 0;
@@ -23,7 +22,7 @@ public class DirectoryReader {
 				if(count>0){
 				html += "<li>" + "<span>" + fileEntry.getName() + "</span>";
 				html += "<ul>";
-				listFilesForFolder(fileEntry);
+				html = listFilesForFolder(fileEntry, html);
 				html+= "</li>";
 				}
 				else{
@@ -32,13 +31,19 @@ public class DirectoryReader {
 			} 
 		}
 		html += "</ul>";
+		return html;
 	}
-
+	
+	
+	
+	
+	
+	
 	public static Date directoryChangeCheck(File f, Date lastcheck){
 		Date modDate = new Date(f.lastModified());
 		if(modDate.after(lastcheck)){
 			String html = "<ul id=\"expList\">";
-			listFilesForFolder(f);
+			listFilesForFolder(f, html);
 			System.out.println(html);
 			return new Date();
 		}

@@ -60,16 +60,15 @@ function requesthandler(request, response) {
 			if(!Array.isArray(filearray)){
 				filearray = [filearray];
 			}
+	
 			var data = {
 				"id":"upload",
 				"filepaths":[],
-				"pathway":"C:/MICHELLE"
+				"pathway":newthing
 				};
-
 			filearray.map(function (file){
 				var oldpath = file.path;
-				//var newpath = newthing + "/" + file.name;
-				var newpath = "C:/MICHELLE/" + file.name;
+				var newpath = newthing + "/" + file.name;
 				data.filepaths.push(newpath);
 				fs.rename(oldpath, newpath, function (err) {
 					if (err) {
