@@ -9,7 +9,6 @@ function b1click() {
 				"exten":exten, 
 				"dateFrom":dateFrom, 
 				"dateTo": dateTo};
-	//var data = "@^*~" + document.getElementById("t1").value + "~s@" + exten + "~t@" + dateFrom + dateTo;
 	data = JSON.stringify(data);
 	alert(oldId);
 	var xhr = ajax();

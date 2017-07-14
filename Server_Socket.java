@@ -93,9 +93,8 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("upload")){
 								System.out.println("hello1");
-								TextFileFilter.clear(indexDirFile);
 								try {
-									Indexer.createIndex(indexDir, dataDir, indexer);
+									Indexer.reindex();
 								} catch (TikaException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

@@ -2,6 +2,7 @@ var net = require("net");
 var http = require("http");
 var url = require("url");
 var fs = require("fs");
+var util = require("util");
 var svr = http.createServer(requesthandler);
 svr.listen(8888);
 var formidable = require("formidable");
@@ -54,8 +55,10 @@ function requesthandler(request, response) {
 
 		var form = new formidable.IncomingForm();
 		form.parse(request, function (err, fields, files) {
+			var newthing = fields.chosenFolder;
+			console.log(newthing);
 			var oldpath = files.filetoupload.path;
-			var newpath = "C:/MICHELLE/" + files.filetoupload.name;
+			var newpath = newthing + "/" + files.filetoupload.name;
 			fs.rename(oldpath, newpath, function (err) {
 				if (err) {
 					throw err;
