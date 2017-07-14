@@ -63,6 +63,14 @@ function requesthandler(request, response) {
 				if (err) {
 					throw err;
 				}
+				var data = {"id":"upload"};
+				data = JSON.stringify(data);
+				client.write(data + "\n");
+				console.log("data recieved:" + data);
+				client.on("data", function (data) {
+					var completed = data.toString();
+					console.log("received:" + completed + "\n");
+				});
 				response.write("File uploaded and moved!");
 				setTimeout(function endit() {
 					response.end();
