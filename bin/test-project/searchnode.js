@@ -54,20 +54,40 @@ function requesthandler(request, response) {
 	case "/fileupload":
 
 		var form = new formidable.IncomingForm();
+		form.multiples = "true";
 		form.parse(request, function (err, fields, files) {
 			var newthing = fields.chosenFolder;
 			console.log(newthing);
-			var oldpath = files.filetoupload.path;
-			var newpath = newthing + "/" + files.filetoupload.name;
-			fs.rename(oldpath, newpath, function (err) {
-				if (err) {
-					throw err;
-				}
-				response.write("File uploaded and moved!");
-				setTimeout(function endit() {
-					response.end();
-				}, 0);
+			console.log(util.inspect(files));
+			//var oldpath = files.filetoupload[0].path;
+			var filearray = files.filetoupload;
+			console.log(filearray);
+			var data = {
+				"id":"upload",
+				"filepaths":[]
+				};
+			filearray.map(function (file){
+				var oldpath = file.path;
+				//var newpath = newthing + "/";
+				var newpath = newthing + file.name;
+				data.filepaths.push(newpath);
+				fs.rename(oldpath, newpath, function (err) {
+					if (err) {
+						throw err;
+					}
+				});
 			});
+			data = JSON.stringify(data);
+			client.write(data + "\n");
+			console.log("data recieved:" + data);
+			client.on("data", function (data) {
+				var completed = data.toString();
+				console.log("received:" + completed + "\n");
+			});
+			console.log("file uploaded");
+			setTimeout(function endit() {
+				response.end();
+			}, 0);	
 		});
 		break;
 	default:
@@ -83,6 +103,28 @@ function requesthandler(request, response) {
 			//client.write(postdata + "\n");
 		});
 	}
+}
+function uploadfile(file){
+	var oldpath = file.path;
+	var newpath = "C:/MICHELLE/";
+	newpath = newpath + file.name;
+	fs.rename(oldpath, newpath, function (err) {
+		if (err) {
+			throw err;
+		}
+		var data = {"id":"upload"};
+		data = JSON.stringify(data);
+		client.write(data + "\n");
+		console.log("data recieved:" + data);
+		client.on("data", function (data) {
+			var completed = data.toString();
+			console.log("received:" + completed + "\n");
+		});
+		console.log("file uploaded");
+		setTimeout(function endit() {
+			response.end();
+		}, 0);
+	});
 }
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function () { //'connect' listener
