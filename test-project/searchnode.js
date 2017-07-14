@@ -58,7 +58,7 @@ function requesthandler(request, response) {
 			var newthing = fields.chosenFolder;
 			console.log(newthing);
 			var oldpath = files.filetoupload.path;
-			var newpath = "C:/MICHELLE/" + files.filetoupload.name;
+			var newpath = newthing + files.filetoupload.name;
 			fs.rename(oldpath, newpath, function (err) {
 				if (err) {
 					throw err;
