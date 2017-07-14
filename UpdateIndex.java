@@ -33,11 +33,40 @@ public static void updateIndex(String filePathAdd, String indexDir) throws IOExc
 	IndexWriterConfig conf = new IndexWriterConfig(analyzer);
 	conf.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
 	writer = new IndexWriter(indexDirectory, conf); 
-	int num = writeIndex(filePathAdd,  new TextFileFilter());
+	int num = writeIndexUpdate(filePathAdd,  new TextFileFilter());
 	writer.close();
 	System.out.println(num);
 	
 }
 
-
+public static int writeIndexUpdate(String dataDirPath, FileFilter filter) throws IOException, TikaException, SAXException{
+		File convertedFile = null;
+		
+		//Check for file type and call appropriate method to convert the file.
+		File file = new File(dataDirPath);
+			//Recalls the Indexer class if the file is a Directory
+			if(file.isDirectory()){
+				File[] files = new File(dataDirPath).listFiles();
+				writeIndex(file.toString(),new TextFileFilter());
+			}
+					
+			//Will index file if file is a .txt file
+			else if(!file.isDirectory() && !file.isHidden() && file.exists() && file.canRead() && filter.accept(file) && TXT.getExtension(file.toString()).equals("txt")){
+				indexFile(file, file);
+			}
+		
+			//Will convert file by calling Parse class if file is not .txt
+			else if(TXT.getExtension(file.toString()).matches("pdf|html|rtf|odf|ods|odt|xlsx|xls|pps|doc|docx|ppt|pptx|pages|key|numbers")){
+				Parse.parse(file.toString());
+				convertedFile = new File(TXT.editExtension(file.toString()));
+				if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+					indexFile(convertedFile, file);
+					convertedFile.delete();
+				}
+			}	
+			else{
+			}
+		return writer.numDocs();
+		}
 }
+

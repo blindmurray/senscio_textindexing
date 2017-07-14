@@ -93,7 +93,7 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("upload")){
 								try {
-									String string = null;
+									String string = "/Users/Gina/Documents/OneDrive/txt_data/Patients/ImmHistory.pdf";
 									UpdateIndex.updateIndex(string, indexDir);
 								} catch (TikaException e) {
 									// TODO Auto-generated catch block
