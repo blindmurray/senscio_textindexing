@@ -11,6 +11,8 @@ function triggerSelect(clicked_ID){
 
 function onChooseLocation(){
 	document.getElementById("chosenFolder").value = oldId;
+	alert(document.getElementById("chosenFolder").value);
+	document.getElementById("location").innerHTML = oldId;
 	var close = document.getElementsByClassName("close")[0];
 	modal.style.display = "none";
 };
