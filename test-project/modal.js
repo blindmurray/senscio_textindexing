@@ -1,3 +1,5 @@
+
+
 var oldId = 10;
 function triggerSelect(clicked_ID){
 	var el = document.getElementById(clicked_ID);
@@ -48,6 +50,7 @@ function prepareList() {
  })
 
 };
+
 
 /**************************************************************/
  /* Functions to execute on loading the document               */

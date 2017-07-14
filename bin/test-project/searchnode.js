@@ -61,15 +61,20 @@ function requesthandler(request, response) {
 			console.log(util.inspect(files));
 			//var oldpath = files.filetoupload[0].path;
 			var filearray = files.filetoupload;
+			if(!Array.isArray(filearray)){
+				filearray = [filearray];
+			}
 			console.log(filearray);
 			var data = {
 				"id":"upload",
-				"filepaths":[]
+				"filepaths":[],
+				"pathway":newthing
 				};
+
 			filearray.map(function (file){
 				var oldpath = file.path;
 				//var newpath = newthing + "/";
-				var newpath = newthing + file.name;
+				var newpath = newthing + "/" + file.name;
 				data.filepaths.push(newpath);
 				fs.rename(oldpath, newpath, function (err) {
 					if (err) {

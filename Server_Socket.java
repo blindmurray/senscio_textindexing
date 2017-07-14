@@ -92,9 +92,23 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("upload")){
 								try {
-									for (int i = 0; i < json.getJSONArray("filepaths").length(); i++) {
-										String string = json.getJSONArray("filepaths").getString(i);
-										UpdateIndex.updateIndex(string, indexDir);
+									boolean check = true;
+									String string = null;
+									File[] files = new File(json.getString("pathway")).listFiles();
+									for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
+										for (File file : files) {
+											string = json.getJSONArray("filepaths").getString(i);
+											if(file.toString().equals(string)){
+												check = false;
+											}
+										}
+										if (check == true){
+											UpdateIndex.updateIndex(string, indexDir);
+										}
+										else{
+											os.println("ERROR. Please rename file to avoid duplicate names");
+										}
+										 
 									}
 									
 								} catch (TikaException e) {

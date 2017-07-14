@@ -18,7 +18,6 @@ function route(request, response, data, path) {
 		client.on("data", function (data) {
 			results = data.toString();
 			console.log("received:" + results + "\n");
-			response.end(results);
 		});
 	} else if (p > -1) {
 		ext = path.slice(p + 1);
@@ -67,7 +66,8 @@ function requesthandler(request, response) {
 			console.log(filearray);
 			var data = {
 				"id":"upload",
-				"filepaths":[]
+				"filepaths":[],
+				"pathway":newthing
 				};
 
 			filearray.map(function (file){
@@ -86,7 +86,8 @@ function requesthandler(request, response) {
 			console.log("data recieved:" + data);
 			client.on("data", function (data) {
 				var completed = data.toString();
-				console.log("received:" + completed + "\n");
+				console.log("received: " + completed + "\n");
+				response.end(data);
 			});
 			console.log("file uploaded");
 			setTimeout(function endit() {
