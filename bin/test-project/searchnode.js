@@ -58,7 +58,6 @@ function requesthandler(request, response) {
 		form.parse(request, function (err, fields, files) {
 			var newthing = fields.chosenFolder;
 			console.log(newthing);
-<<<<<<< HEAD
 			console.log(util.inspect(files));
 			//var oldpath = files.filetoupload[0].path;
 			var filearray = files.filetoupload;
@@ -84,26 +83,6 @@ function requesthandler(request, response) {
 			client.on("data", function (data) {
 				var completed = data.toString();
 				console.log("received:" + completed + "\n");
-=======
-			var oldpath = files.filetoupload.path;
-			var newpath = newthing + "/" + files.filetoupload.name;
-			fs.rename(oldpath, newpath, function (err) {
-				if (err) {
-					throw err;
-				}
-				var data = {"id":"upload"};
-				data = JSON.stringify(data);
-				client.write(data + "\n");
-				console.log("data recieved:" + data);
-				client.on("data", function (data) {
-					var completed = data.toString();
-					console.log("received:" + completed + "\n");
-				});
-				response.write("File uploaded and moved!");
-				setTimeout(function endit() {
-					response.end();
-				}, 0);
->>>>>>> 025563ade63296d9ed82a1964c5528a700ea206e
 			});
 			console.log("file uploaded");
 			setTimeout(function endit() {
@@ -124,28 +103,6 @@ function requesthandler(request, response) {
 			//client.write(postdata + "\n");
 		});
 	}
-}
-function uploadfile(file){
-	var oldpath = file.path;
-	var newpath = "C:/MICHELLE/";
-	newpath = newpath + file.name;
-	fs.rename(oldpath, newpath, function (err) {
-		if (err) {
-			throw err;
-		}
-		var data = {"id":"upload"};
-		data = JSON.stringify(data);
-		client.write(data + "\n");
-		console.log("data recieved:" + data);
-		client.on("data", function (data) {
-			var completed = data.toString();
-			console.log("received:" + completed + "\n");
-		});
-		console.log("file uploaded");
-		setTimeout(function endit() {
-			response.end();
-		}, 0);
-	});
 }
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function () { //'connect' listener
