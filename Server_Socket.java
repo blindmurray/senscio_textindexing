@@ -89,12 +89,14 @@ public class Server_Socket {
 								//later change to new web page instead
 								System.out.println("Search Results" + "\n"+ message);
 
-
 							}
 							else if(json.getString("id").equals("upload")){
 								try {
-									String string = "/Users/Gina/Documents/OneDrive/txt_data/Patients/ImmHistory.pdf";
-									UpdateIndex.updateIndex(string, indexDir);
+									for (int i = 0; i < json.getJSONArray("filepaths").length(); i++) {
+										String string = json.getJSONArray("filepaths").getString(i);
+										UpdateIndex.updateIndex(string, indexDir);
+									}
+									
 								} catch (TikaException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
