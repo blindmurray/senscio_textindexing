@@ -51,10 +51,34 @@ function prepareList() {
 
 };
 
-
+var xhr = ajax();
+	xhr.onload = function () {
+		if (xhr.readyState === 4) {
+			if (xhr.status === 200) {
+				document.getElementById("demo").innerHTML = xhr.responseText;
+			} else {
+				alert("error: " + xhr.responseText);
+			}
+		}
+	};
+	xhr.open("POST", "/", true);
 /**************************************************************/
  /* Functions to execute on loading the document               */
  /**************************************************************/
  $(document).ready( function() {
  	prepareList()
  });
+ function ajax() {
+	"use strict";
+	if ( window.XMLHttpRequest) {
+		return new XMLHttpRequest();
+	} else if (window.ActiveXObject) {
+		try {return new ActiveXObject("Msxml2.DOMDocument.6.0");} catch (e) {}
+		try {return new ActiveXObject("Msxml2.DOMDocument.3.0");} catch (f) {}
+		try {return new ActiveXObject("Microsoft.XMLHTTP");} catch (g) {}
+	} else {
+		alert("newxhr XMLHTTPRequest object failed");
+		return null;
+	}
+	// xhr
+}

@@ -56,24 +56,20 @@ function requesthandler(request, response) {
 		form.multiples = "true";
 		form.parse(request, function (err, fields, files) {
 			var newthing = fields.chosenFolder;
-			console.log(newthing);
-			console.log(util.inspect(files));
-			//var oldpath = files.filetoupload[0].path;
 			var filearray = files.filetoupload;
 			if(!Array.isArray(filearray)){
 				filearray = [filearray];
 			}
-			console.log(filearray);
 			var data = {
 				"id":"upload",
 				"filepaths":[],
-				"pathway":newthing
+				"pathway":"C:/MICHELLE"
 				};
 
 			filearray.map(function (file){
 				var oldpath = file.path;
-				//var newpath = newthing + "/";
-				var newpath = newthing + "/" + file.name;
+				//var newpath = newthing + "/" + file.name;
+				var newpath = "C:/MICHELLE/" + file.name;
 				data.filepaths.push(newpath);
 				fs.rename(oldpath, newpath, function (err) {
 					if (err) {

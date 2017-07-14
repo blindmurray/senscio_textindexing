@@ -37,11 +37,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	//static String indexDir = "C:/MICHELLE/txt_index";
-	static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+	static String indexDir = "C:/MICHELLE/txt_index";
+	//static String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	//static String dataDir = "C:/MICHELLE/txt_data";
-	static String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	static String dataDir = "C:/MICHELLE/txt_data";
+	//static String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
@@ -98,19 +98,20 @@ public class Server_Socket {
 									for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
 										for (File file : files) {
 											string = json.getJSONArray("filepaths").getString(i);
-											if(file.toString().equals(string)){
+											String fpath = file.toString();
+											fpath = fpath.replace("\\", "/");
+											if(fpath.equals(string)){
 												check = false;
 											}
 										}
-										if (check == true){
-											UpdateIndex.updateIndex(string, indexDir);
-										}
-										else{
-											os.println("ERROR. Please rename file to avoid duplicate names");
-										}
-										 
 									}
-									
+									if (check == true){
+										UpdateIndex.updateIndex(string, indexDir);
+										os.println("no duplicates");
+									}
+									else{
+										os.println("ERROR. Please rename file to avoid duplicate names");
+									}
 								} catch (TikaException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
