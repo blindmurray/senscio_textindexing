@@ -92,9 +92,9 @@ public class Server_Socket {
 
 							}
 							else if(json.getString("id").equals("upload")){
-								System.out.println("hello1");
 								try {
-									Indexer.reindex();
+									String string = null;
+									UpdateIndex.updateIndex(string, indexDir);
 								} catch (TikaException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

@@ -17,13 +17,13 @@ import com.google.common.base.CharMatcher;
 
 public class Indexer {
 
-private IndexWriter writer;
+public static IndexWriter writer;
 public static void reindex() throws IOException, TikaException, SAXException{
-	String indexDir = "C:/MICHELLE/txt_index";
-	//String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
+	//String indexDir = "C:/MICHELLE/txt_index";
+	String indexDir = "/Users/Gina/Documents/OneDrive/txt_index";
 	//String indexDir = "/var/www/library/index";
-	String dataDir = "C:/MICHELLE/txt_data";
-	//String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
+	//String dataDir = "C:/MICHELLE/txt_data";
+	String dataDir = "/Users/Gina/Documents/OneDrive/txt_data";
 	//String dataDir = "/var/www/library/Internal Document Repository";
 	Indexer indexer = null;
 	   
@@ -43,7 +43,7 @@ public Indexer(String indexDir) throws IOException {
 	writer = new IndexWriter(indexDirectory, conf);  
 }
 
-private Document getDocument(File newFile, File oldFile) throws IOException {
+public static Document getDocument(File newFile, File oldFile) throws IOException {
 	Document document = new Document();
 	try (InputStream stream = Files.newInputStream(newFile.toPath())) {
 		
@@ -68,32 +68,32 @@ private Document getDocument(File newFile, File oldFile) throws IOException {
 	}
 }
 
-private void indexFile(File newFile, File oldFile ) throws IOException {
+public static void indexFile(File newFile, File oldFile ) throws IOException {
 	System.out.println("Indexing "+ oldFile.getCanonicalPath());
 	Document document = getDocument(newFile, oldFile); //call getDocument method
 	writer.addDocument(document);
 }
 
-static void createIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
+public static void createIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
 	indexer = new Indexer(indexDir);
 	int numIndexed;
 	long startTime = System.currentTimeMillis();	
 
 	//Calls method to write the index
-	numIndexed = indexer.writeIndex(dataDir, new TextFileFilter());
+	numIndexed = Indexer.writeIndex(dataDir, new TextFileFilter());
 	long endTime = System.currentTimeMillis();
 	
 	//Checks to see how many files are indexed and time taken
 	indexer.close();
 	System.out.println(numIndexed+" File indexed, time taken: "	+ (endTime-startTime) +" ms");
 }
-static void addIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
+public static void addIndex(String indexDir, String dataDir, Indexer indexer) throws IOException, TikaException, SAXException {
 	indexer = new Indexer(indexDir);
 	int numIndexed;
 	long startTime = System.currentTimeMillis();	
 
 	//Calls method to write the index
-	numIndexed = indexer.writeIndex(dataDir, new TextFileFilter());
+	numIndexed = Indexer.writeIndex(dataDir, new TextFileFilter());
 	long endTime = System.currentTimeMillis();
 	
 	//Checks to see how many files are indexed and time taken
@@ -105,7 +105,7 @@ public void close() throws CorruptIndexException, IOException {
 	 writer.close();
 }
 
-public int writeIndex(String dataDirPath, FileFilter filter) throws IOException, TikaException, SAXException {
+public static int writeIndex(String dataDirPath, FileFilter filter) throws IOException, TikaException, SAXException {
 	//get all files in the data directory
 	File[] files = new File(dataDirPath).listFiles();
 	File convertedFile = null;
