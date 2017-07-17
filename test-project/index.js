@@ -4,12 +4,12 @@ function b1click() {
 	var exten = document.getElementById("t2").value;
 	var dateFrom = document.getElementById("t3").value;
 	var dateTo = document.getElementById("t4").value;
-	var data = {"id":"search",
+	var search = {"id":"search",
 				"searchterm":searchterm, 
 				"exten":exten, 
 				"dateFrom":dateFrom, 
 				"dateTo": dateTo};
-	data = JSON.stringify(data);
+	search = JSON.stringify(search);
 	alert(oldId);
 	var xhr = ajax();
 	xhr.onload = function () {
@@ -23,8 +23,8 @@ function b1click() {
 	};
 	xhr.open("POST", "/", true);
 	xhr.setRequestHeader("Content-Type", "text/plain");
-	xhr.send(data);
-	console.dir(data);
+	xhr.send(search);
+	console.dir(search);
 }
 function ajax() {
 	"use strict";

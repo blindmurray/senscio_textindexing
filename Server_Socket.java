@@ -54,7 +54,7 @@ public class Server_Socket {
 		try {
 			ssock = new ServerSocket(port);
 			System.out.println("SockServer waiting for connections on 1221...");
-			while( true ){ 
+			while(true){ 
 				try {
 					//creates socket and input/output streams
 					Socket csock = ssock.accept();
@@ -73,6 +73,7 @@ public class Server_Socket {
 						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
+							System.out.println("woking");
 							//if the message is a search
 							if(json.getString("id").equals("search")){
 								try {  			
@@ -106,20 +107,19 @@ public class Server_Socket {
 											}
 										}
 									//return results to node.js
-									if (check == true){
+									if (check){
 										os.println("no duplicates");
 									}
 									else{
 										os.println("ERROR. Please rename file to avoid duplicate names");
 									}
-									os.println("done");
-									System.out.println("indexed");
 									}
 							}
 							else if(json.getString("id").equals("saved")){
 								for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
-										string = json.getJSONArray("filepaths").getString(i);
-										UpdateIndex.updateIndex(string, indexDir);
+									System.out.println("ya boi");
+									string = json.getJSONArray("filepaths").getString(i);
+									UpdateIndex.updateIndex(string, indexDir);
 								}
 								os.println("indexed!");
 							}

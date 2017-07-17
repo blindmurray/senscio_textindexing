@@ -20,6 +20,7 @@ function route(request, response, data, path) {
 			console.log("received:" + results + "\n");
 		});
 	} else if (p > -1) {
+		console.log("part 2")
 		ext = path.slice(p + 1);
 		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css") {
 			var fn = path.slice(1);
@@ -46,7 +47,7 @@ function route(request, response, data, path) {
 	} else {
 		response.end();
 	}
-}
+};
 function requesthandler(request, response) {
 	"use strict";
 	switch (request.url) {
@@ -61,7 +62,7 @@ function requesthandler(request, response) {
 				filearray = [filearray];
 			}
 	
-			var data = {
+			var info = {
 				"id":"upload",
 				"filepaths":[],
 				"pathway":newthing
@@ -69,36 +70,43 @@ function requesthandler(request, response) {
 			filearray.map(function (file){
 				var oldpath = file.path;
 				var newpath = newthing + "/" + file.name;
-				data.filepaths.push(newpath);
+				info.filepaths.push(newpath);
 			});
-			data = JSON.stringify(data);
-			client.write(data + "\n");
-			console.log("data recieved:" + data);
+			info = JSON.stringify(info);
+			client.write(info + "\n");
+			console.log("data recieved:" + info);
 			client.on("data", function (data) {
-				var completed = data.toString();
-				if(completed == "no duplicates"){
+				var completed = data.toString();				
+				console.log("received: " + completed + "\n");
+				if(completed === "no duplicates".valueOf()){
+					console.log("1");
 					filearray.map(function (file){
 						var oldpath1 = file.path;
 						var newpath1 = newthing + "/" + file.name;
+						var saved = {
+							"id":"saved",
+							"filepaths": newpath1
+						};
+
 						fs.rename(oldpath1, newpath1, function (err) {
 							if (err) {
 								throw err;
 							}
-							var saved = {"id":"saved"};
 							saved = JSON.stringify(saved);
 							client.write(saved);
 							client.on("data",function(data){
-								response.end("Files(s) uploaded");
+							response.end("Files(s) uploaded");
 							});
 						});
+
 					});
+
+					
 				}
 				else{
 					response.end(completed);
 				}
-				console.log("received: " + completed + "\n");
 			});
-			console.log("file uploaded");
 			setTimeout(function endit() {
 				response.end();
 			}, 0);		
@@ -106,6 +114,8 @@ function requesthandler(request, response) {
 		});
 		break;
 	default:
+			console.log("it reached the code");
+
 		var postdata = "";
 		var path = url.parse(request.url).pathname;
 		request.setEncoding("utf8");
