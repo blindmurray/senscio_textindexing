@@ -28,7 +28,7 @@
                <input type="date" id="t4" placeholder="mm/dd/yyyy">
             </div>
             <br>
-            <input type="button" id="b1" value="Search" onclick="bonclick()">
+            <input type="button" id="b1" value="Search" onclick="b1click()">
             <br>
             <p id="demo">Results:</p>
          </div>
@@ -40,49 +40,6 @@
             (978) 635-9090
          </p>
       </div>
-      <script type="text/javascript">
-function ajax() {
-    "use strict";
-    if ( window.XMLHttpRequest) {
-        return new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        try {return new ActiveXObject("Msxml2.DOMDocument.6.0");} catch (e) {}
-        try {return new ActiveXObject("Msxml2.DOMDocument.3.0");} catch (f) {}
-        try {return new ActiveXObject("Microsoft.XMLHTTP");} catch (g) {}
-    } else {
-        alert("newxhr XMLHTTPRequest object failed");
-        return null;
-    }
-    // xhr
-}
-function bonclick() {
-    "use strict";
-    var searchterm = document.getElementById("t1").value;
-    var exten = document.getElementById("t2").value;
-    var dateFrom = document.getElementById("t3").value;
-    var dateTo = document.getElementById("t4").value;
-    var search = {"id":"search",
-                "searchterm":searchterm, 
-                "exten":exten, 
-                "dateFrom":dateFrom, 
-                "dateTo": dateTo};
-    search = JSON.stringify(search);
-    alert(searchterm);
-    var xhr = ajax();
-    xhr.onload = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                document.getElementById("demo").innerHTML = xhr.responseText;
-            } else {
-                alert("error: " + xhr.responseText);
-            }
-        }
-    };
-    xhr.open("POST", "/", true);
-    xhr.setRequestHeader("Content-Type", "text/plain");
-    xhr.send(search);
-    console.dir(search);
-}
-      </script>
+      <script type="text/javascript" src="index.js"></script>
    </body>
 </html>

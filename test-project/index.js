@@ -24,7 +24,6 @@ function b1click() {
                 "dateFrom":dateFrom, 
                 "dateTo": dateTo};
     search = JSON.stringify(search);
-    alert(oldId);
     var xhr = ajax();
     xhr.onload = function () {
         if (xhr.readyState === 4) {
