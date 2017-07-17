@@ -17,6 +17,7 @@
  * folder permissions
  * plurals (stemming), reindex with word stems
  * scanned documents
+ * comment searchnode code
  */
 import java.io.*;
 import java.net.*;
@@ -48,7 +49,7 @@ public class Server_Socket {
 
 
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws TikaException, SAXException {
 
 		try {
 			ssock = new ServerSocket(port);
@@ -64,6 +65,8 @@ public class Server_Socket {
 					String message = "";
 					//listen for message from node.js
 					while(true){
+						boolean check = true;
+						String string = null;
 						//tries to read message
 						line = is.readLine();
 						System.out.println(line);
@@ -91,9 +94,6 @@ public class Server_Socket {
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
-								try {
-									boolean check = true;
-									String string = null;
 									File[] files = new File(json.getString("pathway")).listFiles();
 									//check if uploaded file has same name as another in the same folder
 									for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
@@ -105,22 +105,23 @@ public class Server_Socket {
 												check = false;
 											}
 										}
-									}
 									//return results to node.js
 									if (check == true){
-										UpdateIndex.updateIndex(string, indexDir);
 										os.println("no duplicates");
 									}
 									else{
 										os.println("ERROR. Please rename file to avoid duplicate names");
 									}
-								} catch (TikaException e) {
-									e.printStackTrace();
-								} catch (SAXException e) {
-									e.printStackTrace();
-								}
 								os.println("done");
 								System.out.println("indexed");
+									}
+							}
+							else if(json.getString("id").equals("saved")){
+								for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
+										string = json.getJSONArray("filepaths").getString(i);
+										UpdateIndex.updateIndex(string, indexDir);
+								}
+								os.println("indexed!");
 							}
 							//when we implement folder changing/adding/deleting on the website
 							//this will re-read the folders to change the expanding tree
