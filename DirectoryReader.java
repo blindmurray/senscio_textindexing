@@ -4,7 +4,7 @@ import java.util.Date;
 public class DirectoryReader {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		File folder = new File("/Users/Gina/Documents/Files/txt_data");
+		File folder = new File("C:/MICHELLE/txt_data");
 		String html = "<ul id=\"expList\">";
 		html = listFilesForFolder(folder, html);
 		System.out.println(html);
