@@ -43,9 +43,9 @@ public class Searcher{
 
 	}
 	public ArrayList<String> searchIndex(JSONObject json, String indexDir, int num) throws Exception {
-		String searchString = json.getString("searchterm").toLowerCase();
-
-		String[] terms = searchString.split(" ");
+		
+		String searchString = json.getString("searchterm").toLowerCase(); //search string to lowercase
+		String[] terms = searchString.split(" "); //splits search string to separate words
 		//use OR in parentheses for each term's synonyms
 		String queryString = "";
 		for (String term: terms){
@@ -71,13 +71,11 @@ public class Searcher{
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
-		//Create Lucene searcher. It searches over a single IndexReader.
+		//Create searcher... it searches over a single IndexReader.
 		IndexSearcher searcher = createSearcher(indexDir);
 
 		//Search indexed contents using search term
 		TopDocs foundDocs = searchInContent(searcher, booleanQuery, num);
-
-		//Total found documents
 
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");

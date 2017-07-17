@@ -34,11 +34,6 @@ public class DirectoryReader {
 		return html;
 	}
 	
-	
-	
-	
-	
-	
 	public static Date directoryChangeCheck(File f, Date lastcheck){
 		Date modDate = new Date(f.lastModified());
 		if(modDate.after(lastcheck)){
