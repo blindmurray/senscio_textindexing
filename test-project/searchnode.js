@@ -70,24 +70,33 @@ function requesthandler(request, response) {
 				var oldpath = file.path;
 				var newpath = newthing + "/" + file.name;
 				data.filepaths.push(newpath);
-				fs.rename(oldpath, newpath, function (err) {
-					if (err) {
-						throw err;
-					}
-				});
+				
 			});
 			data = JSON.stringify(data);
 			client.write(data + "\n");
 			console.log("data recieved:" + data);
 			client.on("data", function (data) {
 				var completed = data.toString();
+				if(completed == "no duplicates"){
+					filearray.map(function (file){
+						fs.rename(oldpath, newpath, function (err) {
+							if (err) {
+								throw err;
+							}
+						});
+					});
+					response.end("File(s) uploaded!");
+				}
+				else{
+					response.end(completed);
+				}
 				console.log("received: " + completed + "\n");
-				response.end(data);
 			});
 			console.log("file uploaded");
 			setTimeout(function endit() {
 				response.end();
-			}, 0);	
+			}, 0);		
+
 		});
 		break;
 	default:
