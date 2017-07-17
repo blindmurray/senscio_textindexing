@@ -1,31 +1,27 @@
 /* different types of queries (phrase, etc)
- * file upload
- * drag and drop, choose directory to save in (dropdown folder hierarchy)
- * https://www.sitepoint.com/html5-file-drag-and-drop/
- * https://css-tricks.com/drag-and-drop-file-uploading/
- * #fail
- * warning when saving to place that has file of same name
- * renaming files (searching titles) https://www.w3schools.com/nodejs/nodejs_filesystem.asp
+ * check for same name files when saving to place that has file of same name
  * add instructions for search
- * don't use punctuation 
- * search for key words only
- * if using extensions, list with periods, NO SPACES
- * maybe use drop down menu instead for extensions
- * weird thing-search received times=which number search it is
+ 	* don't use punctuation 
+ 	* search for key words only
+ 	* if using extensions, list with periods, NO SPACES
+ 	* maybe use drop down menu instead for extensions
  * spellcheck
  * show part of file where the searched word is, like google does
+ * extract document after search, provide link
  * give option for exact phrase search (use quotes??)
- * DirectoryReader -- need to trigger it if someone updates a folder
  * at some point, go through and add try catches so the program keeps running in case of error
  * folder change ability + alert to reread directory and send html to js
- * client.write not working for file upload
  * alert if only one date entered, or if first is after second
+ * search by created date
+ * put in metadata key words when uploading (who uploaded, upload date)
+ * folder permissions
+ * plurals (stemming), reindex with word stems
+ * scanned documents
  */
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.apache.tika.exception.TikaException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;

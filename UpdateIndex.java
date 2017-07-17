@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Paths;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -62,4 +61,3 @@ public static int writeIndexUpdate(String dataDirPath, FileFilter filter) throws
 		return writer.numDocs();
 		}
 }
-

@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.tika.exception.TikaException;
 import org.xml.sax.SAXException;
 
