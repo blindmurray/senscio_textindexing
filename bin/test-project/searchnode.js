@@ -66,12 +66,7 @@ function requesthandler(request, response) {
 				"filepaths":[],
 				"pathway":newthing
 				};
-			filearray.map(function (file){
-				var oldpath = file.path;
-				var newpath = newthing + "/" + file.name;
-				data.filepaths.push(newpath);
-				
-			});
+			
 			data = JSON.stringify(data);
 			client.write(data + "\n");
 			console.log("data recieved:" + data);
@@ -79,6 +74,11 @@ function requesthandler(request, response) {
 				var completed = data.toString();
 				if(completed == "no duplicates"){
 					filearray.map(function (file){
+						filearray.map(function (file){
+							var oldpath = file.path;
+							var newpath = newthing + "/" + file.name;
+							data.filepaths.push(newpath);
+						});
 						fs.rename(oldpath, newpath, function (err) {
 							if (err) {
 								throw err;

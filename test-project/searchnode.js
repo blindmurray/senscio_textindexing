@@ -70,7 +70,6 @@ function requesthandler(request, response) {
 				var oldpath = file.path;
 				var newpath = newthing + "/" + file.name;
 				data.filepaths.push(newpath);
-				
 			});
 			data = JSON.stringify(data);
 			client.write(data + "\n");
@@ -79,13 +78,20 @@ function requesthandler(request, response) {
 				var completed = data.toString();
 				if(completed == "no duplicates"){
 					filearray.map(function (file){
-						fs.rename(oldpath, newpath, function (err) {
+						var oldpath1 = file.path;
+						var newpath1 = newthing + "/" + file.name;
+						fs.rename(oldpath1, newpath1, function (err) {
 							if (err) {
 								throw err;
 							}
+							var saved = {"id":"saved"};
+							saved = JSON.stringify(saved);
+							client.write(saved);
+							client.on("data",function(data){
+								response.end("Files(s) uploaded");
+							});
 						});
 					});
-					response.end("File(s) uploaded!");
 				}
 				else{
 					response.end(completed);
