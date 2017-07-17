@@ -9,7 +9,7 @@ public class DirectoryReader {
 		html = listFilesForFolder(folder, html);
 		System.out.println(html);
 	}
-
+	//constructs html ul from reading folder directory
 	public static String listFilesForFolder(File folder, String html) {
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
@@ -33,12 +33,12 @@ public class DirectoryReader {
 		html += "</ul>";
 		return html;
 	}
-	
+	//if run in a while loop, checks for file changes
 	public static Date directoryChangeCheck(File f, Date lastcheck){
 		Date modDate = new Date(f.lastModified());
 		if(modDate.after(lastcheck)){
 			String html = "<ul id=\"expList\">";
-			listFilesForFolder(f, html);
+			html = listFilesForFolder(f, html);
 			System.out.println(html);
 			return new Date();
 		}

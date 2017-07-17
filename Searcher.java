@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -23,7 +22,6 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.json.JSONObject;
-
 import edu.mit.jwi.Dictionary;
 import edu.mit.jwi.item.IIndexWord;
 import edu.mit.jwi.item.ISynset;
@@ -32,23 +30,22 @@ import edu.mit.jwi.item.IWordID;
 import edu.mit.jwi.item.POS;
 
 public class Searcher{
-
 	IndexSearcher indexSearcher;
 	QueryParser queryParser;
 	Query query2;
 	IndexReader indexReader;
 	final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
-
 	public Searcher(){
-
 	}
 	public ArrayList<String> searchIndex(JSONObject json, String indexDir, int num) throws Exception {
-		
-		String searchString = json.getString("searchterm").toLowerCase(); //search string to lowercase
-		String[] terms = searchString.split(" "); //splits search string to separate words
+		//convert searchterm to lowercase
+		String searchString = json.getString("searchterm").toLowerCase();
+		//get individual words in searchString
+		String[] terms = searchString.split(" ");
 		//use OR in parentheses for each term's synonyms
 		String queryString = "";
 		for (String term: terms){
+			//find the synonyms
 			ArrayList<String> synonyms = synonymfind(term);
 			queryString += "(" + term;
 			if(synonyms.size()>0){
@@ -58,20 +55,22 @@ public class Searcher{
 			}
 			queryString += ") AND ";
 		}
-
+		//remove the last "AND"
 		queryString = queryString.substring(0, queryString.length()-5);
 		System.out.println(queryString);
+		
+		//construct booleanquery
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-
+		//assigns more weight/importance to titles
 		HashMap<String,Float> boosts = new HashMap<String,Float>();
 		boosts.put("title", 2.0f);
 		boosts.put("keywords", 1.0f);
-
+		//multifieldqueryparser in order to search in title and contents of files
 		MultiFieldQueryParser qp = new MultiFieldQueryParser(new String[] {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME}, new StandardAnalyzer(), boosts);	
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
-		//Create searcher... it searches over a single IndexReader.
+		//Create Lucene searcher. It searches over a single IndexReader.
 		IndexSearcher searcher = createSearcher(indexDir);
 
 		//Search indexed contents using search term
@@ -79,10 +78,11 @@ public class Searcher{
 
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");
-		//Print out the path of files which have searched term
+		//gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
 		String dateTo = json.getString("dateTo").replace("-", "");
 		String extensions = json.getString("exten");
+		//only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
 			System.out.print(exts[0]);
@@ -90,10 +90,11 @@ public class Searcher{
 				Document d = searcher.doc(sd.doc);
 				for(String ext: exts){
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
-
+						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
 							results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 						}
+						//check if it is between those dates
 						else{
 							File f = new File(d.get(LuceneConstants.FILE_PATH));
 							LocalDate ldt = Instant.ofEpochMilli(f.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
@@ -106,11 +107,11 @@ public class Searcher{
 								results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 							}
 						}
-
 					}
 				}
 			}
 		}
+		//if there isn't an extension requirement
 		else{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
@@ -151,22 +152,19 @@ public class Searcher{
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
 	}
+	//find synonyms using wordnet database
 	public ArrayList<String> synonymfind(String synword) {
 		ArrayList<String> syns = new ArrayList<String>();
 		try {
-
+			//open dictionary
 			URL url = new URL("file", null, "WordNet/2.1/dict");
-
-
 			Dictionary dict = new Dictionary(url);
 			try {
 				dict.open();
 			} catch (IOException ex) {
 				ex.printStackTrace();
-
 			}
-
-
+			//add synonyms to list
 			for(int x = 0; x < 4; x++){
 				IIndexWord idxWord = dict.getIndexWord(synword, pos[x]);
 				for(int i = 0; i<idxWord.getWordIDs().size(); i++){
@@ -180,12 +178,9 @@ public class Searcher{
 					}
 				}
 			}
-
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 		}
 		return syns;
-	}
-	public void filter(){
-
 	}
 }
