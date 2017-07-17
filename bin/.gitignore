@@ -1,3 +1,7 @@
+/.metadata/
+/.classpath
+/.project
+/README.md
 /WordNet/
 /referenced_libraries/
 /test-project/

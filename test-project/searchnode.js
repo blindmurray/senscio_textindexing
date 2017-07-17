@@ -18,9 +18,9 @@ function route(request, response, data, path) {
 		client.on("data", function (data) {
 			results = data.toString();
 			console.log("received:" + results + "\n");
+			response.end(results);
 		});
 	} else if (p > -1) {
-		console.log("part 2")
 		ext = path.slice(p + 1);
 		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css") {
 			var fn = path.slice(1);
@@ -114,7 +114,6 @@ function requesthandler(request, response) {
 		});
 		break;
 	default:
-			console.log("it reached the code");
 
 		var postdata = "";
 		var path = url.parse(request.url).pathname;

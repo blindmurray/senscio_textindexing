@@ -16,7 +16,6 @@
                <li><a href="http://www.sensciosystems.com">Senscio</a></li>
             </ul>
          </div>
-         <!--div here-->
          <br>
             <span class="title">Search</span>
          <br>
@@ -24,8 +23,12 @@
          <div class="c1">
             <div>Term(s): <input type="text" id="t1" class="v1"></div>
             <div>Extension(s): <input type='text' id="t2"></div>
-            <div>Date (last modified): <input type="date" id="t3" placeholder="mm/dd/yyyy"> to <input type="date" id="t4" placeholder="mm/dd/yyyy"><div><br>
-            <button id='b1' onclick='b1click()'>Search</button>
+            <div>Date (last modified): 
+               <input type="date" id="t3" placeholder="mm/dd/yyyy"> to 
+               <input type="date" id="t4" placeholder="mm/dd/yyyy">
+            </div>
+            <br>
+            <button type="button" id='b1' onclick="bonclick()">Search</button>
             <br>
             <p id="demo">Results:</p>
          </div>
@@ -37,6 +40,49 @@
             (978) 635-9090
          </p>
       </div>
-      <script type="text/javascript" src="/index.js"></script>
+      <script type="text/javascript">
+function ajax() {
+    "use strict";
+    if ( window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        try {return new ActiveXObject("Msxml2.DOMDocument.6.0");} catch (e) {}
+        try {return new ActiveXObject("Msxml2.DOMDocument.3.0");} catch (f) {}
+        try {return new ActiveXObject("Microsoft.XMLHTTP");} catch (g) {}
+    } else {
+        alert("newxhr XMLHTTPRequest object failed");
+        return null;
+    }
+    // xhr
+}
+function bonclick() {
+    "use strict";
+    var searchterm = document.getElementById("t1").value;
+    var exten = document.getElementById("t2").value;
+    var dateFrom = document.getElementById("t3").value;
+    var dateTo = document.getElementById("t4").value;
+    var search = {"id":"search",
+                "searchterm":searchterm, 
+                "exten":exten, 
+                "dateFrom":dateFrom, 
+                "dateTo": dateTo};
+    search = JSON.stringify(search);
+    alert(oldId);
+    var xhr = ajax();
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                document.getElementById("demo").innerHTML = xhr.responseText;
+            } else {
+                alert("error: " + xhr.responseText);
+            }
+        }
+    };
+    xhr.open("POST", "/", true);
+    xhr.setRequestHeader("Content-Type", "text/plain");
+    xhr.send(search);
+    console.dir(search);
+}
+      </script>
    </body>
 </html>
