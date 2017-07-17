@@ -1,13 +1,2 @@
-/.metadata/
-/DirectoryReader.class
-/Index.class
-/Indexer.class
-/LuceneConstants.class
-/Parse.class
-/WordNet/
 /test-project/
-/Searcher.class
-/Server_Socket.class
-/TXT.class
-/TextFileFilter.class
-/UpdateIndex.class
+/.DS_Store

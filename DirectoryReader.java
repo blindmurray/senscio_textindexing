@@ -4,7 +4,7 @@ import java.util.Date;
 public class DirectoryReader {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		File folder = new File("C:/MICHELLE");
+		File folder = new File("/Users/Gina/Documents/Files/txt_data");
 		String html = "<ul id=\"expList\">";
 		html = listFilesForFolder(folder, html);
 		System.out.println(html);
@@ -20,13 +20,13 @@ public class DirectoryReader {
 					}
 				}
 				if(count>0){
-				html += "<li>" + "<span>" + fileEntry.getName() + "</span>";
+				html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
 				html += "<ul>";
 				html = listFilesForFolder(fileEntry, html);
 				html+= "</li>";
 				}
 				else{
-					html += "<li>" + "<span>" + fileEntry.getName() + "</span>"+ "</li>";
+					html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>"+ "</li>";
 				}
 			} 
 		}

@@ -38,7 +38,6 @@ public static int writeIndexUpdate(String dataDirPath, FileFilter filter) throws
 		File file = new File(dataDirPath);
 			//Recalls the Indexer class if the file is a Directory
 			if(file.isDirectory()){
-				File[] files = new File(dataDirPath).listFiles();
 				writeIndex(file.toString(),new TextFileFilter());
 			}
 					
