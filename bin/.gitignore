@@ -1,10 +1,3 @@
-/.metadata/
-/.classpath
-/.project
-/README.md
-/WordNet/
-/referenced_libraries/
-/test-project/
 /DirectoryReader.class
 /Index.class
 /Indexer.class
@@ -15,3 +8,7 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
+/WordNet/
+/referenced_libraries/
+/test-project/
+/.DS_Store

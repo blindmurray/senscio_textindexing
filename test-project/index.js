@@ -12,6 +12,30 @@ function ajax() {
     }
     // xhr
 }
+
+function chooseLocation(){
+    alert("hi");
+"use strict";
+console.log("hi")
+    var tree = {"id":"tree"};
+    tree = JSON.stringify(tree);
+    var xhr = ajax();
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                
+                document.getElementById("tree").innerHTML = xhr.responseText;
+            } else {
+                alert("Error: " + xhr.responseText);
+            }
+        }
+    };
+    xhr.open("POST", "/", true);
+    xhr.setRequestHeader("Content-Type", "text/plain");
+    xhr.send(tree);
+    console.dir(tree);
+};
+
 function b1click() {
     "use strict";
     var searchterm = document.getElementById("t1").value;
@@ -26,12 +50,11 @@ function b1click() {
     search = JSON.stringify(search);
     var xhr = ajax();
     xhr.onload = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
+        if (xhr.readyState === 4 && xhr.status === 200) {
                 document.getElementById("demo").innerHTML = xhr.responseText;
             } else {
-                alert("error: " + xhr.responseText);
-            }
+                alert("Error: " + xhr.responseText);
+
         }
     };
     xhr.open("POST", "/", true);

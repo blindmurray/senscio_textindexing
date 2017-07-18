@@ -38,15 +38,15 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	static String indexDir = "C:/MICHELLE/txt_index";
-	//static String indexDir = "/Users/Gina/Documents/Files/txt_index";
+	//static String indexDir = "C:/MICHELLE/txt_index";
+	static String indexDir = "/Users/Gina/Documents/Files/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	static String dataDir = "C:/MICHELLE/txt_data";
-	//static String dataDir = "/Users/Gina/Documents/Files/txt_data";
+	//static String dataDir = "C:/MICHELLE/txt_data";
+	static String dataDir = "/Users/Gina/Documents/Files/txt_data";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
-
+	static String html = "<ul id=\"expList\">";
 
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws TikaException, SAXException {
@@ -115,9 +115,15 @@ public class Server_Socket {
 									}
 									}
 							}
+							else if(json.getString("id").equals("tree")){
+								System.out.println("hey");
+								String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+								System.out.println(tree);
+								os.println(tree);
+								
+							}
 							else if(json.getString("id").equals("saved")){
 								for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
-									System.out.println("ya boi");
 									string = json.getJSONArray("filepaths").getString(i);
 									UpdateIndex.updateIndex(string, indexDir);
 								}

@@ -2,13 +2,6 @@ import java.io.File;
 import java.util.Date;
 
 public class DirectoryReader {
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		File folder = new File("C:/MICHELLE/txt_data");
-		String html = "<ul id=\"expList\">";
-		html = listFilesForFolder(folder, html);
-		System.out.println(html);
-	}
 	//constructs html ul from reading folder directory
 	public static String listFilesForFolder(File folder, String html) {
 		for (File fileEntry : folder.listFiles()) {

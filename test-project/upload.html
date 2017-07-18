@@ -7,6 +7,7 @@
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
       <script type="text/javascript" src="modal.js"></script>
+      <script type="text/javascript" src = "index.js"></script>
       <link rel="shortcut icon" href="">
    </head>
    <body>
@@ -26,15 +27,16 @@
                <form action='fileupload' method='post' enctype='multipart/form-data'>
                <input type="file" name='filetoupload' id="t6" class="v5" multiple>
                <br>
-               <input type="button" id="myBtn" value="Choose Location" onclick="hooseLocation()">
+               <input type="button" id="myBtn" value="Choose Location">
                <input type="hidden" id="chosenFolder" name="chosenFolder" value="">
                <span id="location"></span>
                <div id="myModal" class="modal">
                   <div class="modal-content">
-<ul id="expList"><li><span onclick="triggerSelect(this.id)" id= "C:\MICHELLE\txt_data\Business Plans">Business Plans</span></li><li><span onclick="triggerSelect(this.id)" id= "C:\MICHELLE\txt_data\Folder">Folder</span></li></ul>
-                     <br>
+                     <span id = tree> </span>
                      <input type="button" value="Choose Location" onclick="onChooseLocation()">
                   <span class="close">&times;</span>
+                     </div>
+                     
                   <br>
                   </div>
                </div>
@@ -58,7 +60,24 @@
          var span = document.getElementsByClassName("close")[0];
          btn.onclick = function() {
             modal.style.display = "block";
-         }
+              var tree = {"id":"tree"};
+               tree = JSON.stringify(tree);
+               var xhr = ajax();
+               xhr.onload = function () {
+                  if (xhr.readyState === 4) {
+                     if (xhr.status === 200) {    
+                        document.getElementById("tree").innerHTML = xhr.responseText;
+                        prepareList()
+                     } else {
+                        alert("Error: " + xhr.responseText);
+                     }
+                  }
+               };
+                xhr.open("POST", "/", true);
+                xhr.setRequestHeader("Content-Type", "text/plain");
+                xhr.send(tree);
+                console.dir(tree);
+         };
          span.onclick = function() {
             modal.style.display = "none";
          }

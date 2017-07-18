@@ -18,6 +18,7 @@ function route(request, response, data, path) {
 		client.on("data", function (data) {
 			results = data.toString();
 			console.log("received:" + results + "\n");
+			response.end(results);
 		});
 	} else if (p > -1) {
 		ext = path.slice(p + 1);
@@ -79,18 +80,18 @@ function requesthandler(request, response) {
 				console.log("received: " + completed + "\n");
 				if(completed === "no duplicates".valueOf()){
 					console.log("1");
+					
 					filearray.map(function (file){
 						var oldpath1 = file.path;
 						var newpath1 = newthing + "/" + file.name;
-						var saved = {
-							"id":"saved",
-							"filepaths": newpath1
-						};
-
 						fs.rename(oldpath1, newpath1, function (err) {
 							if (err) {
 								throw err;
 							}
+							var saved = {
+								"id":"saved",
+								"filepaths":newpath1
+							};
 							saved = JSON.stringify(saved);
 							client.write(saved);
 							client.on("data",function(data){
@@ -99,8 +100,6 @@ function requesthandler(request, response) {
 						});
 
 					});
-
-					
 				}
 				else{
 					response.end(completed);
@@ -113,7 +112,6 @@ function requesthandler(request, response) {
 		});
 		break;
 	default:
-
 		var postdata = "";
 		var path = url.parse(request.url).pathname;
 		request.setEncoding("utf8");

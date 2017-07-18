@@ -1,5 +1,4 @@
 
-
 var oldId = 10;
 function triggerSelect(clicked_ID){
 	var el = document.getElementById(clicked_ID);

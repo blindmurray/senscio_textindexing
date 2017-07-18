@@ -92,7 +92,7 @@ public class Searcher{
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
-							results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 						}
 						//check if it is between those dates
 						else{
@@ -104,7 +104,7 @@ public class Searcher{
 							}
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-								results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 							}
 						}
 					}
@@ -116,7 +116,7 @@ public class Searcher{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
-					results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -127,7 +127,7 @@ public class Searcher{
 					}
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-						results.add("Path : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
 					}
 				}
 			}
