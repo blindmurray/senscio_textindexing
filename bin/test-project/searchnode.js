@@ -22,7 +22,12 @@ function route(request, response, data, path) {
 		});
 	} else if (p > -1) {
 		ext = path.slice(p + 1);
-		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css" || ext === "doc" || ext === "docx" || ext === "pdf") {
+		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css" || 
+			ext === "doc" || ext === "docx" || ext === "pdf" ||ext === "rtf" || 
+			ext === "odp" || ext ===  "ods" || ext === "odt"|| ext === "csv"|| 
+			ext === "xlsx"|| ext === "xls"|| ext === "pps" || ext ==="ppt" ||
+			ext === "pptx" || ext === "pages" || ext === "key" || ext === "numbers" ||
+			ext === "txt") {
 			var fn = path.slice(1);
 			fs.readFile(fn, function (err, content) {
 				if (ext === "html") {
@@ -46,6 +51,40 @@ function route(request, response, data, path) {
 				if (ext === "pdf") {
 					response.writeHead(200, {"Content-Type": "application/pdf", "content-Length": content.length});
 				}
+				if (ext === "rtf") {
+					response.writeHead(200, {"Content-Type": "application/rtf", "content-Length": content.length});
+				}
+				if (ext === "odp") {
+					response.writeHead(200, {"Content-Type": "application/vnd.oasis.opendocument.presentation", "content-Length": content.length});
+				}
+				if (ext === "odt") {
+					response.writeHead(200, {"Content-Type": "application/vnd.oasis.opendocument.text", "content-Length": content.length});
+				}
+				if (ext === "ods") {
+					response.writeHead(200, {"Content-Type": "application/vnd.oasis.opendocument.spreadsheet", "content-Length": content.length});
+				}
+				if (ext === "csv") {
+					response.writeHead(200, {"Content-Type": "text/csv", "content-Length": content.length});
+				}
+				if (ext === "xls" || ext === "xlsx") {
+					response.writeHead(200, {"Content-Type": "application/vnd.ms-excel", "content-Length": content.length});
+				}
+				if (ext === "pps" || ext === "ppt" || ext === "pptx") {
+					response.writeHead(200, {"Content-Type": "application/vnd.ms-powerpoint", "content-Length": content.length});
+				}
+				if (ext === "pages") {
+					response.writeHead(200, {"Content-Type": "application/x-iWork-pages-sffkey", "content-Length": content.length});
+				}
+				if (ext === "key") {
+					response.writeHead(200, {"Content-Type": "application/x-iWork-keynote-sffkey", "content-Length": content.length});
+				}
+				if (ext === "numbers") {
+					response.writeHead(200, {"Content-Type": "application/x-iWork-numbers-sffkey", "content-Length": content.length});
+				}
+				if (ext === "txt") {
+					response.writeHead(200, {"Content-Type": "text/plain", "content-Length": content.length});
+				}
+
 				
 				response.write(content, function () {
 					setTimeout(function endit() {

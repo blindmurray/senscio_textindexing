@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -40,14 +39,11 @@ public class Searcher{
 	public Searcher(){
 	}
 	public ArrayList<String> searchIndex(JSONObject json, String indexDir, int num) throws Exception {
-		//convert searchterm to lowercase
-		String searchString = json.getString("searchterm").toLowerCase();
-		//get individual words in searchString
-		String[] terms = searchString.split(" ");
-		//use OR in parentheses for each term's synonyms
-		String queryString = "";
-		for (String term: terms){
-			//find the synonyms
+		
+		String searchString = json.getString("searchterm").toLowerCase(); 	//convert searchterm to lowercase
+		String[] terms = searchString.split(" "); 							//get individual words in searchString
+		String queryString = ""; 											//use OR in parentheses for each term's synonyms
+		for (String term: terms){											//find the synonyms
 			ArrayList<String> synonyms = synonymfind(term);
 			queryString += "(" + term;
 			if(synonyms.size()>0){
@@ -57,14 +53,11 @@ public class Searcher{
 			}
 			queryString += ") AND ";
 		}
-		//remove the last "AND"
-		queryString = queryString.substring(0, queryString.length()-5);
+		queryString = queryString.substring(0, queryString.length()-5);		//remove the last "AND"
 		System.out.println(queryString);
 		String[] fields = {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME, LuceneConstants.FILE_TOKENS};
-		//construct booleanquery
-		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
-		//assigns more weight/importance to titles
-		HashMap<String,Float> boosts = new HashMap<String,Float>();
+		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();		//construct booleanquery
+		HashMap<String,Float> boosts = new HashMap<String,Float>();			//assigns more weight/importance to titles
 		boosts.put(LuceneConstants.CONTENTS, 1.0f);
 		boosts.put(LuceneConstants.FILE_NAME, 2.0f);
 		boosts.put(LuceneConstants.FILE_TOKENS, 2.5f);
@@ -74,18 +67,17 @@ public class Searcher{
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
-		//Create Lucene searcher. It searches over a single IndexReader.
-		IndexSearcher searcher = createSearcher(indexDir);
-
-		//Search indexed contents using search term
-		TopDocs foundDocs = searchInContent(searcher, booleanQuery, num);
+		IndexSearcher searcher = createSearcher(indexDir);					//Create Lucene searcher. It searches over a single IndexReader.
+		TopDocs foundDocs = searchInContent(searcher, booleanQuery, num);	//Search indexed contents using search term
 
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ foundDocs.totalHits +"\n");
+		
 		//gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
 		String dateTo = json.getString("dateTo").replace("-", "");
 		String extensions = json.getString("exten");
+		
 		//only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
@@ -96,10 +88,8 @@ public class Searcher{
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
-							StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
-						    sBuffer = sBuffer.delete(0,68);
-						    String s = sBuffer.toString().replaceAll(" ", "%25");
-							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+							String s = changePath(d);
+							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\"> Download</a>" );
 						}
 						//check if it is between those dates
 						else{
@@ -111,10 +101,8 @@ public class Searcher{
 							}
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-								StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
-							    sBuffer = sBuffer.delete(0,68);
-							    String s = sBuffer.toString().replaceAll(" ", "%25");
-								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+								String s = changePath(d);
+								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 							}
 						}
 					}
@@ -126,10 +114,8 @@ public class Searcher{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
-					StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
-				    sBuffer = sBuffer.delete(0,68);
-				    String s = sBuffer.toString().replaceAll(" ", "%25");
-					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+					String s = changePath(d);
+					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -140,10 +126,8 @@ public class Searcher{
 					}
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-						StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
-					    sBuffer = sBuffer.delete(0,68);
-					    String s = sBuffer.toString().replaceAll(" ", "%25");
-						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+						String s = changePath(d);
+						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 					}
 				}
 			}
@@ -153,27 +137,26 @@ public class Searcher{
 	}
 
 	private static TopDocs searchInContent(IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
-		//Search the index
-		TopDocs hits = searcher.search(booleanQuery.build(), num);
+		TopDocs hits = searcher.search(booleanQuery.build(), num);		//Search the index
 		return hits;
 	}
 
 	private static IndexSearcher createSearcher(String index) throws IOException {
 		Directory dir = FSDirectory.open(Paths.get(index));
-
-		//Interface for accessing a point-in-time view of a Lucene index
-		IndexReader reader = DirectoryReader.open(dir);
-
-		//Index searcher
+		IndexReader reader = DirectoryReader.open(dir);		//Interface for accessing a point-in-time view of a Lucene index
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
+	}
+	private static String changePath(Document d){
+		StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
+	    sBuffer = sBuffer.delete(0,68);
+	    return sBuffer.toString();
 	}
 	//find synonyms using wordnet database
 	public ArrayList<String> synonymfind(String synword) {
 		ArrayList<String> syns = new ArrayList<String>();
 		try {
-			//open dictionary
-			URL url = new URL("file", null, "WordNet/2.1/dict");
+			URL url = new URL("file", null, "WordNet/2.1/dict");//open dictionary
 			Dictionary dict = new Dictionary(url);
 			try {
 				dict.open();
