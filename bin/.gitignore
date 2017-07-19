@@ -1,3 +1,4 @@
+/test-project/
 /DirectoryReader.class
 /Index.class
 /Indexer.class
@@ -8,7 +9,6 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/WordNet/
-/referenced_libraries/
-/test-project/
-/.DS_Store
+/txt_index/
+/directoryChanger.class
+/FixDirectory.class

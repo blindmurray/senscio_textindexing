@@ -176,7 +176,7 @@ public static int writeIndex(String dataDirPath, FileFilter filter) throws IOExc
 		}
 	
 		//Will convert file by calling Parse class if file is not .txt
-		else if(TXT.getExtension(file.toString()).matches("pdf|html|rtf|odf|ods|odt|xlsx|xls|pps|doc|docx|ppt|pptx|pages|key|numbers")){
+		else if(TXT.getExtension(file.toString()).matches("pdf|html|rtf|odf|ods|odt|csv|xlsx|xls|pps|doc|docx|ppt|pptx|pages|key|numbers")){
 			Parse.parse(file.toString());
 			convertedFile = new File(TXT.editExtension(file.toString()));
 			if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){

@@ -71,7 +71,6 @@ public class Server_Socket {
 						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
-							System.out.println("woking");
 							//if the message is a search
 							if(json.getString("id").equals("search")){
 								try {  			

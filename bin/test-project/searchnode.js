@@ -22,7 +22,7 @@ function route(request, response, data, path) {
 		});
 	} else if (p > -1) {
 		ext = path.slice(p + 1);
-		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css") {
+		if (ext === "html" || ext === "htm" || ext === "js" || ext === "css" || ext === "doc" || ext === "docx" || ext === "pdf") {
 			var fn = path.slice(1);
 			fs.readFile(fn, function (err, content) {
 				if (ext === "html") {
@@ -37,6 +37,16 @@ function route(request, response, data, path) {
 				if (ext === "css") {
 					response.writeHead(200, {"Content-Type": "text/css", "content-Length": content.length});
 				}
+				if (ext === "jpg"){
+					response.writeHead(200, {"Content-Type": "image/jpg", "content-Length": content.length})
+				}
+				if (ext === "doc" || ext === "docx") {
+					response.writeHead(200, {"Content-Type": "application/msword", "content-Length": content.length});
+				}
+				if (ext === "pdf") {
+					response.writeHead(200, {"Content-Type": "application/pdf", "content-Length": content.length});
+				}
+				
 				response.write(content, function () {
 					setTimeout(function endit() {
 						response.end();
@@ -83,6 +93,7 @@ function requesthandler(request, response) {
 					
 					filearray.map(function (file){
 						var oldpath1 = file.path;
+    					var terms = document.getElementById("keyterms").value;
 						var newpath1 = newthing + "/" + file.name;
 						fs.rename(oldpath1, newpath1, function (err) {
 							if (err) {
@@ -90,7 +101,8 @@ function requesthandler(request, response) {
 							}
 							var saved = {
 								"id":"saved",
-								"filepaths":newpath1
+								"filepaths":newpath1,
+								"terms": terms
 							};
 							saved = JSON.stringify(saved);
 							client.write(saved);

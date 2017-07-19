@@ -7,6 +7,7 @@
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
       <script type="text/javascript" src="modal.js"></script>
+      <script type="text/javascript" src = "index.js"></script>
       <link rel="shortcut icon" href="">
    </head>
    <body>
@@ -24,18 +25,21 @@
             <span class="title">Upload a Document</span>
             <br>
                <form action='fileupload' method='post' enctype='multipart/form-data'>
-               <input type="file" name='filetoupload' id="t6" class="v5" multiple>
                <br>
-               <input type="button" id="myBtn" value="Choose Location" onclick="hooseLocation()">
+               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple></div>
+               <br>
+               <input type="button" id="myBtn" value="Choose Location">
+               <br><br>
                <input type="hidden" id="chosenFolder" name="chosenFolder" value="">
+               <div>Key Terms: <input type="text" name='keyterms' id='keyterms'></div>
                <span id="location"></span>
                <div id="myModal" class="modal">
                   <div class="modal-content">
-<ul id="expList"><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients">Patients</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/CMaine - CMMC">CMaine - CMMC</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/CMaine - CMMC/Contracts">Contracts</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/CMaine - CMMC/Welcome Packet">Welcome Packet</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Community Support Providers - CSP">Community Support Providers - CSP</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Document Templates">Document Templates</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Dow Rummel">Dow Rummel</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Eldercare Networks - ECN">Eldercare Networks - ECN</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/LOIs in Progress">LOIs in Progress</span></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Rural Health - RHCI">Rural Health - RHCI</span><ul><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/Rural Health - RHCI/Client Services">Client Services</span></li></ul></li><li><span onclick="triggerSelect(this.id)" id= "/Users/Gina/Documents/Files/txt_data/Patients/South Dakota Parent Connection - SDPC">South Dakota Parent Connection - SDPC</span></li></ul></li></ul>
-
-                     <br>
+                     <span id = tree> </span>
                      <input type="button" value="Choose Location" onclick="onChooseLocation()">
                   <span class="close">&times;</span>
+                     </div>
+                     
                   <br>
                   </div>
                </div>
@@ -59,7 +63,24 @@
          var span = document.getElementsByClassName("close")[0];
          btn.onclick = function() {
             modal.style.display = "block";
-         }
+              var tree = {"id":"tree"};
+               tree = JSON.stringify(tree);
+               var xhr = ajax();
+               xhr.onload = function () {
+                  if (xhr.readyState === 4) {
+                     if (xhr.status === 200) {    
+                        document.getElementById("tree").innerHTML = xhr.responseText;
+                        prepareList()
+                     } else {
+                        alert("Error: " + xhr.responseText);
+                     }
+                  }
+               };
+                xhr.open("POST", "/", true);
+                xhr.setRequestHeader("Content-Type", "text/plain");
+                xhr.send(tree);
+                console.dir(tree);
+         };
          span.onclick = function() {
             modal.style.display = "none";
          }

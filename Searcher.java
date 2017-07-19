@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -95,7 +96,10 @@ public class Searcher{
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
-							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
+							StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
+						    sBuffer = sBuffer.delete(0,68);
+						    String s = sBuffer.toString().replaceAll(" ", "%25");
+							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 						}
 						//check if it is between those dates
 						else{
@@ -107,7 +111,10 @@ public class Searcher{
 							}
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
+								StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
+							    sBuffer = sBuffer.delete(0,68);
+							    String s = sBuffer.toString().replaceAll(" ", "%25");
+								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 							}
 						}
 					}
@@ -119,7 +126,10 @@ public class Searcher{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
-					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
+					StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
+				    sBuffer = sBuffer.delete(0,68);
+				    String s = sBuffer.toString().replaceAll(" ", "%25");
+					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -130,7 +140,10 @@ public class Searcher{
 					}
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
+						StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
+					    sBuffer = sBuffer.delete(0,68);
+					    String s = sBuffer.toString().replaceAll(" ", "%25");
+						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
 					}
 				}
 			}
