@@ -34,6 +34,7 @@ public class Searcher{
 	QueryParser queryParser;
 	Query query2;
 	IndexReader indexReader;
+	String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-projects";
 	final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
 	public Searcher(){
 	}
@@ -58,15 +59,17 @@ public class Searcher{
 		//remove the last "AND"
 		queryString = queryString.substring(0, queryString.length()-5);
 		System.out.println(queryString);
-		
+		String[] fields = {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME, LuceneConstants.FILE_TOKENS};
 		//construct booleanquery
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
 		//assigns more weight/importance to titles
 		HashMap<String,Float> boosts = new HashMap<String,Float>();
-		boosts.put("title", 2.0f);
-		boosts.put("keywords", 1.0f);
+		boosts.put(LuceneConstants.CONTENTS, 1.0f);
+		boosts.put(LuceneConstants.FILE_NAME, 2.0f);
+		boosts.put(LuceneConstants.FILE_TOKENS, 2.5f);
+		
 		//multifieldqueryparser in order to search in title and contents of files
-		MultiFieldQueryParser qp = new MultiFieldQueryParser(new String[] {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME}, new StandardAnalyzer(), boosts);	
+		MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, new StandardAnalyzer(), boosts);	
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
@@ -92,7 +95,7 @@ public class Searcher{
 					if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
-							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
 						}
 						//check if it is between those dates
 						else{
@@ -104,7 +107,7 @@ public class Searcher{
 							}
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
 							}
 						}
 					}
@@ -116,7 +119,7 @@ public class Searcher{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
-					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -127,7 +130,7 @@ public class Searcher{
 					}
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
-						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n");
+						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + ", Score : " + sd.score + "\n" + "<a href=\""+ d.get(LuceneConstants.FILE_PATH).replace(dataDir, "") + "/" + d.get(LuceneConstants.FILE_NAME) + "\"> download</a>" );
 					}
 				}
 			}
