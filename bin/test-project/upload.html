@@ -24,15 +24,14 @@
          <div>
             <span class="title">Upload a Document</span>
             <br>
-               <form action='fileupload' method='post' enctype='multipart/form-data'>
+               <form action='fileupload' method='post' enctype='multipart/form-data' required>
                <br>
-               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple></div>
+               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple required></div>
                <br>
                <input type="button" id="myBtn" value="Choose Location">
-               <br><br>
-               <input type="hidden" id="chosenFolder" name="chosenFolder" value="">
+               <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span><br><br>
                <div>Key Terms: <input type="text" name='keyterms' id='keyterms'></div>
-               <span id="location"></span>
+               
                <div id="myModal" class="modal">
                   <div class="modal-content">
                      <span id = tree> </span>

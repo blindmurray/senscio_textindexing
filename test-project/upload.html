@@ -24,29 +24,40 @@
          <div>
             <span class="title">Upload a Document</span>
             <br>
-               <form action='fileupload' method='post' enctype='multipart/form-data'>
+               <form action='fileupload' method='post' enctype='multipart/form-data' required>
                <br>
-               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple></div>
+               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple required></div>
                <br>
                <input type="button" id="myBtn" value="Choose Location">
-               <br><br>
-               <input type="hidden" id="chosenFolder" name="chosenFolder" value="">
+               <input type="hidden" id="chosenFolder"  name="chosenFolder" value=""><span id="location"></span><br><br>
                <div>Key Terms: <input type="text" name='keyterms' id='keyterms'></div>
-               <span id="location"></span>
+               <input type='submit' value='Submit'>
+               Please make sure your file name doesn't have spaces
+               </form>
                <div id="myModal" class="modal">
                   <div class="modal-content">
+                     <span class="add" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
                      <span id = tree> </span>
                      <input type="button" value="Choose Location" onclick="onChooseLocation()">
-                  <span class="close">&times;</span>
-                     </div>
-                     
+                     <span class="closeBABA" id = "closeA">&times;</span>
+                  </div>
                   <br>
+                  </div>
+               <div id="myModal2" class ="modal2">
+                  <div class="modal-content2">
+                     <form action='addFolder' method='post'>
+                        <input type="hidden" name="path" value="" class="path_to_add">
+                        <div>Name of Folder: <input type="text" name="name"></div>
+                        <input type="submit" value = "Add Folder">
+                        <span class="closeBABA" id = "closeB">&times;</span>
+                     </form>
+                  </div>
+                  <br>
+                  </div>
                   </div>
                </div>
                <br>
-               <input type='submit' value='Submit'>
-               Please make sure your file name is readable. Put spaces between words and dashes between dates. 
-            </form>
+               
             <br>
          </div>
       </div>
@@ -60,10 +71,11 @@
       <script>
          var modal = document.getElementById('myModal');
          var btn = document.getElementById("myBtn");
-         var span = document.getElementsByClassName("close")[0];
+
+         //Choose Location
          btn.onclick = function() {
-            modal.style.display = "block";
-              var tree = {"id":"tree"};
+               modal.style.display = "block";
+               var tree = {"id":"tree"};
                tree = JSON.stringify(tree);
                var xhr = ajax();
                xhr.onload = function () {
@@ -81,14 +93,35 @@
                 xhr.send(tree);
                 console.dir(tree);
          };
-         span.onclick = function() {
+
+         //Close button
+         var span1 = document.getElementById("closeA");
+         span1.onclick =function(){
             modal.style.display = "none";
+         }
+
+         
+         //Add a Folder
+         var folder = document.getElementById("addFolder");
+         var modal2 = document.getElementById("myModal2");
+         folder.onclick = function(){
+            modal2.style.display = "block";
+            var c = document.getElementsByClassName("checked");
+            console.log(c);
+            if(c != null){
+               document.getElementsByClassName("path_to_add").value = c;
+            }
+         }
+         var span2 = document.getElementById("closeB");
+         span2.onclick =function(){
+            modal2.style.display = "none";
          }
          window.onclick = function(event) {
              if (event.target == modal) {
                  modal.style.display = "none";
              }
-         }
+         };
+         
 
       </script>
    </body>

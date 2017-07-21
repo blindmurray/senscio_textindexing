@@ -1,11 +1,13 @@
 
-var oldId = 10;
+var oldId = "No Path Selected";
 function triggerSelect(clicked_ID){
 	var el = document.getElementById(clicked_ID);
     el.style.fontWeight = 'bold';
-    if(oldId != 10){
+   	el.classList.add('checked');
+    if(oldId != "No Path Selected"){
 		var p = document.getElementById(oldId);
 		p.style.fontWeight = 'normal';
+		p.classList.remove('checked');
 	}
    	oldId = clicked_ID;
 };
@@ -13,7 +15,6 @@ function triggerSelect(clicked_ID){
 function onChooseLocation(){
 	document.getElementById("chosenFolder").value = oldId;
 	document.getElementById("location").innerHTML = oldId;
-	var close = document.getElementsByClassName("close")[0];
 	modal.style.display = "none";
 };
 
@@ -21,7 +22,7 @@ function prepareList() {
  $('#myModal #expList').find('li:has(ul)')
  .click( function(event) {
  if (this == event.target) {
-	 	 $(this).toggleClass('collapsed');
+	 	$(this).toggleClass('collapsed');
 		$(this).toggleClass('expanded');
 	 	$(this).children('ul').toggle('medium');
  }

@@ -81,7 +81,6 @@ public class Searcher{
 		//only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
-			System.out.print(exts[0]);
 			for (ScoreDoc sd : foundDocs.scoreDocs) {
 				Document d = searcher.doc(sd.doc);
 				for(String ext: exts){
@@ -132,7 +131,6 @@ public class Searcher{
 				}
 			}
 		}
-		System.out.println(results);
 		return results;
 	}
 

@@ -88,11 +88,10 @@ public class Server_Socket {
 								os.println(message);
 								line = "";
 								System.out.println("Search Results" + "\n"+ message);
-
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
-									File[] files = new File(json.getString("pathway")).listFiles();
+									File[] files = new File(json.getString("path_new")).listFiles();
 									//check if uploaded file has same name as another in the same folder
 									for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
 										for (File file : files) {
@@ -110,12 +109,10 @@ public class Server_Socket {
 									else{
 										os.println("ERROR. Please rename file to avoid duplicate names");
 									}
-									}
+								}
 							}
 							else if(json.getString("id").equals("tree")){
-								System.out.println("hey");
 								String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
-								System.out.println(tree);
 								os.println(tree);
 								
 							}
@@ -124,9 +121,42 @@ public class Server_Socket {
 									string = json.getJSONArray("filepaths").getString(i);
 									UpdateIndex.updateIndex(string, indexDir);
 								}
-								os.println("indexed!");
+								os.println("Indexed!");
 							}
-							//when we implement folder changing/adding/deleting on the website
+							else if(json.getString("id").equals("addFolder")){
+								String path = json.getString("filepaths");
+								if(path.equals("")){
+								    File dir = new File(dataDir + "/" + json.getString("name"));
+								    String s = dir.toString();
+					        		for (int j = 0; j < s.length(); j++){
+					        		    char c = s.charAt(j);        
+					        		    if(c == ' '){
+					        		    	s = s.replace(c, '_');
+					        		    }
+					        		}
+					        		File f1 = new File (s);
+						        	dir.renameTo(f1);
+								    dir.mkdir();
+									String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+									os.println(tree);
+								}
+								else{
+									File dir = new File(dataDir + "/" + json.getString("name"));
+								    String s = dir.toString();
+					        		for (int j = 0; j < s.length(); j++){
+					        		    char c = s.charAt(j);        
+					        		    if(c == ' '){
+					        		    	s = s.replace(c, '_');
+					        		    }
+					        		}
+					        		File f1 = new File (s);
+						        	dir.renameTo(f1);
+						        	dir.mkdir();
+									String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+									os.println(tree);
+								}
+							}
+							
 							//this will re-read the folders to change the expanding tree
 							else if(json.getString("id").equals("folderchange")){
 								String html = "<ul id=\"expList\">";

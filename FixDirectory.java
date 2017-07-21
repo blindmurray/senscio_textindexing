@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.ArrayList;
 
 
 public class FixDirectory {
@@ -9,7 +8,6 @@ public class FixDirectory {
 	}
 		public static String space(String dir){
 			File[] files = new File(dir).listFiles();
-			File convertedFile = null;
 				
 			//Check for file type and call appropriate method to convert the file.
 			for (int i = 0; i < files.length; i++) {
