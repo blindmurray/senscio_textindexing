@@ -67,25 +67,100 @@ function route(request, response, data, path) {
 };
 function requesthandler(request, response) {
 	'use strict';
+
 	switch (request.url) {
+	
+	case '/login':
+
+		var mysql      = require('mysql');
+		var connection = mysql.createConnection({
+		  host     : 'localhost',
+		  user     : 'root',
+		  password : '',
+		  database : 'indexer'
+		});
+		console.log("reached");
+		var form = new formidable.IncomingForm();
+		form.multiples = 'true';
+		form.parse(request, function (err, fields, files) {
+			var user = fields.uname;
+			var pass = fields.psw;
+			var sql = 'INSERT INTO `indexer`.`account` (`username`, `userpass`) VALUES (?, ?)'
+			var values = [user, pass];
+			console.log(values)
+			var query =  mysql.format(sql, values);
+			connection.query(query, function (error, results, fields) {
+			    if (error) throw error;
+			    	console.log(error);
+			    });
+			
+		});
+
+	break;
+	case '/addFolder':
+
+		var form = new formidable.IncomingForm();
+		form.multiples = 'true';
+		form.parse(request, function (err, fields, files) {
+			var pathway = fields.path;
+			var names = fields.name;
+			var info = {
+				'id':'addFolder',
+				'filepaths': pathway,
+				'name': names
+			};
+		info = JSON.stringify(info);
+		console.log(info);
+		client.write(info + '\n');
+		response.end('Folder Added!');
+
+		var mysql      = require('mysql');
+		var connection = mysql.createConnection({
+		  host     : 'localhost',
+		  user     : 'root',
+		  password : '',
+		  database : 'indexer'
+		});
+		form.parse(request, function (err, fields, files) {
+			var names = fields.name;
+			var pathway = fields.path;
+			if(pathway ==""){
+				pathway = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/files/" + names;
+			}
+			var sql = 'INSERT INTO `indexer`.`folders` (`foldername`, `folderpath`) VALUES (?,?)'
+			var values = [names, pathway];
+			console.log(values)
+			var query =  mysql.format(sql, values);
+			connection.query(query, function (error, results, fields) {
+			    if (error) throw error;
+			    	console.log(error);
+			    });
+			
+		});
+		});
+
+	break;
 	case '/fileupload':
 
 		var form = new formidable.IncomingForm();
 		form.multiples = 'true';
 		form.parse(request, function (err, fields, files) {
 			var newthing = fields.chosenFolder;
+			console.log(newthing);
 			var filearray = files.filetoupload;
 			if(!Array.isArray(filearray)){
 				filearray = [filearray];
 			}
-	
 			var info = {
 				'id':'upload',
 				'filepaths':[],
-				'pathway':newthing
+				'path_new': newthing
 				};
 			filearray.map(function (file){
 				var oldpath = file.path;
+				for (var key in file.name){
+					key=key.replace(/ /g,"_");
+				}
 				var newpath = newthing + '/' + file.name;
 				info.filepaths.push(newpath);
 			});
@@ -96,7 +171,6 @@ function requesthandler(request, response) {
 				var completed = data.toString();				
 				console.log('received: ' + completed + '\n');
 				if(completed === 'no duplicates'.valueOf()){
-					console.log('1');
 					
 					filearray.map(function (file){
 						var oldpath1 = file.path;
@@ -122,6 +196,7 @@ function requesthandler(request, response) {
 				}
 				else{
 					response.end(completed);
+					console.log("no");
 				}
 			});
 			setTimeout(function endit() {
@@ -137,7 +212,7 @@ function requesthandler(request, response) {
 		request.addListener('data', function (postDataChunk) {
 			postdata += postDataChunk;
 		});
-	// end of any data sent with he HTTP request, go to our request handler and return a webpage:
+	// end of any data sent with the HTTP request, go to our request handler and return a webpage:
 		request.addListener('end', function () {
 			route(request, response, postdata, path);
 			//client.write(postdata + '\n');

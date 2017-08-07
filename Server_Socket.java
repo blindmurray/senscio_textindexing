@@ -38,9 +38,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
+	//static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
+	static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
+	//static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
+	static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
@@ -112,7 +114,8 @@ public class Server_Socket {
 								}
 							}
 							else if(json.getString("id").equals("tree")){
-								String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+								File filetoadd = new File(dataDir);
+								String tree = DirectoryReader.listFilesForFolder(filetoadd, html);
 								os.println(tree);
 								
 							}

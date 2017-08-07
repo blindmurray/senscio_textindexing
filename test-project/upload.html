@@ -37,7 +37,7 @@
                <div id="myModal" class="modal">
                   <div class="modal-content">
                      <span class="add" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
-                     <span id = tree> </span>
+                     <span id = "tree"> </span>
                      <input type="button" value="Choose Location" onclick="onChooseLocation()">
                      <span class="closeBABA" id = "closeA">&times;</span>
                   </div>
@@ -45,12 +45,12 @@
                   </div>
                <div id="myModal2" class ="modal2">
                   <div class="modal-content2">
-                     <form action='addFolder' method='post'>
-                        <input type="hidden" name="path" value="" class="path_to_add">
-                        <div>Name of Folder: <input type="text" name="name"></div>
-                        <input type="submit" value = "Add Folder">
+                  <form action='addFolder' method='post'>
+                        <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
+                        <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
+                        <input type="button" value = "Add Folder" onclick="addfolder()">
                         <span class="closeBABA" id = "closeB">&times;</span>
-                     </form>
+                  </form>
                   </div>
                   <br>
                   </div>
@@ -82,7 +82,7 @@
                   if (xhr.readyState === 4) {
                      if (xhr.status === 200) {    
                         document.getElementById("tree").innerHTML = xhr.responseText;
-                        prepareList()
+                        prepareList();
                      } else {
                         alert("Error: " + xhr.responseText);
                      }
@@ -102,7 +102,7 @@
 
          
          //Add a Folder
-         var folder = document.getElementById("addFolder");
+         var folder=document.getElementById("addFolder");
          var modal2 = document.getElementById("myModal2");
          folder.onclick = function(){
             modal2.style.display = "block";
@@ -121,8 +121,33 @@
                  modal.style.display = "none";
              }
          };
-         
-
+         function addfolder(){
+            "use strict";
+            var name = document.getElementById("addfoldername").value;
+            var path = document.getElementById("pathtoadd").value;
+            if(path ==""){
+               path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/files/" + name;
+            }
+            var folderjson = {"id":"addFolder",
+                              "name":name,
+                              "filepaths":path};
+            folderjson = JSON.stringify(folderjson);
+            var xhr = ajax();
+            xhr.onload = function () {
+               if (xhr.readyState === 4 && xhr.status === 200) {
+                  alert("Folder Created!");
+                  modal.style.display = "block";
+                  document.getElementById("tree").innerHTML = xhr.responseText;
+                  prepareList();
+               } else {
+                  alert("Error: " + xhr.responseText);
+               }
+            };
+            xhr.open("POST", "/", true);
+            xhr.setRequestHeader("Content-Type", "text/plain");
+            xhr.send(folderjson);
+            console.dir(folderjson);
+         }
       </script>
    </body>
 </html>
