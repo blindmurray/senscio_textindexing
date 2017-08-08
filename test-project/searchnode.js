@@ -180,14 +180,15 @@ function requesthandler(request, response) {
 					});
 					saved = JSON.stringify(saved);
 					client.write(saved);
-					client.write("just random stuff");
+
 					console.log(saved);
 					client.on("data", function (data) {
 						console.log("2" + saved);
 						response.end("File(s) uploaded");
 					});
-					
-
+					client.write("random stuff");
+					client.on("data", function (data) {
+					});
 				} else {
 					response.end(completed);
 					console.log("no");
