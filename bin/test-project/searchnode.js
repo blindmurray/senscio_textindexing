@@ -165,18 +165,20 @@ function requesthandler(request, response) {
 				info.filepaths.push(newpath);
 			});
 			info = JSON.stringify(info);
-			client.write(info);
+			client.write(info + '\n');
 			console.log('data recieved:' + info);
 			client.on('data', function (data) {
 				var completed = data.toString();				
 				console.log('received: ' + completed + '\n');
-				if(completed === 'no duplicates'.valueOf()){
+				console.log(completed);
+				console.log(completed ===true);
+				if(completed.valueOf() === 'noduplicates'.valueOf()){
 					
 					filearray.map(function (file){
 						var oldpath1 = file.path;
-    					var terms = document.getElementById('keyterms').value;
+    					var terms = fields.keyterms;
 						var newpath1 = newthing + '/' + file.name;
-						fs.copy(oldpath1, newpath1, function (err) {
+						fs.rename(oldpath1, newpath1, function (err) {
 							if (err) {
 								throw err;
 							}
@@ -184,16 +186,16 @@ function requesthandler(request, response) {
 								'id':'saved',
 								'filepaths':newpath1,
 								'terms': terms
-							};
+							}
 							saved = JSON.stringify(saved);
 							client.write(saved);
 							client.on('data',function(data){
-							response.end('Files(s) uploaded');
+								response.end('Files(s) uploaded');
 							});
 						});
 
 					});
-				}
+					}
 				else{
 					response.end(completed);
 					console.log("no");

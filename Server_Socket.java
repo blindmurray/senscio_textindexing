@@ -38,11 +38,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	//static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
-	static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
+	static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
+	//static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	//static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
-	static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
+	static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
+	//static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
@@ -70,15 +70,15 @@ public class Server_Socket {
 						//tries to read message
 						line = is.readLine();
 						System.out.println(line);
+						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
-							JSONObject json = new JSONObject(line);
 							//if the message is a search
 							if(json.getString("id").equals("search")){
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(json, indexDir, 20);
+									stuff = s.searchIndex(json, indexDir, json.getInt("num"));
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -106,7 +106,8 @@ public class Server_Socket {
 										}
 									//return results to node.js
 									if (check){
-										os.println("no duplicates");
+										os.println("true");
+										System.out.println("work please");
 									}
 									else{
 										os.println("ERROR. Please rename file to avoid duplicate names");
@@ -114,8 +115,8 @@ public class Server_Socket {
 								}
 							}
 							else if(json.getString("id").equals("tree")){
-								File filetoadd = new File(dataDir);
-								String tree = DirectoryReader.listFilesForFolder(filetoadd, html);
+								File file = new File(dataDir);
+								String tree = DirectoryReader.listFilesForFolder(file, html);
 								os.println(tree);
 								
 							}

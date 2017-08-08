@@ -24,10 +24,8 @@
          <div>
             <span class="title">Upload a Document</span>
             <br>
-               <form action='fileupload' method='post' enctype='multipart/form-data' required>
-               <br>
-               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple required></div>
-               <br>
+               <form action='fileupload' method='post' enctype='multipart/form-data' required><br>
+               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple required></div><br>
                <input type="button" id="myBtn" value="Choose Location">
                <input type="hidden" id="chosenFolder"  name="chosenFolder" value=""><span id="location"></span><br><br>
                <div>Key Terms: <input type="text" name='keyterms' id='keyterms'></div>
@@ -126,7 +124,7 @@
             var name = document.getElementById("addfoldername").value;
             var path = document.getElementById("pathtoadd").value;
             if(path ==""){
-               path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/files/" + name;
+               path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/files/" + name;
             }
             var folderjson = {"id":"addFolder",
                               "name":name,
