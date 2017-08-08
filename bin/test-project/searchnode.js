@@ -165,7 +165,7 @@ function requesthandler(request, response) {
 				info.filepaths.push(newpath);
 			});
 			info = JSON.stringify(info);
-			client.write(info + '\n');
+			client.write(info);
 			console.log('data recieved:' + info);
 			client.on('data', function (data) {
 				var completed = data.toString();				
@@ -176,7 +176,7 @@ function requesthandler(request, response) {
 						var oldpath1 = file.path;
     					var terms = document.getElementById('keyterms').value;
 						var newpath1 = newthing + '/' + file.name;
-						fs.rename(oldpath1, newpath1, function (err) {
+						fs.copy(oldpath1, newpath1, function (err) {
 							if (err) {
 								throw err;
 							}

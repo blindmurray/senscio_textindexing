@@ -70,9 +70,9 @@ public class Server_Socket {
 						//tries to read message
 						line = is.readLine();
 						System.out.println(line);
-						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
+							JSONObject json = new JSONObject(line);
 							//if the message is a search
 							if(json.getString("id").equals("search")){
 								try {  			
