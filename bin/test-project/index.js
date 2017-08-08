@@ -23,12 +23,15 @@ function b1click() {
     var exten = document.getElementById("t2").value;
     var dateFrom = document.getElementById("t3").value;
     var dateTo = document.getElementById("t4").value;
+    var num = document.getElementById("t8").value;
+    console.log(num);
     var search = {
         "id": "search",
         "searchterm": searchterm,
         "exten": exten,
         "dateFrom": dateFrom,
-        "dateTo": dateTo
+        "dateTo": dateTo,
+        "num": num
     };
     search = JSON.stringify(search);
     var xhr = ajax();

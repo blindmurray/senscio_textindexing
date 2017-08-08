@@ -68,10 +68,16 @@ public class Searcher{
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
 		IndexSearcher searcher = createSearcher(indexDir);					//Create Lucene searcher. It searches over a single IndexReader.
-		TopDocs foundDocs = searchInContent(searcher, booleanQuery, num);	//Search indexed contents using search term
-
+		TopDocs found = searchInContent(searcher, booleanQuery, 20);	//Search indexed contents using search term
+		TopDocs foundDocs;
+		if(found.totalHits < num){
+			foundDocs = searchInContent(searcher,booleanQuery, found.totalHits);
+		}
+		else{
+			foundDocs = searchInContent(searcher,booleanQuery, num);
+		}
 		ArrayList<String> results = new ArrayList<String>();
-		results.add("Total Results: "+ foundDocs.totalHits +"\n");
+		results.add("Total Results: "+ found.totalHits +"\n");
 		
 		//gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
@@ -88,7 +94,7 @@ public class Searcher{
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
 							String s = changePath(d);
-							results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\"> Download</a>" );
+							results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
 						}
 						//check if it is between those dates
 						else{
@@ -101,7 +107,7 @@ public class Searcher{
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 								String s = changePath(d);
-								results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+								results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
 							}
 						}
 					}
@@ -114,7 +120,7 @@ public class Searcher{
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
 					String s = changePath(d);
-					results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+					results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -126,7 +132,7 @@ public class Searcher{
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 						String s = changePath(d);
-						results.add("File Name : "+ d.get(LuceneConstants.FILE_NAME) + "\n" + "<a href=\""+ s  + "\">      Download</a>" );
+						results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
 					}
 				}
 			}

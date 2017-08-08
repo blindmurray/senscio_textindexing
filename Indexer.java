@@ -19,11 +19,9 @@ public class Indexer {
 
 public static IndexWriter writer;
 public static void reindex() throws IOException, TikaException, SAXException{
-	//String indexDir = "C:/MICHELLE/txt_index";
-	String indexDir = "/Users/Gina/Documents/Files/txt_index";
+	String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
 	//String indexDir = "/var/www/library/index";
-	//String dataDir = "C:/MICHELLE/txt_data";
-	String dataDir = "/Users/Gina/Documents/Files/txt_data";
+	String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
 	//String dataDir = "/var/www/library/Internal Document Repository";
 	Indexer indexer = null;
 	 

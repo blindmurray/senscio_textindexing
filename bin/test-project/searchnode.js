@@ -119,7 +119,7 @@ function requesthandler(request, response) {
 				var names = fields.name;
 				var pathway2 = fields.path;
 				if (pathway2 === "") {
-					pathway2 = "/Users/linjiang/Documents/GitHub/senscio_textindexing/files/" + names;
+					pathway2 = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/" + names;
 				}
 				var sql = "INSERT INTO `indexer`.`folders` (`foldername`, `folderpath`) VALUES (?,?)";
 				var values = [names, pathway];
@@ -160,9 +160,8 @@ function requesthandler(request, response) {
 			client.on("data", function (data) {
 				var completed = data.toString();
 				console.log("received: " + completed);
-				console.log(completed);
-				console.log(completed == "noduplicates");
-				if (completed == "noduplicates") {
+				console.log(typeof(data) + data);
+				if (data) {
 					var terms = fields.keyterms;
 					var saved = {
 						"id": "saved",
@@ -181,10 +180,14 @@ function requesthandler(request, response) {
 					});
 					saved = JSON.stringify(saved);
 					client.write(saved);
+
 					console.log(saved);
 					client.on("data", function (data) {
 						console.log("2" + saved);
 						response.end("File(s) uploaded");
+					});
+					client.write("random stuff");
+					client.on("data", function (data) {
 					});
 				} else {
 					response.end(completed);

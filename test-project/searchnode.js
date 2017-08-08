@@ -119,7 +119,7 @@ function requesthandler(request, response) {
 				var names = fields.name;
 				var pathway2 = fields.path;
 				if (pathway2 === "") {
-					pathway2 = "/Users/linjiang/Documents/GitHub/senscio_textindexing/files/" + names;
+					pathway2 = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/" + names;
 				}
 				var sql = "INSERT INTO `indexer`.`folders` (`foldername`, `folderpath`) VALUES (?,?)";
 				var values = [names, pathway];

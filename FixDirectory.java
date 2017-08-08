@@ -1,10 +1,8 @@
 import java.io.File;
-
-
 public class FixDirectory {
 
 	public static void main(String[] args){
-		space("/var/www/library/txt");
+		space("/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files");
 	}
 		public static String space(String dir){
 			File[] files = new File(dir).listFiles();
@@ -38,8 +36,8 @@ public class FixDirectory {
 			        	f.renameTo(f1);
 			        	System.out.println(f.toString());
 			        	
-	}
-}
+		        	}
+			}
 		return null;
 		}
-}
+	}
