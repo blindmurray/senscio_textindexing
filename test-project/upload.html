@@ -24,13 +24,13 @@
          <div>
             <span class="title">Upload a Document</span>
             <br>
-               <form action='fileupload' method='post' enctype='multipart/form-data' required><br>
-               <div><input type="file" name='filetoupload' id="t6" class="v5" multiple required></div><br>
+               <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
+               <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br>
                <input type="button" id="myBtn" value="Choose Location">
                <input type="hidden" id="chosenFolder"  name="chosenFolder" value=""><span id="location"></span><br><br>
-               <div>Key Terms: <input type="text" name='keyterms' id='keyterms'></div>
-               <input type='submit' value='Submit'>
-               Please make sure your file name doesn't have spaces
+               <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div>
+               <input type="submit" value="Submit">
+               Please make sure your file name doesn"t have spaces
                </form>
                <div id="myModal" class="modal">
                   <div class="modal-content">
@@ -43,7 +43,7 @@
                   </div>
                <div id="myModal2" class ="modal2">
                   <div class="modal-content2">
-                  <form action='addFolder' method='post'>
+                  <form action="addFolder" method="post">
                         <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
                         <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
                         <input type="button" value = "Add Folder" onclick="addfolder()">
@@ -67,85 +67,86 @@
          </p>
       </div>
       <script>
-         var modal = document.getElementById('myModal');
-         var btn = document.getElementById("myBtn");
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
 
-         //Choose Location
-         btn.onclick = function() {
-               modal.style.display = "block";
-               var tree = {"id":"tree"};
-               tree = JSON.stringify(tree);
-               var xhr = ajax();
-               xhr.onload = function () {
-                  if (xhr.readyState === 4) {
-                     if (xhr.status === 200) {    
-                        document.getElementById("tree").innerHTML = xhr.responseText;
-                        prepareList();
-                     } else {
-                        alert("Error: " + xhr.responseText);
-                     }
-                  }
-               };
-                xhr.open("POST", "/", true);
-                xhr.setRequestHeader("Content-Type", "text/plain");
-                xhr.send(tree);
-                console.dir(tree);
-         };
-
-         //Close button
-         var span1 = document.getElementById("closeA");
-         span1.onclick =function(){
-            modal.style.display = "none";
-         }
-
-         
-         //Add a Folder
-         var folder=document.getElementById("addFolder");
-         var modal2 = document.getElementById("myModal2");
-         folder.onclick = function(){
-            modal2.style.display = "block";
-            var c = document.getElementsByClassName("checked");
-            console.log(c);
-            if(c != null){
-               document.getElementsByClassName("path_to_add").value = c;
+//Choose Location
+btn.onclick = function () {
+    "use strict";
+    modal.style.display = "block";
+    var tree = {"id":"tree"};
+    tree = JSON.stringify(tree);
+    var xhr = ajax();
+    xhr.onload = function () {
+       if (xhr.readyState === 4) {
+          if (xhr.status === 200) {    
+              document.getElementById("tree").innerHTML = xhr.responseText;
+               prepareList();
+            } else {
+               alert("Error: " + xhr.responseText);
             }
          }
-         var span2 = document.getElementById("closeB");
-         span2.onclick =function(){
-            modal2.style.display = "none";
-         }
-         window.onclick = function(event) {
-             if (event.target == modal) {
-                 modal.style.display = "none";
-             }
-         };
-         function addfolder(){
-            "use strict";
-            var name = document.getElementById("addfoldername").value;
-            var path = document.getElementById("pathtoadd").value;
-            if(path ==""){
-               path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/files/" + name;
-            }
-            var folderjson = {"id":"addFolder",
-                              "name":name,
-                              "filepaths":path};
-            folderjson = JSON.stringify(folderjson);
-            var xhr = ajax();
-            xhr.onload = function () {
-               if (xhr.readyState === 4 && xhr.status === 200) {
-                  alert("Folder Created!");
-                  modal.style.display = "block";
-                  document.getElementById("tree").innerHTML = xhr.responseText;
-                  prepareList();
-               } else {
-                  alert("Error: " + xhr.responseText);
-               }
-            };
-            xhr.open("POST", "/", true);
-            xhr.setRequestHeader("Content-Type", "text/plain");
-            xhr.send(folderjson);
-            console.dir(folderjson);
-         }
+      };
+       xhr.open("POST", "/", true);
+       xhr.setRequestHeader("Content-Type", "text/plain");
+       xhr.send(tree);
+       console.dir(tree);
+};
+
+//Close button
+var span1 = document.getElementById("closeA");
+span1.onclick =function(){
+   modal.style.display = "none";
+}
+
+
+//Add a Folder
+var folder=document.getElementById("addFolder");
+var modal2 = document.getElementById("myModal2");
+folder.onclick = function(){
+   modal2.style.display = "block";
+   var c = document.getElementsByClassName("checked");
+   console.log(c);
+   if(c != null){
+      document.getElementsByClassName("path_to_add").value = c;
+   }
+}
+var span2 = document.getElementById("closeB");
+span2.onclick =function(){
+   modal2.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+function addfolder(){
+   "use strict";
+   var name = document.getElementById("addfoldername").value;
+   var path = document.getElementById("pathtoadd").value;
+   if(path ==""){
+      path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/files/" + name;
+   }
+   var folderjson = {"id":"addFolder",
+                     "name":name,
+                     "filepaths":path};
+   folderjson = JSON.stringify(folderjson);
+   var xhr = ajax();
+   xhr.onload = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+         alert("Folder Created!");
+         modal.style.display = "block";
+         document.getElementById("tree").innerHTML = xhr.responseText;
+         prepareList();
+      } else {
+         alert("Error: " + xhr.responseText);
+      }
+   };
+   xhr.open("POST", "/", true);
+   xhr.setRequestHeader("Content-Type", "text/plain");
+   xhr.send(folderjson);
+   console.dir(folderjson);
+}
       </script>
    </body>
 </html>

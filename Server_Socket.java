@@ -38,11 +38,11 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
-	//static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
+	//static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
+	static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
 	//static String indexDir = "/var/www/library/index";
-	static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
-	//static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
+	//static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
+	static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
 	static File indexDirFile = new File(indexDir);
@@ -160,16 +160,6 @@ public class Server_Socket {
 									os.println(tree);
 								}
 							}
-							
-							//this will re-read the folders to change the expanding tree
-							else if(json.getString("id").equals("folderchange")){
-								String html = "<ul id=\"expList\">";
-								html = listFilesForFolder(new File(dataDir), html);
-								File uploadhtml = new File("test-project/upload.html");
-								Document doc = Jsoup.parse(uploadhtml, "UTF-8");
-								Element exptree = doc.select("#exptree").first();
-								exptree.html(html);
-						}
 						}
 						if (line.equals("bye")){ 
 							csock.close();	
@@ -186,28 +176,4 @@ public class Server_Socket {
 			System.out.println(e);
 		}   	
 	} //end main
-	//same as in directory reader, will eventually move to here
-	public static String listFilesForFolder(File folder, String html) {
-		for (File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				int count = 0;
-				for(File files :fileEntry.listFiles()){
-					if(files.isDirectory()){
-						count++;
-					}
-				}
-				if(count>0){
-				html += "<li>" + "<span>" + fileEntry.getName() + "</span>";
-				html += "<ul>";
-				html = listFilesForFolder(fileEntry, html);
-				html+= "</li>";
-				}
-				else{
-					html += "<li>" + "<span>" + fileEntry.getName() + "</span>"+ "</li>";
-				}
-			} 
-		}
-		html += "</ul>";
-		return html;
-	}
 }
