@@ -24,6 +24,9 @@ function b1click() {
     var dateFrom = document.getElementById("t3").value;
     var dateTo = document.getElementById("t4").value;
     var num = document.getElementById("t8").value;
+        if(num.length < 1){
+        num = 20;
+    }
     console.log(num);
     var search = {
         "id": "search",
@@ -33,6 +36,7 @@ function b1click() {
         "dateTo": dateTo,
         "num": num
     };
+
     search = JSON.stringify(search);
     var xhr = ajax();
     xhr.onload = function () {
