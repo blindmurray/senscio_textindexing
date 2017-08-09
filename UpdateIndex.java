@@ -29,7 +29,7 @@ public static void updateIndex(String filePathAdd, String indexDir) throws IOExc
 	writer.close();
 	System.out.println(num);
 }
-public static void updateIndex(String filePathAdd,String tokens, String indexDir) throws IOException, TikaException, SAXException{
+public static void updateIndex(String filePathAdd, String tokens, String indexDir) throws IOException, TikaException, SAXException{
 	//this directory will contain the indexer
 	Directory indexDirectory = FSDirectory.open(Paths.get(indexDir));
 	

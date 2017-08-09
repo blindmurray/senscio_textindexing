@@ -1,6 +1,8 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -14,6 +16,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.tika.exception.TikaException;
 import org.xml.sax.SAXException;
 import com.google.common.base.CharMatcher;
+
 
 public class Indexer {
 
@@ -57,14 +60,24 @@ public static Document getDocument(File newFile, File oldFile) throws IOExceptio
 		
 		//Converts content to all lowercase
 		content = content.toLowerCase();
-		
+		String blurb;
+		System.out.println(content.length());
+		if(content.length()<149){
+			blurb = "..."+StringUtils.substring(content, 0, content.length())+"...";
+		}
+		else{
+			blurb = "..."+StringUtils.substring(content, 200, 450)+"...";
+		}
+		System.out.println(blurb);
 		//Creates file Path field, extension field, concent field, and file name field
+		Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, blurb, Field.Store.YES);
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
 		Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);
 		Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
 		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, oldFile.getName(), Field.Store.YES);
 
 		//Adds them to document objects
+		document.add(previewField);
 		document.add(contentField);
 		document.add(extField);
 		document.add(fileNameField);
@@ -74,7 +87,6 @@ public static Document getDocument(File newFile, File oldFile) throws IOExceptio
 		return document;
 	}
 }
-
 public static Document getDocument(File newFile, String tokens, File oldFile) throws IOException {
 	Document document = new Document();
 	try (InputStream stream = Files.newInputStream(newFile.toPath())) {
@@ -91,7 +103,16 @@ public static Document getDocument(File newFile, String tokens, File oldFile) th
 		//Converts content to all lowercase
 		content = content.toLowerCase();
 		
+		String blurb;
+		if(content.length()<149){
+			blurb = "..."+StringUtils.substring(content, 0, content.length())+"...";
+		}
+		else{
+			blurb = "..."+StringUtils.substring(content, 200, 450)+"...";
+		}
+		System.out.println(blurb);
 		//Creates file Path field, extension field, concent field, and file name field
+		Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, blurb, Field.Store.YES);
 		Field terms = new StringField(LuceneConstants.FILE_TOKENS, tokens, Field.Store.YES);
 		Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
 		Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);
@@ -99,6 +120,7 @@ public static Document getDocument(File newFile, String tokens, File oldFile) th
 		Field fileNameField = new StringField(LuceneConstants.FILE_NAME, oldFile.getName(), Field.Store.YES);
 
 		//Adds them to document objects
+		document.add(previewField);
 		document.add(terms);
 		document.add(contentField);
 		document.add(extField);
