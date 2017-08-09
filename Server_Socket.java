@@ -79,7 +79,7 @@ public class Server_Socket {
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(json, indexDir, json.getInt("num"));
+									stuff = s.searchIndex(json, indexDir, json.getString("num"));
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -119,7 +119,6 @@ public class Server_Socket {
 								File file = new File(dataDir);
 								String tree = DirectoryReader.listFilesForFolder(file, html);
 								os.println(tree);
-								
 							}
 							else if(json.getString("id").equals("saved")){
 								for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){

@@ -11,7 +11,6 @@ public static void main(String[] args) throws IOException, TikaException, SAXExc
 	//static String indexDir = "/var/www/library/index";
 	//String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
 	String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
-
 	//static String dataDir = "/var/www/library/Internal Document Repository";
 	
 	Indexer indexer = null;

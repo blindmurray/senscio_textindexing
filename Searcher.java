@@ -38,7 +38,7 @@ public class Searcher{
 	final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
 	public Searcher(){
 	}
-	public ArrayList<String> searchIndex(JSONObject json, String indexDir, int num) throws Exception {
+	public ArrayList<String> searchIndex(JSONObject json, String indexDir, String number) throws Exception {
 		
 		String searchString = json.getString("searchterm").toLowerCase(); 	//convert searchterm to lowercase
 		String[] terms = searchString.split(" "); 							//get individual words in searchString
@@ -70,11 +70,17 @@ public class Searcher{
 		IndexSearcher searcher = createSearcher(indexDir);					//Create Lucene searcher. It searches over a single IndexReader.
 		TopDocs found = searchInContent(searcher, booleanQuery, 20);	//Search indexed contents using search term
 		TopDocs foundDocs;
+		if(number.equals("")){
+			foundDocs = searchInContent(searcher,booleanQuery, 20);
+		}
+		else{
+			int num = Integer.parseInt(number);
 		if(found.totalHits < num){
 			foundDocs = searchInContent(searcher,booleanQuery, found.totalHits);
 		}
 		else{
 			foundDocs = searchInContent(searcher,booleanQuery, num);
+		}
 		}
 		ArrayList<String> results = new ArrayList<String>();
 		results.add("Total Results: "+ found.totalHits +"\n");
@@ -94,7 +100,7 @@ public class Searcher{
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
 							String s = changePath(d);
-							results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
+							results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 						}
 						//check if it is between those dates
 						else{
@@ -107,7 +113,7 @@ public class Searcher{
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 								String s = changePath(d);
-								results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
+								results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 							}
 						}
 					}
@@ -120,7 +126,7 @@ public class Searcher{
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
 					String s = changePath(d);
-					results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
+					results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -132,7 +138,7 @@ public class Searcher{
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 						String s = changePath(d);
-						results.add("<a href=\""+ s  + "\"> Download </a>"+ d.get(LuceneConstants.FILE_NAME) + "\n");
+						results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 					}
 				}
 			}
