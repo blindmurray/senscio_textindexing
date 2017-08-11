@@ -18,6 +18,7 @@ function ajax() {
     }
 }
 function b1click() {
+    //when search button is clicked, sends all info thru ajax to nodejs
     "use strict";
     var searchterm = document.getElementById("t1").value;
     var exten = document.getElementById("t2").value;

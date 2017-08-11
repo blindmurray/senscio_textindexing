@@ -14,6 +14,7 @@ function route(request, response, data, path) {
 	var p = path.lastIndexOf(".");
 	var ext = "";
 	if (data.length > 0) {
+        //communication with search engine for search, tree, and folder add
 		client.write(data + "\n");
 		console.log("data recieved:" + data);
 		client.on("data", function (data) {
@@ -50,6 +51,7 @@ function route(request, response, data, path) {
 			"numbers": "application/x-iWork-numbers-sffkey"
 		};
 		if (mimeType[ext] !== undefined) {
+            //load webpage
 			var fn = path.slice(1);
 			fs.readFile(fn, function (err, content) {
 				response.writeHead(200, {"Content-Type": mimeType[ext], "content-Length": content.length});
@@ -95,29 +97,33 @@ function requesthandler(request, response) {
         break;
     
     case "/fileupload":
+        //communication with search engine for fileupload
         var form = new formidable.IncomingForm();
         form.multiples = "true";
         form.parse(request, function (err, fields, files) {
+            //retrieve info from form
             var newthing = fields.chosenFolder;
             var filearray = files.filetoupload;
             if (!Array.isArray(filearray)) {
                 filearray = [filearray];
             }
             var saved = {
-                "id": "saved",
+                "id": "upload",
                 "filepaths": [],
+                "path_new": newthing,
                 "terms": fields.keyterms
             };
             filearray = filearray.map(function(file){
+                //save all files in temporary folder
                 var f = file.name;
                 var oldpath = file.path;
 
                 var dup = false;
                 
                 console.log("worked, i think" + f);
-                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + f;
-                
-                saved.filepaths.push(newthing + "/" + f);
+                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/Temporary/" + f;
+                //get all filepaths
+                saved.filepaths.push(npath);
                 fs.rename(oldpath, npath, function (err) {
                     if (err) {
                         throw err;
@@ -125,6 +131,7 @@ function requesthandler(request, response) {
                     return npath;
                 });
             });
+            //send data
             saved = JSON.stringify(saved);
             console.log(client.write(saved + "\n"));
             console.log(saved);
@@ -148,28 +155,7 @@ function requesthandler(request, response) {
         });
     }
 }
-
-function changeName(f){
-    var noparen = f.substring(0, f.length - 1);
-    var vnum = noparen.split("\(");
-    var vnum2 = vnum[vnum.length-1];
-    var vint = parseInt(vnum2);
-    if (vint.toString() == vnum2) {
-        var name = "";
-        vint++;
-        vnum.map(function(string){
-            name += string;
-        });
-        name += "\(" + vint + "\)";
-        console.log(name);
-        return name;
-    }
-    else {
-        console.log(f);
-        return f + "\(1\)";
-    }
-
-}
+//open socket
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function () { //"connect" listener
     "use strict";

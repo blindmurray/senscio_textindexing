@@ -94,51 +94,43 @@ public class Server_Socket {
 								JSONArray filepaths = json.getJSONArray("filepaths");
 								String pathnew = json.getString("path_new");
 								for(int x = 0; x< filepaths.length(); x++){
+									//for each file, check for duplicates, then move to destination folder and add to index
 									String filepath = filepaths.getString(x);
 									File file = new File(filepath);
 									String filename = duplicateCheck(file.getName(), pathnew);
 									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename), StandardCopyOption.REPLACE_EXISTING);
-									UpdateIndex.updateIndex(pathnew + "/" + filename, indexDir);
+									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"), indexDir);
 								}
 								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
 								File file = new File(dataDir);
+								//writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html);
+								//return to nodejs
 								os.println(tree);
 							}
 							else if(json.getString("id").equals("addFolder")){
 								String path = json.getString("filepaths");
+								System.out.println(path);
 								if(path.equals("")){
-								    File dir = new File(dataDir + "/" + json.getString("name"));
-								    String s = dir.toString();
-					        		for (int j = 0; j < s.length(); j++){
-					        		    char c = s.charAt(j);        
-					        		    if(c == ' '){
-					        		    	s = s.replace(c, '_');
-					        		    }
-					        		}
-					        		File f1 = new File (s);
-						        	dir.renameTo(f1);
-								    dir.mkdir();
-									String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
-									os.println(tree);
+									 path = dataDir + "/" + json.getString("name");
 								}
-								else{
-									File dir = new File(dataDir + "/" + json.getString("name"));
-								    String s = dir.toString();
-					        		for (int j = 0; j < s.length(); j++){
-					        		    char c = s.charAt(j);        
-					        		    if(c == ' '){
-					        		    	s = s.replace(c, '_');
-					        		    }
-					        		}
-					        		File f1 = new File (s);
-						        	dir.renameTo(f1);
-						        	dir.mkdir();
-									String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
-									os.println(tree);
-								}
+								//replace spaces with underscores
+					        	for (int j = 0; j < path.length(); j++){
+					       		    char c = path.charAt(j);        
+					       		    if(c == ' '){
+					       		    	path = path.replace(c, '_');
+					       		    }
+					      		}
+					        	System.out.println("renamed");
+					        	Path dir = Paths.get(path);
+					        	//creates folder
+					        	dir = Files.createDirectory(dir);
+							    //redo tree so that user can see new folder
+					        	System.out.println(dir);
+								String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+								os.println(tree);								
 							}
 						}
 						if (line.equals("bye")){ 
@@ -168,12 +160,12 @@ public class Server_Socket {
 					check = false;
 				}
 			}
-		//return results to node.js
+		//returns filename if no duplicates
 			if (check){
-				os.println("true");
 				return filename;
 			}
 			else{
+				//changes filename and rechecks for duplicates
 				filename = changeName(filename);
 				duplicateCheck(filename, path);
 			}
@@ -181,6 +173,7 @@ public class Server_Socket {
 		return filename;
 	}
 	public static String changeName(String f){
+		//if there is a duplicate name, adds (1) or adds 1 to version number
 		String ext = TXT.getExtension(f);
 		f = f.substring(0, f.length()-ext.length()-1);
 		if(f.contains("(")){

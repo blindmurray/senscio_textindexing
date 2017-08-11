@@ -6,8 +6,6 @@
       <link rel="stylesheet" type="text/css" href="css/style.css">
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="modal.js"></script>
-      <script type="text/javascript" src = "index.js"></script>
       <link rel="shortcut icon" href="">
    </head>
    <body>
@@ -67,10 +65,89 @@
          </p>
       </div>
       <script>
+      var oldId = "No Path Selected";
+//stores bolded folder id
+function triggerSelect(clicked_ID) {
+  "use strict";
+  var el = document.getElementById(clicked_ID);
+  document.getElementById("pathtoadd").value = clicked_ID;
+  el.style.fontWeight = "bold";
+  el.classList.add("checked");
+  if (oldId !== "No Path Selected") {
+    var p = document.getElementById(oldId);
+    p.style.fontWeight = "normal";
+    p.classList.remove("checked");
+  }
+  oldId = clicked_ID;
+}
+//shows chosenfolder after button click
+function onChooseLocation() {
+  "use strict";
+  document.getElementById("chosenFolder").value = oldId;
+  document.getElementById("location").innerHTML = oldId;
+  modal.style.display = "none";
+}
+//tree
+function prepareList() {
+  "use strict";
+  $("#myModal #expList").find("li:has(ul)")
+    .click(function (event) {
+      if (this == event.target) {
+        $(this).toggleClass("collapsed");
+        $(this).toggleClass("expanded");
+        $(this).children("ul").toggle("medium");
+      }
+      return false;
+    })
+    .addClass("collapsed")
+    .children("ul").hide();
+
+//Hack to add links inside the cv
+  $("#expList a").unbind("click").click(function () {
+    window.open($(this).attr("href"));
+    return false;
+  });
+
+  //Create the button funtionality
+  $("#expandList")
+    .unbind("click")
+    .click(function () {
+      $(".collapsed").children("ul").show("medium");
+    });
+  $("#collapseList")
+    .unbind("click")
+    .click(function () {
+      $(".expanded").children("ul").hide("medium");
+    });
+}
+$(document).ready(function () {
+  "use strict";
+  prepareList();
+});
+
+function ajax() {
+  "use strict";
+  if ( window.XMLHttpRequest) {
+    return new XMLHttpRequest();
+  } else if (window.ActiveXObject) {
+    try {
+      return new ActiveXObject("Msxml2.DOMDocument.6.0");
+    } catch (e) {}
+    try {
+      return new ActiveXObject("Msxml2.DOMDocument.3.0");
+    } catch (f) {}
+    try {
+      return new ActiveXObject("Microsoft.XMLHTTP");
+    } catch (g) {}
+  } else {
+    alert("newxhr XMLHTTPRequest object failed");
+    return null;
+  }
+}
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("myBtn");
 
-//Choose Location
+//Choose Location: make tree
 btn.onclick = function () {
     "use strict";
     modal.style.display = "block";
@@ -100,16 +177,12 @@ span1.onclick =function(){
 }
 
 
-//Add a Folder
+//Add a Folder functionality
 var folder=document.getElementById("addFolder");
 var modal2 = document.getElementById("myModal2");
+//reveal textbox to enter folder name
 folder.onclick = function(){
    modal2.style.display = "block";
-   var c = document.getElementsByClassName("checked");
-   console.log(c);
-   if(c != null){
-      document.getElementsByClassName("path_to_add").value = c;
-   }
 }
 var span2 = document.getElementById("closeB");
 span2.onclick =function(){
@@ -121,16 +194,22 @@ window.onclick = function(event) {
     }
 };
 function addfolder(){
-   "use strict";
-   var name = document.getElementById("addfoldername").value;
-   var path = document.getElementById("pathtoadd").value;
-   if(path ==""){
-      path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/files/" + name;
+  "use strict";
+  modal2.style.display = "none";
+  //retrieve folder path
+  var name = document.getElementById("addfoldername").value;
+  var path = document.getElementById("pathtoadd").value;
+  if(path ==""){
+      path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + name;
+  }
+  else{
+    path = path + "/" + name;
    }
    var folderjson = {"id":"addFolder",
                      "name":name,
                      "filepaths":path};
    folderjson = JSON.stringify(folderjson);
+   //send folder to create path to nodejs
    var xhr = ajax();
    xhr.onload = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
