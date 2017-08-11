@@ -1,16 +1,13 @@
 /* different types of queries (phrase, etc)
- * check for same name files when saving to place that has file of same name
+ * try tomcat server connect directly to javascript
  * add instructions for search
  	* don't use punctuation 
  	* search for key words only
  	* if using extensions, list with periods, NO SPACES
  	* maybe use drop down menu instead for extensions
  * spellcheck
- * show part of file where the searched word is, like google does
- * extract document after search, provide link
  * give option for exact phrase search (use quotes??)
  * at some point, go through and add try catches so the program keeps running in case of error
- * folder change ability + alert to reread directory and send html to js
  * alert if only one date entered, or if first is after second
  * search by created date
  * put in metadata key words when uploading (who uploaded, upload date)
@@ -21,13 +18,15 @@
  */
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import org.apache.tika.exception.TikaException;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.xml.sax.SAXException;
 
 public class Server_Socket {
@@ -66,8 +65,6 @@ public class Server_Socket {
 					String message = "";
 					//listen for message from node.js
 					while(true){
-						boolean check = true;
-						String string = null;
 						//tries to read message
 						line = lines.readLine();
 						System.out.println(line);
@@ -94,38 +91,21 @@ public class Server_Socket {
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
-									File[] files = new File(json.getString("path_new")).listFiles();
-									//check if uploaded file has same name as another in the same folder
-									for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
-										for (File file : files) {
-											string = json.getJSONArray("filepaths").getString(i);
-											String fpath = file.toString();
-											fpath = fpath.replace("\\", "/");
-											if(fpath.equals(string)){
-												check = false;
-											}
-										}
-									//return results to node.js
-									if (check){
-										os.println("true");
-										System.out.println("work please");
-									}
-									else{
-										os.println("ERROR. Please rename file to avoid duplicate names");
-									}
+								JSONArray filepaths = json.getJSONArray("filepaths");
+								String pathnew = json.getString("path_new");
+								for(int x = 0; x< filepaths.length(); x++){
+									String filepath = filepaths.getString(x);
+									File file = new File(filepath);
+									String filename = duplicateCheck(file.getName(), pathnew);
+									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename), StandardCopyOption.REPLACE_EXISTING);
+									UpdateIndex.updateIndex(pathnew + "/" + filename, indexDir);
 								}
+								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
 								File file = new File(dataDir);
 								String tree = DirectoryReader.listFilesForFolder(file, html);
 								os.println(tree);
-							}
-							else if(json.getString("id").equals("saved")){
-								for(int i = 0; i < json.getJSONArray("filepaths").length(); i++){
-									string = json.getJSONArray("filepaths").getString(i);
-									UpdateIndex.updateIndex(string, indexDir);
-								}
-								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("addFolder")){
 								String path = json.getString("filepaths");
@@ -175,5 +155,54 @@ public class Server_Socket {
 		catch (IOException e) {
 			System.out.println(e);
 		}   	
-	} //end main
+	}
+	//end main
+	public static String duplicateCheck(String filename, String path){
+		boolean check = true;
+		File[] files = new File(path).listFiles();
+		//check if uploaded file has same name as another in the same folder
+		for(int i = 0; i < files.length; i++){
+			for (File file : files) {
+				String fname = file.getName();
+				if(fname.equals(filename)){
+					check = false;
+				}
+			}
+		//return results to node.js
+			if (check){
+				os.println("true");
+				return filename;
+			}
+			else{
+				filename = changeName(filename);
+				duplicateCheck(filename, path);
+			}
+		}
+		return filename;
+	}
+	public static String changeName(String f){
+		String ext = TXT.getExtension(f);
+		f = f.substring(0, f.length()-ext.length()-1);
+		if(f.contains("(")){
+			String noparen = f.substring(0, f.length() - 1);
+		    String[] vnum = noparen.split("(");
+		    String vnum2 = vnum[vnum.length-1];
+		    int vint;
+		        try { 
+		        	vint = Integer.parseInt(vnum2);
+		        } catch(NumberFormatException e) { 
+		        	return f + "(1)" + ext;
+		        } catch(NullPointerException e) {
+		        	return f + "(1)" + ext;
+		        }
+		        vint++;
+		        String newname = noparen.substring(0, noparen.length()-vnum2.length()) + "(" + vint + ")." + ext;
+		        return newname;
+		    }
+		else{
+			return f + "(1)." + ext;
+		}
+		
+		
+	}
 }

@@ -65,7 +65,6 @@ function route(request, response, data, path) {
 	}
 }
 function requesthandler(request, response) {
-<<<<<<< HEAD
     "use strict";
     switch (request.url) {
     case "/login":
@@ -96,47 +95,45 @@ function requesthandler(request, response) {
         break;
     
     case "/fileupload":
-        console.log(client.write("hello"));
         var form = new formidable.IncomingForm();
         form.multiples = "true";
         form.parse(request, function (err, fields, files) {
             var newthing = fields.chosenFolder;
-            console.log(newthing);
             var filearray = files.filetoupload;
             if (!Array.isArray(filearray)) {
                 filearray = [filearray];
             }
             var saved = {
-                "id": "saved",
+                "id": "upload",
                 "filepaths": [],
-                "terms": fields.keyterms,
+                "path_new": newthing,
+                "terms": fields.keyterms
             };
-            
-            filearray.map(function (file) {
-                var newfilename = duplicateCheck(file.name, newthing);
-                var npath = newthing + "/" + newfilename;
-                var existingfilenames = fs.readdir(newthing);
-                saved.filepaths.push(npath);
-                console.log(npath);
-            });
-
-            filearray.map(function (file, index) {
+            filearray = filearray.map(function(file){
+                var f = file.name;
                 var oldpath = file.path;
-                var filepath = saved.filepaths[index];
-                fs.rename(oldpath, filepath, function (err) {
+
+                var dup = false;
+                
+                console.log("worked, i think" + f);
+                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/Temporary/" + f;
+                
+                saved.filepaths.push(npath);
+                fs.rename(oldpath, npath, function (err) {
                     if (err) {
                         throw err;
                     }
+                    return npath;
                 });
             });
             saved = JSON.stringify(saved);
-            console.log(client.write(saved) + "a");
+            console.log(client.write(saved + "\n"));
             console.log(saved);
             client.on("data", function (data) {
                 console.log("2" + data);
                 response.end("File(s) uploaded");
             });
-    });
+        });
         break;
     default:
         var postdata = "";
@@ -152,46 +149,7 @@ function requesthandler(request, response) {
         });
     }
 }
-function duplicateCheck(f, path) {
-    var dup = false;
-    console.log("hello2");
-    fs.readdir(path, function (err, files) {
-        files.map(function (file) {
-            if (f == file){
-                dup = true;
-            }
-        });
-        if(dup){
-            var newf = changeName(f);
-            duplicateCheck(newf, path);
-        }
-        else{
-            console.log("worked, i think" + f);
-            return f;
-        }
-    });
-}
-function changeName(f){
-    var noparen = f.substring(0, f.length - 1);
-    var vnum = noparen.split("\(");
-    var vnum2 = vnum[vnum.length-1];
-    var vint = parseInt(vnum2);
-    if (vint.toString() == vnum2) {
-        var name = "";
-        vint++;
-        vnum.map(function(string){
-            name += string;
-        });
-        name += "\(" + vint + "\)";
-        console.log(name);
-        return name;
-    }
-    else {
-        console.log(f);
-        return f + "\(1\)";
-    }
 
-}
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function () { //"connect" listener
     "use strict";

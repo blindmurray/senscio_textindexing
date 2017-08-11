@@ -65,7 +65,6 @@ function route(request, response, data, path) {
 	}
 }
 function requesthandler(request, response) {
-<<<<<<< HEAD
     "use strict";
     switch (request.url) {
     case "/login":
@@ -100,7 +99,6 @@ function requesthandler(request, response) {
         form.multiples = "true";
         form.parse(request, function (err, fields, files) {
             var newthing = fields.chosenFolder;
-            console.log(newthing);
             var filearray = files.filetoupload;
             if (!Array.isArray(filearray)) {
                 filearray = [filearray];
@@ -108,31 +106,33 @@ function requesthandler(request, response) {
             var saved = {
                 "id": "saved",
                 "filepaths": [],
-                "terms": fields.keyterms,
+                "terms": fields.keyterms
             };
-            filearray.map(function (file) {
+            filearray = filearray.map(function(file){
+                var f = file.name;
                 var oldpath = file.path;
-                var newfilename = duplicateCheck(file.name, newthing);
-                var npath = newthing + "/" + newfilename;
-                saved.filepaths.push("npath" + npath);
+
+                var dup = false;
+                
+                console.log("worked, i think" + f);
+                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + f;
+                
+                saved.filepaths.push(newthing + "/" + f);
                 fs.rename(oldpath, npath, function (err) {
                     if (err) {
                         throw err;
                     }
+                    return npath;
                 });
-                console.log(npath);
             });
             saved = JSON.stringify(saved);
-            client.write(saved);
+            console.log(client.write(saved + "\n"));
             console.log(saved);
             client.on("data", function (data) {
                 console.log("2" + data);
                 response.end("File(s) uploaded");
-                client.write("cool1");
             });
-            client.write("cool2");
-
-    });
+        });
         break;
     default:
         var postdata = "";
@@ -148,25 +148,7 @@ function requesthandler(request, response) {
         });
     }
 }
-function duplicateCheck(f, path) {
-    var dup = false;
-    console.log("hello2");
-    fs.readdir(path, function (err, files) {
-        files.map(function (file) {
-            if (f == file){
-                dup = true;
-            }
-        });
-        if(dup){
-            var newf = changeName(f);
-            duplicateCheck(newf, path);
-        }
-        else{
-            console.log("worked, i think");
-            return f;
-        }
-    });
-}
+
 function changeName(f){
     var noparen = f.substring(0, f.length - 1);
     var vnum = noparen.split("\(");
@@ -187,163 +169,14 @@ function changeName(f){
         return f + "\(1\)";
     }
 
-=======
-	"use strict";
-	switch (request.url) {
-	case "/login":
-		var mysql = require("mysql");
-		var connection = mysql.createConnection({
-			host: "localhost",
-			user: "root",
-			password: "",
-			database: "indexer"
-		});
-		console.log("reached");
-		var form = new formidable.IncomingForm();
-		form.multiples = "true";
-		form.parse(request, function (err, fields, files) {
-			var user = fields.uname;
-			var pass = fields.psw;
-			var sql = "INSERT INTO `indexer`.`account` (`username`, `userpass`) VALUES (?, ?)";
-			var values = [user, pass];
-			console.log(values);
-			var query = mysql.format(sql, values);
-			connection.query(query, function (error, results, fields) {
-				if (error) {
-					throw error;
-				}
-				console.log(error);
-			});
-		});
-		break;
-	case "/addFolder":
-		var form = new formidable.IncomingForm();
-		form.multiples = "true";
-		form.parse(request, function (err, fields, files) {
-			var pathway = fields.path;
-			var name = fields.name;
-			var info = {
-				"id": "addFolder",
-				"filepaths": pathway,
-				"name": name
-			};
-			info = JSON.stringify(info);
-			console.log(info);
-			client.write(info + "\n");
-			response.end("Folder Added!");
-
-			var mysql = require("mysql");
-			var connection = mysql.createConnection({
-				host: "localhost",
-				user: "root",
-				password: "",
-				database: "indexer"
-			});
-			form.parse(request, function (err, fields, files) {
-				var names = fields.name;
-				var pathway2 = fields.path;
-				if (pathway2 === "") {
-					pathway2 = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/" + names;
-				}
-				var sql = "INSERT INTO `indexer`.`folders` (`foldername`, `folderpath`) VALUES (?,?)";
-				var values = [names, pathway];
-				console.log(values);
-				var query = mysql.format(sql, values);
-				connection.query(query, function (error, results, fields) {
-					if (error) {
-						throw error;
-					}
-					console.log(error);
-				});
-			});
-		});
-		break;
-	case "/fileupload":
-
-		var form = new formidable.IncomingForm();
-		form.multiples = "true";
-		form.parse(request, function (err, fields, files) {
-			var newthing = fields.chosenFolder;
-			console.log(newthing);
-			var filearray = files.filetoupload;
-			if (!Array.isArray(filearray)) {
-				filearray = [filearray];
-			}
-			var info = {
-				"id": "upload",
-				"filepaths": [],
-				"path_new": newthing
-			};
-			filearray.map(function (file) {
-				var newpath = newthing + "/" + file.name;
-				info.filepaths.push(newpath);
-			});
-			info = JSON.stringify(info);
-			client.write(info + "\n");
-			console.log("data recieved:" + info);
-			client.on("data", function (data) {
-				var completed = data.toString();
-				console.log("received: " + completed);
-				console.log(typeof(data) + data);
-				if (data) {
-					var terms = fields.keyterms;
-					var saved = {
-						"id": "saved",
-						"filepaths": [],
-						"terms": terms
-					};
-					filearray.map(function (file) {
-						var oldpath1 = file.path;
-						var newpath1 = newthing + "/" + file.name;
-						fs.copy(oldpath1, newpath1, function (err) {
-							if (err) {
-								throw err;
-							}
-						});
-						saved.filepaths.push(newpath1);
-					});
-					saved = JSON.stringify(saved);
-					client.write(saved);
-
-					console.log(saved);
-					client.on("data", function (data) {
-						console.log("2" + saved);
-						response.end("File(s) uploaded");
-					});
-					client.write("random stuff");
-					client.on("data", function (data) {
-					});
-				} else {
-					response.end(completed);
-					console.log("no");
-				}
-			});
-			setTimeout(function endit() {
-				response.end();
-			}, 0);
-		});
-		break;
-	default:
-		var postdata = "";
-		var path = url.parse(request.url).pathname;
-		request.setEncoding("utf8");
-		request.addListener("data", function (postDataChunk) {
-			postdata += postDataChunk;
-		});
-	// end of any data sent with the HTTP request, go to our request handler and return a webpage:
-		request.addListener("end", function () {
-			route(request, response, postdata, path);
-			//client.write(postdata + "\n");
-		});
-	}
->>>>>>> 118e6ef75b8588b16c0220a935c01cc8ed537b99
 }
 console.log("sockclnt.js");
 var client = net.connect({port: 1221}, function () { //"connect" listener
-	"use strict";
-	console.log("client connected");
-	client.on("end", function () {
-		console.log("client disconnected");
-	});
+    "use strict";
+    console.log("client connected");
+    client.setNoDelay();
+    client.on("end", function () {
+        console.log("client disconnected");
+    });
 });
 console.log("sending...");
