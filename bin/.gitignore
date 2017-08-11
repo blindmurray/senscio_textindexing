@@ -1,3 +1,5 @@
+/referenced_libraries/
+/test-project/
 /DirectoryReader.class
 /FixDirectory.class
 /Index.class
@@ -9,6 +11,5 @@
 /TXT.class
 /TextFileFilter.class
 /UpdateIndex.class
-/test-project/
 /txt_index/
-/files/
+/IdTokenVerifierAndParser.class

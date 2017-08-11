@@ -18,16 +18,21 @@
  */
 import java.io.*;
 import java.net.*;
+import java.sql.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
-import org.apache.tika.exception.TikaException;
 import org.json.JSONArray;
+import org.apache.tika.exception.TikaException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+
+
+
 
 public class Server_Socket {
 
@@ -48,7 +53,7 @@ public class Server_Socket {
 	static String html = "<ul id=\"expList\">";
 
 	@SuppressWarnings("deprecation")
-	public static void main(String[] args) throws TikaException, SAXException {
+	public static void main(String[] args) throws Exception {
 
 		try {
 			ssock = new ServerSocket(port);
@@ -89,6 +94,31 @@ public class Server_Socket {
 								line = "";
 								System.out.println("Search Results" + "\n"+ message);
 							}
+							else if(json.getString("id").equals("signIn")){
+								
+					            String idToken = json.getString("idtoken");
+					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
+					            String userName = (String) payLoad.get("name");
+					            String email = payLoad.getEmail();
+					            System.out.println("User name: " + userName);
+					            System.out.println("User email: " + email);
+					            String url = "jdbc:mysql://localhost:3306/";
+					            String username = "java";
+					            String password = "password";
+
+					            System.out.println("Connecting database...");
+
+					            try{
+					                Class.forName("com.mysql.jdbc.Driver");
+					            	Connection conn = DriverManager.getConnection(url, "root", "");
+					            	System.out.println("Database connected!");
+					                Statement st = conn.createStatement();
+						            st.executeUpdate("INSERT INTO `indexer`.`account` (`userid`, `name`) VALUES("+ idToken + "," + userName + ")");
+						            conn.close();
+					            } catch (SQLException e) {
+					                throw new IllegalStateException("Cannot connect the database!", e);
+					            }
+						}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
 								JSONArray filepaths = json.getJSONArray("filepaths");
