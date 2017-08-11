@@ -2,7 +2,7 @@ import java.io.File;
 public class FixDirectory {
 
 	public static void main(String[] args){
-		space("/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files");
+		space(LuceneConstants.dataDir);
 	}
 		public static String space(String dir){
 			File[] files = new File(dir).listFiles();

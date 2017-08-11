@@ -31,9 +31,6 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 
-
-
-
 public class Server_Socket {
 
 	private static int port =  1221;
@@ -42,14 +39,8 @@ public class Server_Socket {
 	public static DataInputStream is;
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
-	static String indexDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/txt_index";
-	//static String indexDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/txt_index";
-	//static String indexDir = "/var/www/library/index";
-	static String dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files";
-	//static String dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files";
-	//static String dataDir = "/var/www/library/Internal Document Repository";
 	static Indexer indexer = null;
-	static File indexDirFile = new File(indexDir);
+	static File indexDirFile = new File(LuceneConstants.indexDir);
 	static String html = "<ul id=\"expList\">";
 
 	public static void main(String[] args) throws Exception {
@@ -80,7 +71,7 @@ public class Server_Socket {
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(json, indexDir, json.getString("num"));
+									stuff = s.searchIndex(json, LuceneConstants.indexDir, json.getString("num"));
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -128,12 +119,12 @@ public class Server_Socket {
 									File file = new File(filepath);
 									String filename = duplicateCheck(file.getName(), pathnew);
 									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename), StandardCopyOption.REPLACE_EXISTING);
-									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"), indexDir);
+									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"), LuceneConstants.indexDir);
 								}
 								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
-								File file = new File(dataDir);
+								File file = new File(LuceneConstants.dataDir);
 								//writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html);
 								//return to nodejs
@@ -143,7 +134,7 @@ public class Server_Socket {
 								String path = json.getString("filepaths");
 								System.out.println(path);
 								if(path.equals("")){
-									 path = dataDir + "/" + json.getString("name");
+									 path = LuceneConstants.dataDir + "/" + json.getString("name");
 								}
 								//replace spaces with underscores
 					        	for (int j = 0; j < path.length(); j++){
@@ -158,7 +149,7 @@ public class Server_Socket {
 					        	dir = Files.createDirectory(dir);
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
-								String tree = DirectoryReader.listFilesForFolder(new File(dataDir), "<ul id=\"expList\">");
+								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">");
 								os.println(tree);								
 							}
 						}

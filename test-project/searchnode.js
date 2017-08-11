@@ -31,6 +31,7 @@ function route(request, response, data, path) {
 			"js": "text/javascript",
 			"css": "text/css",
 			"jpg": "image/jpg",
+            "jpeg": "image/jpeg",
 			"txt": "text/plain",
 			"doc": "application/msword",
 			"dot": "application/msword",
