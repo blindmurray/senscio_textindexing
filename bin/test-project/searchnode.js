@@ -30,7 +30,7 @@ function route(request, response, data, path) {
 			"htm": "text/htm",
 			"js": "text/javascript",
 			"css": "text/css",
-			"jpg": "image/jpeg",
+			"jpg": "image/jpg",
             "jpeg": "image/jpeg",
 			"txt": "text/plain",
 			"doc": "application/msword",

@@ -48,6 +48,7 @@ function b1click() {
     xhr.setRequestHeader("Content-Type", "text/plain");
     xhr.send(search);
     console.dir(search);
+    xhr.end();
 }
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();

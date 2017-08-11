@@ -87,6 +87,7 @@ public class Server_Socket {
 							else if(json.getString("id").equals("signIn")){
 								
 					            String idToken = json.getString("idtoken");
+					            System.out.println(idToken.length());
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 					            String userName = (String) payLoad.get("name");
 					            String email = payLoad.getEmail();
@@ -100,10 +101,10 @@ public class Server_Socket {
 
 					            try{
 					                Class.forName("com.mysql.jdbc.Driver");
-					            	Connection conn = DriverManager.getConnection(url, "root", "");
+					            	Connection conn = DriverManager.getConnection(url, "root", "s3nsci0");
 					            	System.out.println("Database connected!");
 					                Statement st = conn.createStatement();
-						            st.executeUpdate("INSERT INTO `indexer`.`account` (`userid`, `name`) VALUES("+ idToken + "," + userName + ")");
+						            st.executeUpdate("INSERT INTO `sys`.`account` (`userid`, `name`) VALUES ('"+ idToken + "', '" + userName + "')");
 						            conn.close();
 					            } catch (SQLException e) {
 					                throw new IllegalStateException("Cannot connect the database!", e);
