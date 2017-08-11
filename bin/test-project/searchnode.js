@@ -121,7 +121,7 @@ function requesthandler(request, response) {
                 var dup = false;
                 
                 console.log("worked, i think" + f);
-                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/Temporary/" + f;
+                var npath = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/Temporary/" + f;
                 //get all filepaths
                 saved.filepaths.push(npath);
                 fs.rename(oldpath, npath, function (err) {
@@ -166,3 +166,33 @@ var client = net.connect({port: 1221}, function () { //"connect" listener
     });
 });
 console.log("sending...");
+
+console.log("sending...");
+
+const GoogleAuth = require('google-auth-library');
+const Auth = new GoogleAuth();
+const oauth = new Auth.OAuth2('953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com', 'XmMSaeVM6IsROwf3Xzgn3Ioa');
+
+const acceptableISSs = new Set(
+    ['accounts.google.com', 'https://accounts.google.com']
+);
+
+const validateToken = (token) => {
+    return new Promise((resolve, reject) => {
+        if (!token) {
+            reject();
+        }
+        oauth.verifyIdToken(token, null, (err, ticket) => {
+            if (err) {
+                return reject(err);
+            }
+            const payload = ticket.getPayload();
+            const tokenIsOK = payload &&
+                  payload.aud === authData.web.client_id &&
+                  new Date(payload.exp * 1000) > new Date() &&
+                  acceptableISSs.has(payload.iss) &&
+                  payload.hd === 'sensciosystems.com';
+            return tokenIsOK ? resolve() : reject();
+        });
+    });
+};

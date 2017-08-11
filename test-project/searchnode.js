@@ -121,7 +121,7 @@ function requesthandler(request, response) {
                 var dup = false;
                 
                 console.log("worked, i think" + f);
-                var npath = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/Temporary/" + f;
+                var npath = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/Temporary/" + f;
                 //get all filepaths
                 saved.filepaths.push(npath);
                 fs.rename(oldpath, npath, function (err) {

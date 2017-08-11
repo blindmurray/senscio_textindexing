@@ -58,8 +58,7 @@ public static Document getDocument(File newFile, File oldFile) throws IOExceptio
 		content = content.replaceAll("[^\\p{Graph}\n\r\t ]", "");
 		content = content.replaceAll("[\\t\\n\\r]", " ");
 		
-		//Converts content to all lowercase
-		content = content.toLowerCase();
+		//Creates the google-like blurb for search results
 		String blurb;
 		System.out.println(content.length());
 		if(content.length()<149){
@@ -68,6 +67,9 @@ public static Document getDocument(File newFile, File oldFile) throws IOExceptio
 		else{
 			blurb = "..."+StringUtils.substring(content, 200, 450)+"...";
 		}
+		//Converts content to all lowercase
+		content = content.toLowerCase();
+
 		System.out.println(blurb);
 		//Creates file Path field, extension field, concent field, and file name field
 		Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, blurb, Field.Store.YES);

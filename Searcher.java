@@ -100,7 +100,7 @@ public class Searcher{
 						//if no dates specified
 						if(dateFrom.length()==0 || dateTo.length()==0){
 							String s = changePath(d);
-							results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+							results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 						}
 						//check if it is between those dates
 						else{
@@ -113,7 +113,7 @@ public class Searcher{
 							date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 							if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 								String s = changePath(d);
-								results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+								results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 							}
 						}
 					}
@@ -126,7 +126,7 @@ public class Searcher{
 				Document d = searcher.doc(sd.doc);
 				if(dateFrom.length()==0 || dateTo.length()==0){
 					String s = changePath(d);
-					results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+					results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 				}
 				else{
 					File f = new File(d.get(LuceneConstants.FILE_PATH));
@@ -138,7 +138,7 @@ public class Searcher{
 					date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 					if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 						String s = changePath(d);
-						results.add("<a href=\""+ s  + "\"> Download </a>&nbsp&nbsp"+ d.get(LuceneConstants.FILE_NAME) + "\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+						results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 					}
 				}
 			}
