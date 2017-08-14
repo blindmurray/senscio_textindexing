@@ -272,12 +272,12 @@ input#file {
     cursor: pointer;
 }
 
-.add {
+.buttons_upload {
     color: #aaaaaa;
     float: right;
     font-weight: bold;
 }
-.add:hover {
+.buttons_upload:hover {
     color: #000;
     text-decoration: none;
     cursor: pointer;
@@ -326,11 +326,26 @@ input#file {
 
 /* Collapsed state for list element */
 
+#myModal #expList ul .file {
+    list-style-image:url(../images/file.jpg) ;
+}
+#myModal #expList li .folder {
+    list-style-image:url(../images/folder.jpg) ;
+}
 #myModal #expList li {
     list-style-image:url(../images/folder.jpg);
 }
 #myModal #expList li>span:hover {
    font-weight: bold;    
+}
+#myModal #expList li .folder.collapsed.toggled {
+    list-style-image:url(../images/folder.jpg) ;
+}
+#myModal #expList li .folder.expanded.toggled{
+    list-style-image:url(../images/folder.jpg) ;
+}
+#myModal #expList li .folder {
+    list-style-image:url(../images/folder.jpg) ;
 }
 #myModal #expList li .collapsed {
     list-style-image: url(../images/expand.jpg);
@@ -342,9 +357,13 @@ input#file {
     list-style-image:url(../images/collapse.jpg);
     cursor: pointer;
  }
+
+
  
  #myModal #expList {
  clear: both;
+ height: 400px;
+    overflow: scroll;
  }
 
 .listControl{
