@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.Date;
 
 public class DirectoryReader {
 	//constructs html ul from reading folder directory
@@ -25,21 +24,5 @@ public class DirectoryReader {
 		}
 		html += "</ul>";
 		return html;
-	}
-	//if run in a while loop, checks for file changes
-	public static Date directoryChangeCheck(File f, Date lastcheck){
-		Date modDate = new Date(f.lastModified());
-		if(modDate.after(lastcheck)){
-			String html = "<ul id=\"expList\">";
-			html = listFilesForFolder(f, html);
-			System.out.println(html);
-			return new Date();
-		}
-		for (File fileEntry : f.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				directoryChangeCheck(fileEntry, lastcheck);
-			} 
-		}
-		return new Date();
 	}
 }

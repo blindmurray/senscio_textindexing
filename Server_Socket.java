@@ -44,10 +44,15 @@ public class Server_Socket {
 	static String html = "<ul id=\"expList\">";
 
 	public static void main(String[] args) throws Exception {
-
+		String url = "jdbc:mysql://10.0.55.100:3306/";
+        String username = "ibisua";
+        String password = "ibisua";
+        Class.forName("com.mysql.jdbc.Driver");
 		try {
 			ssock = new ServerSocket(port);
 			System.out.println("SockServer waiting for connections on 1221...");
+        	Connection conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Connecting database...");
 			while(true){ 
 				try {
 					//creates socket and input/output streams
@@ -58,6 +63,7 @@ public class Server_Socket {
 					os = new PrintStream(csock.getOutputStream());
 					ArrayList<String> stuff = new ArrayList<String>();
 					String message = "";
+					
 					//listen for message from node.js
 					while(true){
 						//tries to read message
@@ -93,23 +99,28 @@ public class Server_Socket {
 					            String email = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
-					            String url = "jdbc:mysql://localhost:3306/";
-					            String username = "java";
-					            String password = "password";
-
-					            System.out.println("Connecting database...");
-
-					            try{
-					                Class.forName("com.mysql.jdbc.Driver");
-					            	Connection conn = DriverManager.getConnection(url, "root", "s3nsci0");
-					            	System.out.println("Database connected!");
-					                Statement st = conn.createStatement();
-						            st.executeUpdate("INSERT INTO `sys`.`account` (`userid`, `name`) VALUES ('"+ idToken + "', '" + userName + "')");
-						            conn.close();
-					            } catch (SQLException e) {
-					                throw new IllegalStateException("Cannot connect the database!", e);
+					            //if it is a senscio email, save into database
+					            if(userName.length()>19 && userName.substring(userName.length()-19).equals("@sensciosystems.com")){
+						            try{
+						            	System.out.println("Database connected!");
+						                Statement st = conn.createStatement();
+						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE userid = '" + idToken + "'");
+						                if(!rs.first()){
+						                	st.executeUpdate("INSERT INTO indexer.account (`userid`, `name`) VALUES ('"+ idToken + "', '" + userName + "')");
+								            
+						                }
+						                else{
+						                	if(rs.getInt("permissions") == 1){
+						                		os.println("1");
+						                	}
+						                }
+						                rs.close();
+						                conn.close();
+						            } catch (SQLException e) {
+						                throw new IllegalStateException("Cannot connect the database!", e);
+						            }
 					            }
-						}
+							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
 								JSONArray filepaths = json.getJSONArray("filepaths");
@@ -151,6 +162,8 @@ public class Server_Socket {
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
 								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">");
+								Statement st = conn.createStatement();
+								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
 								os.println(tree);								
 							}
 						}
