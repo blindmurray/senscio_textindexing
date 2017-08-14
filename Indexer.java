@@ -109,7 +109,7 @@ public static Document getDocument(File newFile, String tokens, File oldFile) th
                         blurb = "..."+StringUtils.substring(content, 200, 450)+"...";
                 }
                 System.out.println(blurb);
-                //Creates file Path field, extension field, concent field, and file name field
+                //Creates file Path field, extension field, content field, and file name field
                 Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, blurb, Field.Store.YES);
                 Field terms = new StringField(LuceneConstants.FILE_TOKENS, tokens, Field.Store.YES);
                 Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);

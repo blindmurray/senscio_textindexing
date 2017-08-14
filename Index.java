@@ -8,7 +8,7 @@ public class Index{
 public static void main(String[] args) throws IOException, TikaException, SAXException {
 
 	Indexer indexer = null;
-	  
+
 	//Create index calls Indexer class
 	File indexDirFile = new File(LuceneConstants.indexDir);
 	TextFileFilter.clear(indexDirFile);

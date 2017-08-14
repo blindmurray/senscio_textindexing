@@ -326,8 +326,11 @@ input#file {
 
 /* Collapsed state for list element */
 
-#myModal #expList li {
-    list-style-image:url(../images/folder.jpg);
+/*#myModal #expList li {
+    list-style-image:url(../images/folder.jpg) ;
+}*/
+#myModal #expList li #file{
+    list-style-image:url(../images/file.jpg);
 }
 #myModal #expList li>span:hover {
    font-weight: bold;    
@@ -342,6 +345,7 @@ input#file {
     list-style-image:url(../images/collapse.jpg);
     cursor: pointer;
  }
+
  
  #myModal #expList {
  clear: both;
