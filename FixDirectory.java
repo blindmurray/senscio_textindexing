@@ -7,6 +7,7 @@ public class FixDirectory {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException{
 		readToSQL(LuceneConstants.dataDir);
+		System.out.println("Database connected!");
 	}
 		public static String space(String dir){
 			File[] files = new File(dir).listFiles();
@@ -50,7 +51,7 @@ public class FixDirectory {
 	        String username = "ibisua";
 	        String password = "ibisua";
 	        Connection conn = DriverManager.getConnection(url, username, password);
-        	System.out.println("Database connected!");
+        
             Statement st = conn.createStatement();
 	    
 			Class.forName("com.mysql.jdbc.Driver");
