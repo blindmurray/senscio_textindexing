@@ -106,7 +106,7 @@ public class Server_Socket {
 						                if(!rs.first()){
 						                	st.executeUpdate("ALTER TABLE indexer.permissions ADD `" + email + "` TINYINT(1) NOT NULL DEFAULT 0;");
 						                	st.executeUpdate("INSERT INTO indexer.account (email, name) VALUES ('" + email + "', '" + userName + "');");; 
-						                	st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + LuceneConstants.dataDir + "/Public';");
+						                	st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath LIKE '" + LuceneConstants.dataDir + "/Public%';");
 						                	os.println("done");
 						                }
 						                rs.close();
@@ -166,6 +166,12 @@ public class Server_Socket {
 					            System.out.println("Connecting database...");
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
+								String permissions = json.getString("permissions");
+								String[] per = permissions.split("\\s+");
+								
+								for(String email: per){
+									st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath LIKE '" + path + "%';");
+								}
 								os.println(tree);								
 							}
 						}
@@ -233,5 +239,26 @@ public class Server_Socket {
 		}
 		
 		
+	}
+	public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException{
+		if(path.startsWith(LuceneConstants.dataDir + "/Public")){
+			return true;
+		}
+		else{
+			String url = "jdbc:mysql://10.0.55.100:3306/";
+	        String username = "ibisua";
+	        String password = "ibisua";
+	        Class.forName("com.mysql.jdbc.Driver");
+	        Connection conn = DriverManager.getConnection(url, username, password);
+	        System.out.println("Connecting database...");
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT " + email + " FROM indexer.permissions WHERE folderpath = '" + path + "'");
+			if(rs.getInt(1)==1){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 	}
 }
