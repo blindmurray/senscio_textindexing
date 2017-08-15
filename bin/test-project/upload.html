@@ -74,32 +74,28 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
+  
   $( function() {
-    var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-    
+    var availableTags = [];
+       var json = {"id":"autofillarray"};
+   json = JSON.stringify(json);
+   //send folder to create path to nodejs
+   var xhr = ajax();
+   xhr.onload = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+         availableTags = xhr.responseText;
+         availableTags = JSON.parse(availableTags);
+         availableTags = availableTags.array;
+         prepareList();
+         
+      } else {
+         alert("Error: " + xhr.responseText);
+      }
+   };
+   xhr.open("POST", "/", true);
+   xhr.setRequestHeader("Content-Type", "text/plain");
+   xhr.send(json);
+   console.dir(json);
     function split( val ) {
       return val.split( /,\s*/ );
     }
@@ -139,8 +135,6 @@
         }
       });
   } );
-  </script>
-  <script>
       var oldId = "No Path Selected";
 //stores bolded folder id
 function triggerSelect(clicked_ID) {
@@ -258,7 +252,7 @@ var folder=document.getElementById("addFolder");
 var modal2 = document.getElementById("myModal2");
 //reveal textbox to enter folder name
 folder.onclick = function(){
-   modal2.style.display = "block";
+  modal2.style.display = "block";
 }
 var span2 = document.getElementById("closeB");
 span2.onclick =function(){

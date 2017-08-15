@@ -142,6 +142,21 @@ public class Server_Socket {
 								//return to nodejs
 								os.println(tree);
 							}
+							else if(json.getString("id").equals("autofillarray")){
+								JSONObject array = new JSONObject();
+								Connection conn = DriverManager.getConnection(url, username, password);
+								Statement st = conn.createStatement();
+								ResultSet rs = st.executeQuery("SELECT `email` FROM indexer.account;");
+								ArrayList<String> al = new ArrayList<String>();
+								while(rs.next()){
+									al.add(rs.getString("email"));
+								}
+								JSONArray emails = new JSONArray(al);
+								array.put("array", emails);
+								String data = array.toString();
+								System.out.println(data);
+								os.println(data);
+							}
 							else if(json.getString("id").equals("addFolder")){
 								String path = json.getString("filepaths");
 								System.out.println(path);
