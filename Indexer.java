@@ -9,8 +9,10 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.tika.exception.TikaException;
@@ -130,6 +132,22 @@ public static Document getDocument(File newFile, String tokens, File oldFile) th
         }
 }
 
+public static void deleteIndex(String file) {
+	
+	System.out.println("Deleting index...."+ file);
+	
+	try {
+		Term term = new Term(LuceneConstants.FILE_PATH, file);
+		writer.deleteDocuments(term);
+		writer.flush();
+		System.out.println("Done");
+		
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+
 public static void indexFile(File newFile, File oldFile ) throws IOException {
         System.out.println("Indexing "+ oldFile.getCanonicalPath());
         Document document = getDocument(newFile, oldFile); //call getDocument method
@@ -173,6 +191,7 @@ public static void addIndex(String indexDir, String dataDir, Indexer indexer) th
 public void close() throws CorruptIndexException, IOException {
          writer.close();
 }
+
 
 public static int writeIndex(String dataDirPath, FileFilter filter) throws IOException, TikaException, SAXException {
         //get all files in the data directory

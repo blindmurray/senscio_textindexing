@@ -2,6 +2,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -37,7 +42,7 @@ public class Searcher{
         final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
         public Searcher(){
         }
-        public ArrayList<String> searchIndex(JSONObject json, String indexDir, String number) throws Exception {
+        public ArrayList<String> searchIndex(JSONObject json, String indexDir, String number, String email) throws Exception {
 
                 String searchString = json.getString("searchterm").toLowerCase();       //convert searchterm to lowercase
                 String[] terms = searchString.split(" ");                                                       //get individual words in searchString
@@ -94,6 +99,7 @@ public class Searcher{
                         String[] exts = extensions.split("\\.");
                         for (ScoreDoc sd : foundDocs.scoreDocs) {
                                 Document d = searcher.doc(sd.doc);
+                                if((email == null && d.get(LuceneConstants.FILE_PATH).startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(d.get(LuceneConstants.FILE_PATH),email)){
                                 for(String ext: exts){
                                         if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
                                                 //if no dates specified
@@ -118,12 +124,14 @@ public class Searcher{
                                                 }
                                         }
                                 }
+                                }
                         }
                 }
                 //if there isn't an extension requirement
                 else{
                         for(ScoreDoc sd: foundDocs.scoreDocs){
                                 Document d = searcher.doc(sd.doc);
+                                if((email == null && d.get(LuceneConstants.FILE_PATH).startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(d.get(LuceneConstants.FILE_PATH),email)){
                                 if(dateFrom.length()==0 || dateTo.length()==0){
                                         String s = changePath(d);
                                         results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
@@ -142,6 +150,7 @@ public class Searcher{
                                         }
                                 }
                         }
+                }
                 }
                 return results;
         }
@@ -192,4 +201,25 @@ public class Searcher{
                 }
                 return syns;
         }
+        public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException{
+    		if(path.startsWith(LuceneConstants.dataDir + "/Public")){
+    			return true;
+    		}
+    		else{
+    			String url = "jdbc:mysql://10.0.55.100:3306/";
+    	        String username = "ibisua";
+    	        String password = "ibisua";
+    	        Class.forName("com.mysql.jdbc.Driver");
+    	        Connection conn = DriverManager.getConnection(url, username, password);
+    	        System.out.println("Connecting database...");
+    			Statement st = conn.createStatement();
+    			ResultSet rs = st.executeQuery("SELECT " + email + " FROM indexer.permissions WHERE folderpath LIKE '" + path + "%'");
+    			if(rs.getInt(1)==1){
+    				return true;
+    			}
+    			else{
+    				return false;
+    			}
+    		}
+    	}
 }

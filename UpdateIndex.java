@@ -67,7 +67,6 @@ public static int writeIndexUpdate(String dataDirPath, FileFilter filter) throws
 		return writer.numDocs();
 	}
 
-
 public static int writeIndexUpdate(String dataDirPath, String tokens, FileFilter filter) throws IOException, TikaException, SAXException{
 	File convertedFile = null;
 	
@@ -88,8 +87,6 @@ public static int writeIndexUpdate(String dataDirPath, String tokens, FileFilter
 				convertedFile.delete();
 			}
 		}	
-		else{
-		}
 	return writer.numDocs();
 	}
 }

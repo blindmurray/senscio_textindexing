@@ -8,10 +8,9 @@ import java.sql.Statement;
 public class DirectoryReader {
 	//constructs html ul from reading folder directory
 	public static String listFilesForFolder(File folder, String html, String email) throws ClassNotFoundException, SQLException {
-		System.out.println(email);
+
 		for (File fileEntry : folder.listFiles()) {
-		if(email == null){
-			if(fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public")){
+		if(email == null && fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public")){
 				if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
 					int count = 0;
 					for(File file : fileEntry.listFiles()){
@@ -35,7 +34,6 @@ public class DirectoryReader {
 				else if(!fileEntry.isHidden()){
 					html+= "<li class =\"file\">" +  fileEntry.getName() + "</li>";
 					}
-				}
 		}
 		else{
 			if(checkPermission(fileEntry.toString(), email) && fileEntry.isDirectory() && !fileEntry.isHidden()){

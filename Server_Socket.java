@@ -74,7 +74,7 @@ public class Server_Socket {
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(json, LuceneConstants.indexDir, json.getString("num"));
+									stuff = s.searchIndex(json, LuceneConstants.indexDir, json.getString("num"), email);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
