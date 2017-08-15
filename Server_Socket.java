@@ -45,6 +45,7 @@ public class Server_Socket {
 		String url = "jdbc:mysql://10.0.55.100:3306/";
         String username = "ibisua";
         String password = "ibisua";
+        String email = null;
         Class.forName("com.mysql.jdbc.Driver");
 		try {
 			ssock = new ServerSocket(port);
@@ -93,12 +94,11 @@ public class Server_Socket {
 					            System.out.println(idToken.length());
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 					            String userName = (String) payLoad.get("name");
-					            String email = payLoad.getEmail();
-					            String email2 = payLoad.getEmail();
+					            email = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
 					            //if it is a senscio email, save into database
-					            if(email.length()>19 && email2.substring(email.length()-19).equals("@sensciosystems.com")){
+					            if(email.length()>19 && email.substring(email.length()-19).equals("@sensciosystems.com")){
 						            try{
 						            	System.out.println("Database connected!");
 						                Statement st = conn.createStatement();
@@ -138,7 +138,7 @@ public class Server_Socket {
 							else if(json.getString("id").equals("tree")){
 								File file = new File(LuceneConstants.dataDir);
 								//writes new html tree
-								String tree = DirectoryReader.listFilesForFolder(file, html);
+								String tree = DirectoryReader.listFilesForFolder(file, html, email);
 								//return to nodejs
 								os.println(tree);
 							}
@@ -161,7 +161,7 @@ public class Server_Socket {
 					        	dir = Files.createDirectory(dir);
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
-								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">");
+								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 								Connection conn = DriverManager.getConnection(url, username, password);
 					            System.out.println("Connecting database...");
 								Statement st = conn.createStatement();
@@ -169,8 +169,8 @@ public class Server_Socket {
 								String permissions = json.getString("permissions");
 								String[] per = permissions.split("\\s+");
 								
-								for(String email: per){
-									st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath LIKE '" + path + "%';");
+								for(String e: per){
+									st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath LIKE '" + path + "%';");
 								}
 								os.println(tree);								
 							}
@@ -240,25 +240,5 @@ public class Server_Socket {
 		
 		
 	}
-	public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException{
-		if(path.startsWith(LuceneConstants.dataDir + "/Public")){
-			return true;
-		}
-		else{
-			String url = "jdbc:mysql://10.0.55.100:3306/";
-	        String username = "ibisua";
-	        String password = "ibisua";
-	        Class.forName("com.mysql.jdbc.Driver");
-	        Connection conn = DriverManager.getConnection(url, username, password);
-	        System.out.println("Connecting database...");
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT " + email + " FROM indexer.permissions WHERE folderpath = '" + path + "'");
-			if(rs.getInt(1)==1){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}
-	}
+	
 }

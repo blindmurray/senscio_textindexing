@@ -5,6 +5,7 @@
       <title>mytest</title>
       <link rel="stylesheet" type="text/css" href="css/style.css">
       <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+      <link rel="stylesheet" href="css/jquery-ui.css">
       <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
       <link rel="shortcut icon" href="">
    </head>
@@ -46,15 +47,9 @@
                   <div class="modal-content2">
                   <form action="addFolder" method="post">
                         <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
-                        <div>Name of Folder: 
-                          <input id="addfoldername" type="text" name="name">
-                          <br>
-                          Permissions:
-                          <input id="permissions" type="text">
-                          <br>
-                          Enter the people who are allowed to see this folder (emails), separated by spaces.
-                        </div>
 
+                        <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
+                        <div>Who Can See This Folder: <input id="tags" type="text"></div>
                         <input type="button" value = "Add Folder" onclick="addfolder()">
                         <span class="closeBABA" id = "closeB">&times;</span>
                   </form>
@@ -75,7 +70,77 @@
             (978) 635-9090
          </p>
       </div>
-      <script>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
+        }
+      });
+  } );
+  </script>
+  <script>
       var oldId = "No Path Selected";
 //stores bolded folder id
 function triggerSelect(clicked_ID) {
@@ -210,7 +275,7 @@ function addfolder(){
   //retrieve folder path
   var name = document.getElementById("addfoldername").value;
   var path = document.getElementById("pathtoadd").value;
-  var permissions = document.getElementById("permissions").value;
+  var permissions = document.getElementById("tags").value;
   if(path ==""){
       path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + name;
   }

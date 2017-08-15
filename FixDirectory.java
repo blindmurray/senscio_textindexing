@@ -66,12 +66,6 @@ public class FixDirectory {
 		                	st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + f.getPath() + "');");
 			        		readToSQL(f.getPath());
 		                }
-		                else{
-		                	if(rs.getInt("permissions") == 1){
-		                		
-		                	}
-		                }
-		        		
 		        		rs.close();
 		        		
 		        	}
