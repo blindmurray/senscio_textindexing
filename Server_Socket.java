@@ -26,9 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import org.json.JSONArray;
-import org.apache.tika.exception.TikaException;
 import org.json.JSONObject;
-import org.xml.sax.SAXException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 
 public class Server_Socket {
@@ -51,8 +49,6 @@ public class Server_Socket {
 		try {
 			ssock = new ServerSocket(port);
 			System.out.println("SockServer waiting for connections on 1221...");
-        	Connection conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connecting database...");
 			while(true){ 
 				try {
 					//creates socket and input/output streams
@@ -91,34 +87,39 @@ public class Server_Socket {
 								System.out.println("Search Results" + "\n"+ message);
 							}
 							else if(json.getString("id").equals("signIn")){
-								
+								Connection conn = DriverManager.getConnection(url, username, password);
+					            System.out.println("Connecting database...");
 					            String idToken = json.getString("idtoken");
 					            System.out.println(idToken.length());
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 					            String userName = (String) payLoad.get("name");
 					            String email = payLoad.getEmail();
+					            String email2 = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
 					            //if it is a senscio email, save into database
-					            if(email.length()>19 && email.substring(email.length()-19).equals("@sensciosystems.com")){
+					            if(email.length()>19 && email2.substring(email.length()-19).equals("@sensciosystems.com")){
 						            try{
 						            	System.out.println("Database connected!");
 						                Statement st = conn.createStatement();
-						                Statement n = conn.createStatement();
-						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + email + "'");
-						                if(!rs.next()){
-						                	st.executeUpdate("INSERT INTO indexer.account (`email`, `name`) VALUES ('"+ email + "', '" + userName + "')");
-						                	n.executeQuery("ALTER TABLE `indexer`.`permissions` ADD" + email + "BINARY(1) NOT NULL DEFAULT 0;");
+						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + email + "';");
+						                if(!rs.first()){
+						                	st.executeUpdate("ALTER TABLE indexer.permissions ADD `" + email + "` TINYINT(1) NOT NULL DEFAULT 0;");
+						                	st.executeUpdate("INSERT INTO indexer.account (email, name) VALUES ('" + email + "', '" + userName + "');");; 
+						                	st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + LuceneConstants.dataDir + "/Public';");
+						                	os.println("done");
 						                }
 						                rs.close();
+						                
 
 						            } catch (SQLException e) {
 						                throw new IllegalStateException("Cannot connect the database!", e);
 						            }
 					            }
 					            else{
-					            	os.print("1");
+					            	os.print("Not a Senscio email.");
 					            }
+					            conn.close();
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
@@ -161,6 +162,8 @@ public class Server_Socket {
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
 								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">");
+								Connection conn = DriverManager.getConnection(url, username, password);
+					            System.out.println("Connecting database...");
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
 								os.println(tree);								

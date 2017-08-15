@@ -63,7 +63,7 @@ public class FixDirectory {
 		        	if (f.isDirectory()){
 		        		ResultSet rs = st.executeQuery("SELECT * FROM indexer.permissions WHERE folderpath = '" + f.getPath() + "'");
 		                if(!rs.first()){
-		                	st.executeUpdate("ALTER TABLE indexer.permissions ADD '" + f.getPath() + "' tinyint NOT NULL DEFAULT 0;");
+		                	st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + f.getPath() + "');");
 			        		readToSQL(f.getPath());
 		                }
 		                else{
