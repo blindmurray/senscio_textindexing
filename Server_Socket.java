@@ -93,6 +93,7 @@ public class Server_Socket {
 					            String idToken = json.getString("idtoken");
 					            System.out.println(idToken.length());
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
+					            
 					            String userName = (String) payLoad.get("name");
 					            email = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
