@@ -104,20 +104,20 @@ public class Server_Socket {
 						            try{
 						            	System.out.println("Database connected!");
 						                Statement st = conn.createStatement();
-						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE userid = '" + idToken + "'");
-						                if(!rs.first()){
-						                	st.executeUpdate("INSERT INTO indexer.account (`userid`, `name`) VALUES ('"+ idToken + "', '" + userName + "')");
-								            
-						                }
-						                else{
-						                	if(rs.getInt("permissions") == 1){
-						                		os.println("1");
-						                	}
+						                Statement n = conn.createStatement();
+						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + email + "'");
+						                if(!rs.next()){
+						                	st.executeUpdate("INSERT INTO indexer.account (`email`, `name`) VALUES ('"+ email + "', '" + userName + "')");
+						                	n.executeQuery("ALTER TABLE `indexer`.`permissions` ADD" + email + "BINARY(1) NOT NULL DEFAULT 0;");
 						                }
 						                rs.close();
+
 						            } catch (SQLException e) {
 						                throw new IllegalStateException("Cannot connect the database!", e);
 						            }
+					            }
+					            else{
+					            	os.print("1");
 					            }
 							}
 							//if there was a file upload

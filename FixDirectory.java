@@ -8,6 +8,7 @@ public class FixDirectory {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException{
 		readToSQL(LuceneConstants.dataDir);
+		System.out.println("Database connected!");
 	}
 		public static String space(String dir){
 			File[] files = new File(dir).listFiles();
