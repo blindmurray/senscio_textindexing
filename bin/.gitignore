@@ -1,5 +1,4 @@
 /test-project/
-/txt_index/
 /DirectoryReader.class
 /FixDirectory.class
 /IdTokenVerifierAndParser.class
@@ -7,6 +6,7 @@
 /Indexer.class
 /LuceneConstants.class
 /Parse.class
+/txt_index/
 /Searcher.class
 /Server_Socket.class
 /TXT.class

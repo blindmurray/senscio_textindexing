@@ -118,10 +118,7 @@ function requesthandler(request, response) {
                 //save all files in temporary folder
                 var f = file.name;
                 var oldpath = file.path;
-
                 var dup = false;
-                
-                console.log("worked, i think" + f);
                 var npath = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/Temporary/" + f;
                 //get all filepaths
                 saved.filepaths.push(npath);
@@ -166,8 +163,6 @@ var client = net.connect({port: 1221}, function () { //"connect" listener
         console.log("client disconnected");
     });
 });
-console.log("sending...");
-
 console.log("sending...");
 
 const GoogleAuth = require('google-auth-library');

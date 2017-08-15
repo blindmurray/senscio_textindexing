@@ -1,6 +1,7 @@
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 public class FixDirectory {
@@ -50,7 +51,6 @@ public class FixDirectory {
 	        String username = "ibisua";
 	        String password = "ibisua";
 	        Connection conn = DriverManager.getConnection(url, username, password);
-        	System.out.println("Database connected!");
             Statement st = conn.createStatement();
 	    
 			Class.forName("com.mysql.jdbc.Driver");
@@ -60,11 +60,19 @@ public class FixDirectory {
 			for (int i = 0; i < files.length; i++) {
 					File f = files[i];
 		        	if (f.isDirectory()){
-		        		st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + f.getPath() + "');");
-		        		if(f.getName().equals("Public")){
-		        			st.executeUpdate("");
-		        		}
-		        		readToSQL(f.getPath());
+		        		ResultSet rs = st.executeQuery("SELECT * FROM indexer.permissions WHERE folderpath = '" + f.getPath() + "'");
+		                if(!rs.first()){
+		                	st.executeUpdate("ALTER TABLE indexer.permissions ADD '" + f.getPath() + "' tinyint NOT NULL DEFAULT 0;");
+			        		readToSQL(f.getPath());
+		                }
+		                else{
+		                	if(rs.getInt("permissions") == 1){
+		                		
+		                	}
+		                }
+		        		
+		        		rs.close();
+		        		
 		        	}
 			}
 			conn.close();

@@ -100,7 +100,7 @@ public class Server_Socket {
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
 					            //if it is a senscio email, save into database
-					            if(userName.length()>19 && userName.substring(userName.length()-19).equals("@sensciosystems.com")){
+					            if(email.length()>19 && email.substring(email.length()-19).equals("@sensciosystems.com")){
 						            try{
 						            	System.out.println("Database connected!");
 						                Statement st = conn.createStatement();
@@ -115,7 +115,6 @@ public class Server_Socket {
 						                	}
 						                }
 						                rs.close();
-						                conn.close();
 						            } catch (SQLException e) {
 						                throw new IllegalStateException("Cannot connect the database!", e);
 						            }
