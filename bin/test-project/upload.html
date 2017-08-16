@@ -1,309 +1,303 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta charset="utf-8">
-      <title>mytest</title>
-      <link rel="stylesheet" type="text/css" href="css/style.css">
-      <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-      <link rel="stylesheet" href="css/jquery-ui.css">
-      <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-      <link rel="shortcut icon" href="">
-   </head>
-   <body>
-      <div class="news">
-         <div class="nav">
-            <ul>
-               <li><a href="index.html">Home</a></li>
-               <li><a class="active" href="upload.html">Upload</a></li>
-               <li><a href="search.html">Search</a></li>
-               <li><a href="http://www.sensciosystems.com">Senscio</a></li>
-            </ul>
-         </div>
-         <br>       
-         <div>
-            <span class="title">Upload a Document</span>
-            <br>
-               <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
-               <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br>
-               <input type="button" id="myBtn" value="Choose Location">
-               <input type="hidden" id="chosenFolder"  name="chosenFolder" value=""><span id="location"></span><br><br>
-               <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div>
-               <input type="submit" value="Submit">
-               Please make sure your file name doesn"t have spaces
-               </form>
-               <div id="myModal" class="modal">
-                  <div class="modal-content">
-                     <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
-                     <br><br>
-                     <span class="buttons_upload" id = "show_hide"><img src = /images/show_hide.jpg>
-                     <span id="hide">Hide All Files</span><span id="show" style="display:none" >Show All Files</span></span>
-                     <span id = "tree"> </span>
-                     <input type="button" value="Choose Location" onclick="onChooseLocation()">
-                     <span class="closeBABA" id = "closeA">&times;</span>
-                  </div>
-                  <br>
-                  </div>
-               <div id="myModal2" class ="modal2">
-                  <div class="modal-content2">
-                  <form action="addFolder" method="post">
-                        <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
 
-                        <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
-                        <div>Who Can See This Folder: <input id="tags" type="text"></div>
-                        <input type="button" value = "Add Folder" onclick="addfolder()">
-                        <span class="closeBABA" id = "closeB">&times;</span>
-                  </form>
-                  </div>
-                  <br>
-                  </div>
-                  </div>
-               </div>
-               <br>
-               
-            <br>
-         </div>
+<head>
+  <meta charset="utf-8">
+  <title>mytest</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+  <link rel="shortcut icon" href="">
+</head>
+
+<body>
+  <div class="news">
+    <div class="nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="upload.html">Upload</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li><a href="http://www.sensciosystems.com">Senscio</a></li>
+      </ul>
+    </div>
+    <br>
+    <div>
+      <span class="title">Upload a Document</span>
+      <br>
+      <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
+        <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br>
+        <input type="button" id="myBtn" value="Choose Location">
+        <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span><br><br>
+        <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div>
+        <input type="submit" value="Submit">
+      </form>
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
+          <br><br>
+          <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
+                     <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
+          <span id="tree"> </span>
+          <input type="button" value="Choose Location" onclick="onChooseLocation()">
+          <span class="closeBABA" id="closeA">&times;</span>
+        </div>
+        <br>
       </div>
-      <div class="foot">
-         <p id="text">Senscio Systems, Inc.<br>
-            1740 Massachusetts Ave<br>
-            Boxborough, MA 01719<br>
-            (978) 635-9090
-         </p>
+      <div id="myModal2" class="modal2">
+        <div class="modal-content2">
+          <form action="addFolder" method="post">
+            <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
+
+            <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
+            <div>Who Can See This Folder: <input id="tags" type="text"></div>
+            <input type="button" value="Add Folder" onclick="addfolder()">
+            <span class="closeBABA" id="closeB">&times;</span>
+          </form>
+        </div>
+        <br>
       </div>
+    </div>
+  </div>
+  <br>
+
+  <br>
+  </div>
+  </div>
+  <div class="foot">
+    <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090
+    </p>
+  </div>
 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-  
-  $( function() {
-    var availableTags = [];
-       var json = {"id":"autofillarray"};
-   json = JSON.stringify(json);
-   //send folder to create path to nodejs
-   var xhr = ajax();
-   xhr.onload = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-         availableTags = xhr.responseText;
-         availableTags = JSON.parse(availableTags);
-         availableTags = availableTags.array;
-         prepareList();
-         
-      } else {
-         alert("Error: " + xhr.responseText);
-      }
-   };
-   xhr.open("POST", "/", true);
-   xhr.setRequestHeader("Content-Type", "text/plain");
-   xhr.send(json);
-   console.dir(json);
-    function split( val ) {
-      return val.split( /,\s*/ );
-    }
-    function extractLast( term ) {
-      return split( term ).pop();
-    }
- 
-    $( "#tags" )
-      // don't navigate away from the field on tab when selecting an item
-      .on( "keydown", function( event ) {
-        if ( event.keyCode === $.ui.keyCode.TAB &&
-            $( this ).autocomplete( "instance" ).menu.active ) {
-          event.preventDefault();
-        }
-      })
-      .autocomplete({
-        minLength: 0,
-        source: function( request, response ) {
-          // delegate back to autocomplete, but extract the last term
-          response( $.ui.autocomplete.filter(
-            availableTags, extractLast( request.term ) ) );
-        },
-        focus: function() {
-          // prevent value inserted on focus
-          return false;
-        },
-        select: function( event, ui ) {
-          var terms = split( this.value );
-          // remove the current input
-          terms.pop();
-          // add the selected item
-          terms.push( ui.item.value );
-          // add placeholder to get the comma-and-space at the end
-          terms.push( "" );
-          this.value = terms.join( ", " );
-          return false;
-        }
-      });
-  } );
-      var oldId = "No Path Selected";
-//stores bolded folder id
-function triggerSelect(clicked_ID) {
-  "use strict";
-  var el = document.getElementById(clicked_ID);
-  document.getElementById("pathtoadd").value = clicked_ID;
-  el.style.fontWeight = "bold";
-  el.classList.add("checked");
-  if (oldId !== "No Path Selected") {
-    var p = document.getElementById(oldId);
-    p.style.fontWeight = "normal";
-    p.classList.remove("checked");
-  }
-  oldId = clicked_ID;
-}
-//shows chosenfolder after button click
-function onChooseLocation() {
-  "use strict";
-  document.getElementById("chosenFolder").value = oldId;
-  document.getElementById("location").innerHTML = oldId;
-  modal.style.display = "none";
-}
-
-
-//tree
-function prepareList() {
-  "use strict";
-  $("#myModal #expList").find("li:has(ul)")
-    .click(function (event) {
-      if (this == event.target) {
-        $(this).toggleClass("collapsed");
-        $(this).toggleClass("expanded");
-        $(this).children("ul").toggle("medium");
-      }
-      return false;
-    })
-    .addClass("collapsed")
-    .children("ul").hide();
-
-//Hack to add links inside the cv
-  $("#expList a").unbind("click").click(function () {
-    window.open($(this).attr("href"));
-    return false;
-  });
-
-  //Create the button funtionality
-    $("#expandList")
-      .unbind("click")
-      .click(function () {
-        $(".collapsed").children("ul").show("medium");
-      });
-    $("#collapseList")
-      .unbind("click")
-      .click(function () {
-        $(".expanded").children("ul").hide("medium");
-      });
-}
-
-
-
-function ajax() {
-  "use strict";
-  if ( window.XMLHttpRequest) {
-    return new XMLHttpRequest();
-  } else if (window.ActiveXObject) {
-    try {
-      return new ActiveXObject("Msxml2.DOMDocument.6.0");
-    } catch (e) {}
-    try {
-      return new ActiveXObject("Msxml2.DOMDocument.3.0");
-    } catch (f) {}
-    try {
-      return new ActiveXObject("Microsoft.XMLHTTP");
-    } catch (g) {}
-  } else {
-    alert("newxhr XMLHTTPRequest object failed");
-    return null;
-  }
-}
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("myBtn");
-
-//Choose Location: make tree
-btn.onclick = function () {
-    "use strict";
-    modal.style.display = "block";
-    var tree = {"id":"tree"};
-    tree = JSON.stringify(tree);
-    var xhr = ajax();
-    xhr.onload = function () {
-       if (xhr.readyState === 4) {
-          if (xhr.status === 200) {    
-              document.getElementById("tree").innerHTML = xhr.responseText;
-               prepareList();
-            } else {
-               alert("Error: " + xhr.responseText);
-            }
-         }
+    $(function() {
+      var availableTags = [];
+      var json = {
+        "id": "autofillarray"
       };
-       xhr.open("POST", "/", true);
-       xhr.setRequestHeader("Content-Type", "text/plain");
-       xhr.send(tree);
-       console.dir(tree);
-};
+      json = JSON.stringify(json);
+      //send folder to create path to nodejs
+      var xhr = ajax();
+      xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+          availableTags = xhr.responseText;
+          availableTags = JSON.parse(availableTags);
+          availableTags = availableTags.array;
+          prepareList();
+        } else {
+          alert("Error: " + xhr.responseText);
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(json);
+      console.dir(json);
 
-//Close button
-var span1 = document.getElementById("closeA");
-span1.onclick =function(){
-   modal.style.display = "none";
-}
-
-
-//Add a Folder functionality
-var folder=document.getElementById("addFolder");
-var modal2 = document.getElementById("myModal2");
-//reveal textbox to enter folder name
-folder.onclick = function(){
-  modal2.style.display = "block";
-}
-var span2 = document.getElementById("closeB");
-span2.onclick =function(){
-   modal2.style.display = "none";
-}
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
-function addfolder(){
-  "use strict";
-  modal2.style.display = "none";
-  //retrieve folder path
-  var name = document.getElementById("addfoldername").value;
-  var path = document.getElementById("pathtoadd").value;
-  var permissions = document.getElementById("tags").value;
-  if(path ==""){
-      path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + name;
-  }
-  else{
-    path = path + "/" + name;
-   }
-   var folderjson = {"id":"addFolder",
-                     "name":name,
-                     "filepaths":path,
-                     "permissions": permissions};
-   folderjson = JSON.stringify(folderjson);
-   //send folder to create path to nodejs
-   var xhr = ajax();
-   xhr.onload = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-         alert("Folder Created!");
-         modal.style.display = "block";
-         document.getElementById("tree").innerHTML = xhr.responseText;
-         prepareList();
-      } else {
-         alert("Error: " + xhr.responseText);
+      function split(val) {
+        return val.split(/,\s*/);
       }
-   };
-   xhr.open("POST", "/", true);
-   xhr.setRequestHeader("Content-Type", "text/plain");
-   xhr.send(folderjson);
-   console.dir(folderjson);
-}
-$( "#show_hide" ).click(function() {
-  $("#myModal #expList ul .file").toggle();
-  $('#hide').toggle();
-  $('#show').toggle();
-  $('#myModal #expList li .folder').toggleClass('toggled');
-});
-      </script>
-   </body>
+
+      function extractLast(term) {
+        return split(term).pop();
+      }
+      $("#tags")
+        // don't navigate away from the field on tab when selecting an item
+        .on("keydown", function(event) {
+          if(event.keyCode === $.ui.keyCode.TAB &&
+            $(this).autocomplete("instance").menu.active) {
+            event.preventDefault();
+          }
+        })
+        .autocomplete({
+          minLength: 0,
+          source: function(request, response) {
+            // delegate back to autocomplete, but extract the last term
+            response($.ui.autocomplete.filter(
+              availableTags, extractLast(request.term)));
+          },
+          focus: function() {
+            // prevent value inserted on focus
+            return false;
+          },
+          select: function(event, ui) {
+            var terms = split(this.value);
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push(ui.item.value);
+            // add placeholder to get the comma-and-space at the end
+            terms.push("");
+            this.value = terms.join(", ");
+            return false;
+          }
+        });
+    });
+    var oldId = "No Path Selected";
+    //stores bolded folder id
+    function triggerSelect(clicked_ID) {
+      "use strict";
+      var el = document.getElementById(clicked_ID);
+      document.getElementById("pathtoadd").value = clicked_ID;
+      el.style.fontWeight = "bold";
+      el.classList.add("checked");
+      if(oldId !== "No Path Selected") {
+        var p = document.getElementById(oldId);
+        p.style.fontWeight = "normal";
+        p.classList.remove("checked");
+      }
+      oldId = clicked_ID;
+    }
+    //shows chosenfolder after button click
+    function onChooseLocation() {
+      "use strict";
+      document.getElementById("chosenFolder").value = oldId;
+      document.getElementById("location").innerHTML = oldId;
+      modal.style.display = "none";
+    }
+    //tree
+    function prepareList() {
+      "use strict";
+      $("#myModal #expList").find("li:has(ul)")
+        .click(function(event) {
+          if(this == event.target) {
+            $(this).toggleClass("collapsed");
+            $(this).toggleClass("expanded");
+            $(this).children("ul").toggle("medium");
+          }
+          return false;
+        })
+        .addClass("collapsed")
+        .children("ul").hide();
+      //Hack to add links inside the cv
+      $("#expList a").unbind("click").click(function() {
+        window.open($(this).attr("href"));
+        return false;
+      });
+      //Create the button funtionality
+      $("#expandList")
+        .unbind("click")
+        .click(function() {
+          $(".collapsed").children("ul").show("medium");
+        });
+      $("#collapseList")
+        .unbind("click")
+        .click(function() {
+          $(".expanded").children("ul").hide("medium");
+        });
+    }
+
+    function ajax() {
+      "use strict";
+      if(window.XMLHttpRequest) {
+        return new XMLHttpRequest();
+      } else if(window.ActiveXObject) {
+        try {
+          return new ActiveXObject("Msxml2.DOMDocument.6.0");
+        } catch(e) {}
+        try {
+          return new ActiveXObject("Msxml2.DOMDocument.3.0");
+        } catch(f) {}
+        try {
+          return new ActiveXObject("Microsoft.XMLHTTP");
+        } catch(g) {}
+      } else {
+        alert("newxhr XMLHTTPRequest object failed");
+        return null;
+      }
+    }
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    //Choose Location: make tree
+    btn.onclick = function() {
+      "use strict";
+      modal.style.display = "block";
+      var tree = {
+        "id": "tree"
+      };
+      tree = JSON.stringify(tree);
+      var xhr = ajax();
+      xhr.onload = function() {
+        if(xhr.readyState === 4) {
+          if(xhr.status === 200) {
+            document.getElementById("tree").innerHTML = xhr.responseText;
+            prepareList();
+          } else {
+            alert("Error: " + xhr.responseText);
+          }
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(tree);
+      console.dir(tree);
+    };
+    //Close button
+    var span1 = document.getElementById("closeA");
+    span1.onclick = function() {
+      modal.style.display = "none";
+    }
+    //Add a Folder functionality
+    var folder = document.getElementById("addFolder");
+    var modal2 = document.getElementById("myModal2");
+    //reveal textbox to enter folder name
+    folder.onclick = function() {
+      modal2.style.display = "block";
+    }
+    var span2 = document.getElementById("closeB");
+    span2.onclick = function() {
+      modal2.style.display = "none";
+    }
+    window.onclick = function(event) {
+      if(event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    function addfolder() {
+      "use strict";
+      modal2.style.display = "none";
+      //retrieve folder path
+      var name = document.getElementById("addfoldername").value;
+      var path = document.getElementById("pathtoadd").value;
+      var permissions = document.getElementById("tags").value;
+      if(path == "") {
+        path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + name;
+      } else {
+        path = path + "/" + name;
+      }
+      var folderjson = {
+        "id": "addFolder",
+        "name": name,
+        "filepaths": path,
+        "permissions": permissions
+      };
+      folderjson = JSON.stringify(folderjson);
+      //send folder to create path to nodejs
+      var xhr = ajax();
+      xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+          alert("Folder Created!");
+          modal.style.display = "block";
+          document.getElementById("tree").innerHTML = xhr.responseText;
+          prepareList();
+        } else {
+          alert("Error: " + xhr.responseText);
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(folderjson);
+      console.dir(folderjson);
+    }
+    $("#show_hide").click(function() {
+      $("#myModal #expList ul .file").toggle();
+      $('#hide').toggle();
+      $('#show').toggle();
+      $('#myModal #expList li .folder').toggleClass('toggled');
+    });
+  </script>
+</body>
+
 </html>

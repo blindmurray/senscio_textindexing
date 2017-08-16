@@ -45,7 +45,6 @@ public class Server_Socket {
 		String url = "jdbc:mysql://10.0.55.100:3306/";
         String username = "ibisua";
         String password = "ibisua";
-        String email = null;
         Class.forName("com.mysql.jdbc.Driver");
 		try {
 			ssock = new ServerSocket(port);
@@ -71,6 +70,7 @@ public class Server_Socket {
 						if(!line.isEmpty()){
 							//if the message is a search
 							if(json.getString("id").equals("search")){
+								String email = null;
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
@@ -95,7 +95,7 @@ public class Server_Socket {
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 					            
 					            String userName = (String) payLoad.get("name");
-					            email = payLoad.getEmail();
+					            String email = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
 					            //if it is a senscio email, save into database
@@ -124,6 +124,7 @@ public class Server_Socket {
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
+								String email = null;
 								JSONArray filepaths = json.getJSONArray("filepaths");
 								String pathnew = json.getString("path_new");
 								for(int x = 0; x< filepaths.length(); x++){
@@ -133,10 +134,14 @@ public class Server_Socket {
 									String filename = duplicateCheck(file.getName(), pathnew);
 									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename), StandardCopyOption.REPLACE_EXISTING);
 									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"), LuceneConstants.indexDir);
+									Connection conn = DriverManager.getConnection(url, username, password);
+									Statement st = conn.createStatement();
+									st.executeUpdate("INSERT INTO indexer.files (filepath, owner) VALUES ('" + filepath + "', '" + email + "');");
 								}
 								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
+								String email = null;
 								File file = new File(LuceneConstants.dataDir);
 								//writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html, email);
@@ -159,6 +164,7 @@ public class Server_Socket {
 								os.println(data);
 							}
 							else if(json.getString("id").equals("addFolder")){
+								String email = null;
 								String path = json.getString("filepaths");
 								System.out.println(path);
 								if(path.equals("")){

@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta charset="utf-8">
-      <title>mytest</title>
-      <link rel="stylesheet" type="text/css" href="css/style.css">
-      <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-      <script src="node_modules/requirejs/require.js"></script>
-      <script src="https://apis.google.com/js/api.js"></script>
-      <script src ="https://apis.google.com/js/client.js"></script>
 
-      <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
-   </head>
-   <body>
-      <div class="news">
-         <div class="nav">
-            <ul>
-               <li><a class="active" href="index.html">Home</a></li>
-               <li><a href="upload.html">Upload</a></li>
-               <li><a href="search.html">Search</a></li>
-               <li><a href="http://www.sensciosystems.com">Senscio</a></li>
-            </ul>
-         </div>
-         <!--div here-->
-         <br>
-            <span class="title">HOME PAGE</span>
-            <form action='login' method="POST">
-                <b>Username</b>
-                <input type="text" placeholder="Enter Username" name="uname" id = "user" required autocomplete="on">
-                <br>
-                <b>Password</b>
-                <input type="password" placeholder="Enter Password" name="psw" id = "pass" required><br>
-                <button type="submit" onclick="b2click()">Login</button><br>
-                
-                <!--<input type="checkbox" checked="checked"> Remember me<br>
-                <button type="button" class="cancelbtn">Cancel</button>
-                <span class="psw">Forgot password?</span>
-                <span class="psw"><a href="/newuser">Don't have an account? Make one now!</a></span>-->
-            </form>
-            <br>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            <a href="#" onclick="signOut();">Sign out</a>
+<head>
+  <meta charset="utf-8">
+  <title>mytest</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/requirejs/require.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://apis.google.com/js/client.js"></script>
+  <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
+</head>
 
-         <br> 
-      <div class="foot">
-         <p id="text">Senscio Systems, Inc.<br>
-            1740 Massachusetts Ave<br>
-            Boxborough, MA 01719<br>
-            (978) 635-9090
-         </p>
-      </div>
-     <script>
-     </script>
+<body>
+  <div class="news">
+    <div class="nav">
+      <ul>
+        <li><a class="active" href="index.html">Home</a></li>
+        <li><a href="upload.html">Upload</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li><a href="http://www.sensciosystems.com">Senscio</a></li>
+      </ul>
+    </div>
+    <br>
+    <span class="title">HOME PAGE</span>
+    <form action='login' method="POST">
+      <b>Username</b>
+      <input type="text" placeholder="Enter Username" name="uname" id="user" required autocomplete="on">
+      <br>
+      <b>Password</b>
+      <input type="password" placeholder="Enter Password" name="psw" id="pass" required><br>
+      <button type="submit" onclick="b2click()">Login</button><br>
+      <!--<input type="checkbox" checked="checked"> Remember me<br>
+         <button type="button" class="cancelbtn">Cancel</button>
+         <span class="psw">Forgot password?</span>
+         <span class="psw"><a href="/newuser">Don't have an account? Make one now!</a></span>-->
+    </form>
+    <br>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+    <br>
+    <div class="foot">
+      <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090
+      </p>
+    </div>
+    <script></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script type="text/javascript" src="index.js"></script>
+</body>
 
-
-      <script src="https://apis.google.com/js/platform.js" async defer></script>
-      <script type ="text/javascript" src = "index.js"></script>
-   </body>
 </html>
