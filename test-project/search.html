@@ -3,6 +3,17 @@
 
 <head>
   <meta charset="utf-8">
+   <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-XXXXX-Y', 'none');
+      ga('send', 'pageview');
+      ga(function(tracker) {
+        var clientId = tracker.get('clientId');
+        console.log(clientId);
+        // Logs the tracker created above to the console.
+        console.log(tracker);
+      });
+  </script>
   <title>mytest</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
