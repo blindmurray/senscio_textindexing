@@ -1,11 +1,9 @@
-/WordNet/
-/referenced_libraries/
 /test-project/
-/txt_index/
 /DirectoryReader.class
 /FixDirectory.class
 /IdTokenVerifierAndParser.class
 /Index.class
+/txt_index/
 /Indexer.class
 /LuceneConstants.class
 /Parse.class
