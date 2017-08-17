@@ -185,7 +185,6 @@ public class Server_Socket {
 					        	System.out.println(dir);
 								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
-					            System.out.println("Connecting database...");
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
 								String permissions = json.getString("permissions");
@@ -194,16 +193,24 @@ public class Server_Socket {
 								for(String e: per){
 									st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath LIKE '" + path + "%';");
 								}
-								os.println(tree);								
+								os.println(tree);	
+								conn.close();
 							}
 							else if(json.getString("id").equals("deleteFile")){
-								String idToken = json.getString("idtoken");
-								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
+								email = json.getString("email");
 								File file = new File (json.getString("filepath"));
-								if(DirectoryReader.checkEditPermission(file.getParent(), json.getString(email))){
+								if(DirectoryReader.checkEditPermission(file.getParent(), json.getString("email"))){
 									if(!file.isDirectory() || (file.isDirectory()&&file.list().length == 0)){
 										Path path = Paths.get(json.getString("filepath"));
 										Files.deleteIfExists(path);
+										Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
+										Statement st = conn.createStatement();
+										if(file.isDirectory()){
+											st.executeUpdate("DELETE FROM indexer.permissions WHERE folderpath = '" + path + "';");
+										}
+										else{
+											st.executeUpdate("DELETE FROM indexer.files WHERE filepath = '" + path + "';");
+										}
 										String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 										os.println(tree);
 									}
