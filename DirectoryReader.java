@@ -84,7 +84,6 @@ public class DirectoryReader {
 			Connection conn = DriverManager.getConnection(url, username, password);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
-			rs.absolute(1);
 			if(rs.absolute(1) && rs.getInt(email)>=1){
 				return true;
 			}

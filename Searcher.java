@@ -99,7 +99,8 @@ public class Searcher{
 			String[] exts = extensions.split("\\.");
 			for (ScoreDoc sd : foundDocs.scoreDocs) {
 				Document d = searcher.doc(sd.doc);
-				if((email == null && d.get(LuceneConstants.FILE_PATH).startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(d.get(LuceneConstants.FILE_PATH),email)){
+				File temp = new File(d.get(LuceneConstants.FILE_PATH));
+				if((email == null && temp.getPath().startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(temp.getParent(), email)){
 					for(String ext: exts){
 						if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
 							//if no dates specified
@@ -131,7 +132,8 @@ public class Searcher{
 		else{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
-				if((email == null && d.get(LuceneConstants.FILE_PATH).startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(d.get(LuceneConstants.FILE_PATH),email)){
+				File temp = new File(d.get(LuceneConstants.FILE_PATH));
+				if((email == null && temp.getPath().startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(temp.getParent(), email)){
 					if(dateFrom.length()==0 || dateTo.length()==0){
 						String s = changePath(d);
 						results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
@@ -202,24 +204,24 @@ public class Searcher{
 		return syns;
 	}
 	public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException{
-		if(path.startsWith(LuceneConstants.dataDir + "/Public")){
+		if(path.startsWith(LuceneConstants.dataDir + "/public")){
 			return true;
 		}
-		else{
+		else if(!email.isEmpty()){
 			String url = "jdbc:mysql://10.0.55.100:3306/";
 			String username = "ibisua";
 			String password = "ibisua";
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(url, username, password);
-			System.out.println("Connecting database...");
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery("SELECT " + email + " FROM indexer.permissions WHERE folderpath LIKE '" + path + "%'");
-			if(rs.getInt(1)==1){
+			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
+			if(rs.absolute(1) && rs.getInt(email)>=1){
 				return true;
 			}
 			else{
 				return false;
 			}
 		}
+		return false;
 	}
 }

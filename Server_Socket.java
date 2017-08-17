@@ -114,6 +114,7 @@ public class Server_Socket {
 						            } catch (SQLException e) {
 						                throw new IllegalStateException("Cannot connect the database!", e);
 						            }
+						            os.println(email);
 					            }
 					            else{
 					            	os.print("Not a Senscio email.");
