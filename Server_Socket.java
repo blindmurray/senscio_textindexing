@@ -68,8 +68,7 @@ public class Server_Socket {
 						if(!line.isEmpty()){
 							//if the message is a search
 							if(json.getString("id").equals("search")){
-								String idToken = json.getString("idtoken");
-								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
+								email = json.getString("email");
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
@@ -197,6 +196,8 @@ public class Server_Socket {
 								os.println(tree);								
 							}
 							else if(json.getString("id").equals("deleteFile")){
+								String idToken = json.getString("idtoken");
+								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
 								File file = new File (json.getString("filepath"));
 								if(DirectoryReader.checkEditPermission(file.getParent(), json.getString(email))){
 									if(!file.isDirectory() || (file.isDirectory()&&file.list().length == 0)){

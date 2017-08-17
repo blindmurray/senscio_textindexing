@@ -344,17 +344,41 @@ input#file {
  }
  /* Expanded state for list element
  /* NOTE: This class must be located UNDER the collapsed one */
- #myModal #expList li .expanded {
+ #repositoryTree li .expanded {
     list-style-image:url(../images/collapse.jpg);
     cursor: pointer;
  }
 
-
- 
- #myModal #expList {
- clear: both;
- height: 400px;
-    overflow: scroll;
+ #repositoryTree ul .file {
+    list-style-image:url(../images/file.jpg) ;
+}
+ #repositoryTree li .folder {
+    list-style-image:url(../images/folder.jpg) ;
+}
+ #repositoryTree li {
+    list-style-image:url(../images/folder.jpg);
+}
+ #repositoryTree li>span:hover {
+   font-weight: bold;    
+}
+ #repositoryTree li .folder.collapsed.toggled {
+    list-style-image:url(../images/folder.jpg) ;
+}
+ #repositoryTree li .folder.expanded.toggled{
+    list-style-image:url(../images/folder.jpg) ;
+}
+ #repositoryTree li .folder {
+    list-style-image:url(../images/folder.jpg) ;
+}
+ #repositoryTree li .collapsed {
+    list-style-image: url(../images/expand.jpg);
+    cursor: pointer;
+ }
+ /* Expanded state for list element
+ /* NOTE: This class must be located UNDER the collapsed one */
+  #repositoryTree li .expanded {
+    list-style-image:url(../images/collapse.jpg);
+    cursor: pointer;
  }
 
 .listControl{

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Upload</title>
+  <title>Repository</title>
 
   <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -15,11 +15,12 @@
   <link rel="shortcut icon" href="">
 </head>
 
-<body>
+<body onload="onPageLoad();"">
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a  href="upload.html">Upload</a></li>
+        <li><a class="active" href="respository.html">Repository</a></li>
+        <li><a href="upload.html">Upload</a></li>
         <li><a href="search.html">Search</a></li>
         <li><span id="account">My Account</span>
         <div id="myModal4" class="modal">
@@ -36,28 +37,13 @@
     </div>
     <br>
     <div>
-      <span class="title">Upload a Document</span>
-      <br>
-      <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
-        <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br>
-        <input type="button" id="myBtn" value="Choose Location">
-        <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span><br><br>
-        <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div>
-        <input type="submit" value="Submit">
-      </form>
-      <div id="myModal" class="modal">
-        <div class="modal-content">
           <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
           <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
                      <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
           <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span>
           <br><br>
-          <span id="tree"> </span>
-          <input type="button" value="Choose Location" onclick="onChooseLocation()">
-          <span class="closeBABA" id="closeA">&times;</span>
-        </div>
+          <div id = "repositoryTree"><span id="tree"> </span></div>
         <br>
-      </div>
       <div id="myModal2" class="modal2">
         <div class="modal-content2">
           <form action="addFolder" method="post">
@@ -85,68 +71,7 @@
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
   <script>
-    // $(function() {
-    //   var availableTags = [];
-    //   var json = {
-    //     "id": "autofillarray"
-    //   };
-    //   json = JSON.stringify(json);
-    //   //send folder to create path to nodejs
-    //   var xhr = ajax();
-    //   xhr.onload = function() {
-    //     if(xhr.readyState === 4 && xhr.status === 200) {
-    //       availableTags = xhr.responseText;
-    //       availableTags = JSON.parse(availableTags);
-    //       availableTags = availableTags.array;
-    //       prepareList();
-    //     } else {
-    //       alert("Error: " + xhr.responseText);
-    //     }
-    //   };
-    //   xhr.open("POST", "/", true);
-    //   xhr.setRequestHeader("Content-Type", "text/plain");
-    //   xhr.send(json);
-    //   console.dir(json);
 
-    //   function split(val) {
-    //     return val.split(/,\s*/);
-    //   }
-
-    //   function extractLast(term) {
-    //     return split(term).pop();
-    //   }
-    //   $("#tags")
-    //     // don't navigate away from the field on tab when selecting an item
-    //     .on("keydown", function(event) {
-    //       if(event.keyCode === $.ui.keyCode.TAB &&
-    //         $(this).autocomplete("instance").menu.active) {
-    //         event.preventDefault();
-    //       }
-    //     })
-    //     .autocomplete({
-    //       minLength: 0,
-    //       source: function(request, response) {
-    //         // delegate back to autocomplete, but extract the last term
-    //         response($.ui.autocomplete.filter(
-    //           availableTags, extractLast(request.term)));
-    //       },
-    //       focus: function() {
-    //         // prevent value inserted on focus
-    //         return false;
-    //       },
-    //       select: function(event, ui) {
-    //         var terms = split(this.value);
-    //         // remove the current input
-    //         terms.pop();
-    //         // add the selected item
-    //         terms.push(ui.item.value);
-    //         // add placeholder to get the comma-and-space at the end
-    //         terms.push("");
-    //         this.value = terms.join(", ");
-    //         return false;
-    //       }
-    //     });
-    // });
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -172,7 +97,7 @@
     //tree
     function prepareList() {
       "use strict";
-      $("#myModal #expList").find("li:has(ul)")
+      $("#repositoryTree").find("li:has(ul)")
         .click(function(event) {
           if(this == event.target) {
             $(this).toggleClass("collapsed");
@@ -235,10 +160,9 @@
 
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
+    
     //Choose Location: make tree
-    btn.onclick = function() {
-      "use strict";
-      modal.style.display = "block";
+   function onPageLoad() {
       var tree = {
         "id": "tree"
       };
@@ -259,14 +183,17 @@
       xhr.send(tree);
       console.dir(tree);
     };
+
     //Close button
     var span1 = document.getElementById("closeA");
     span1.onclick = function() {
       modal.style.display = "none";
     }
+    
     //Add a Folder functionality
     var folder = document.getElementById("addFolder");
     var modal2 = document.getElementById("myModal2");
+    
     //reveal textbox to enter folder name
     folder.onclick = function() {
       modal2.style.display = "block";
@@ -378,10 +305,10 @@
 }
 
     $("#show_hide").click(function() {
-      $("#myModal #expList ul .file").toggle();
+      $("#repositoryTree ul .file").toggle();
       $('#hide').toggle();
       $('#show').toggle();
-      $('#myModal #expList li .folder').toggleClass('toggled');
+      $('#repositoryTree li .folder').toggleClass('toggled');
     });
     
     </script>

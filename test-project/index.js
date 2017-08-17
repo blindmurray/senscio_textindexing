@@ -21,8 +21,11 @@ function ajax() {
 function b1click() {
   //when search button is clicked, sends all info thru ajax to nodejs
   "use strict";
-  var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-  var id_token = profile.getID();
+  var email = "";
+  if(gapi.auth2.getAuthInstance()){
+  var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()  //IF STATEMENT TO CHECK IF LOGGED IN FIRST
+    email = profile.getEmail();
+  } 
   var searchterm = document.getElementById("t1").value;
   var exten = document.getElementById("t2").value;
   var dateFrom = document.getElementById("t3").value;
@@ -36,7 +39,7 @@ function b1click() {
     "dateFrom": dateFrom,
     "dateTo": dateTo,
     "num": num,
-    "id_token": id_token
+    "email": email
   };
   search = JSON.stringify(search);
   var xhr = ajax();
@@ -51,7 +54,6 @@ function b1click() {
   xhr.setRequestHeader("Content-Type", "text/plain");
   xhr.send(search);
   console.dir(search);
-  xhr.end();
 }
 
 function onSignIn(googleUser) {
