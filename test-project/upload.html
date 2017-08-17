@@ -3,13 +3,15 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
-
   <title>Upload</title>
 
   <link rel="stylesheet" type="text/css" href="css/style.css">
-<!--   <script data-main="app/main" src="node_modules/requirejs/require.js"></script>  -->
-  <link rel="stylesheet" href="css/jquery-ui.css">
+
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/requirejs/require.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://apis.google.com/js/client.js"></script>
+  <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">  <link rel="stylesheet" href="css/jquery-ui.css">
   <link rel="shortcut icon" href="">
 </head>
 
@@ -17,11 +19,19 @@
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a class="active" href="upload.html">Upload</a></li>
+        <li><a  href="upload.html">Upload</a></li>
         <li><a href="search.html">Search</a></li>
-        <li><div class="g-signin2" data-onsuccess="onSignIn"></div></li>
-        <li><a href="#" onclick="signOut();">Sign out</a></li>
+        <li><span id="account">My Account</span>
+        <div id="myModal4" class="modal">
+        <div class="modal-content">
+          <span class="closeBABA" id="close6">&times;</span>
+          <div>Please Sign In With a Senscio Systems Email:</div>
+          <div id = "signIn3" class="g-signin2" data-onsuccess="onSignIn"></div>
+          <div>Please Sign Out Here:</div>
+          <div onclick="signOut();">Sign out</li></div>
+        </div>
+        </div>
+        </li>
       </ul>
     </div>
     <br>
@@ -74,7 +84,6 @@
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="index.js"></script>
   <script>
     // $(function() {
     //   var availableTags = [];
@@ -211,6 +220,19 @@
         return null;
       }
     }
+    var acc = document.getElementById("account")
+    var modal4 = document.getElementById("myModal4");
+
+    acc.onclick = function() {
+      "use strict";
+      modal4.style.display = "block";
+    };
+    var span4 = document.getElementById("close6");
+    span4.onclick = function() {
+      modal4.style.display = "none";
+    }
+
+
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
     //Choose Location: make tree
@@ -259,15 +281,17 @@
       }
     };
 
-    function addfolder() {
+
+    function addfolder(googleUser) {
       "use strict";
       modal2.style.display = "none";
       //retrieve folder path
+      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+      var id_token = profile.getID();
       var name = document.getElementById("addfoldername").value;
       var path = document.getElementById("pathtoadd").value;
-      var permissions = document.getElementById("tags").value;
       if(path == "") {
-        path = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/" + name;
+        path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/" + name;
       } else {
         path = path + "/" + name;
       }
@@ -275,7 +299,7 @@
         "id": "addFolder",
         "name": name,
         "filepaths": path,
-        "permissions": permissions
+        "id_token": id_token
       };
       folderjson = JSON.stringify(folderjson);
       //send folder to create path to nodejs
@@ -295,6 +319,12 @@
       xhr.send(folderjson);
       console.dir(folderjson);
     }
+    function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function() {
+    console.log('User signed out.');
+  });
+}
     
     $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
@@ -302,7 +332,8 @@
       $('#show').toggle();
       $('#myModal #expList li .folder').toggleClass('toggled');
     });
-  </script>
+    
+    </script>
 </body>
 
 </html>
