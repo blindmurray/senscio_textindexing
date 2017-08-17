@@ -14,8 +14,9 @@ public class DirectoryReader {
 	//constructs html ul from reading folder directory
 	public static String listFilesForFolder(File folder, String html, String email) throws ClassNotFoundException, SQLException {
 		for (File fileEntry : folder.listFiles()) {
+			System.out.println(fileEntry.getName() + fileEntry.isDirectory());
 			if(fileEntry.isDirectory()){
-				System.out.print(fileEntry.getName() + ((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))));
+				System.out.print(((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))));
 				System.out.println(checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden());
 			}
 			if((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))||(fileEntry.isDirectory() && checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden())){
@@ -26,13 +27,14 @@ public class DirectoryReader {
 							count++;
 						}
 					}
+					html += "<ul>";
 					if(count==0){
 						html += "<li class=\"folder\">" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
 					}
 					else{
 						html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
 					}
-					html += "<ul>";
+					
 					html = listFilesForFolder(fileEntry, html, email);
 					html+= "</li>";
 					html += "</ul>";
@@ -45,9 +47,25 @@ public class DirectoryReader {
 			}
 			else if(fileEntry.isDirectory() && !fileEntry.isHidden()){
 				for(File file : fileEntry.listFiles()){
-					if(file.isDirectory()){
+					if(file.isDirectory()&&checkPermission(file.getPath(), email)){
 						System.out.println("hello here" + file.getName());
+						int count = 0;
+						for(File f : file.listFiles()){
+							if(f.isDirectory()){
+								count++;
+							}
+						}
+						html += "<ul>";
+						if(count==0){
+							html += "<li class=\"folder\">" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + file.getPath() + "\">" + file.getName() + "</span>";
+						}
+						else{
+							html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + file.getPath() + "\">" + file.getName() + "</span>";
+						}
+						
 						html = listFilesForFolder(file, html, email);
+						html+= "</li>";
+						html += "</ul>";
 					}
 				}
 			}
@@ -67,7 +85,6 @@ public class DirectoryReader {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
 			rs.absolute(1);
-			System.out.println("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "': " + rs.getInt(email));
 			if(rs.absolute(1) && rs.getInt(email)>=1){
 				return true;
 			}
