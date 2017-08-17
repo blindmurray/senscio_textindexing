@@ -164,8 +164,7 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("addFolder")){
 								String path = json.getString("filepaths");
-								String idToken = json.getString("idtoken");
-								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
+								email = json.getString("email");
 								System.out.println(path);
 								if(path.equals("")){
 									 path = LuceneConstants.dataDir + "/" + json.getString("name");
@@ -189,12 +188,16 @@ public class Server_Socket {
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
 								String permissions = json.getString("permissions");
-								String[] per = permissions.split("\\s+");
-								
-								for(String e: per){
-									st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath LIKE '" + path + "%';");
+								System.out.println(permissions);
+								if(!permissions.equals("")){
+									String[] per = permissions.split("\\s+");
+									
+									for(String e: per){
+										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "'");
+										}
 								}
-								os.println(tree);								
+								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + path + "'");
+								os.println(tree);							
 							}
 							else if(json.getString("id").equals("deleteFile")){
 								String idToken = json.getString("idtoken");

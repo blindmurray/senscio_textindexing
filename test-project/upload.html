@@ -20,7 +20,7 @@
     <div class="nav">
       <ul>
         <li><a  href="respository.html">Repository</a></li>
-        <li><a  href="upload.html">Upload</a></li>
+        <li><a  class = "active" href="upload.html">Upload</a></li>
         <li><a href="search.html">Search</a></li>
         <li><span id="account">My Account</span>
         <div id="myModal4" class="modal">
@@ -86,69 +86,8 @@
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
   <script>
-    // $(function() {
-    //   var availableTags = [];
-    //   var json = {
-    //     "id": "autofillarray"
-    //   };
-    //   json = JSON.stringify(json);
-    //   //send folder to create path to nodejs
-    //   var xhr = ajax();
-    //   xhr.onload = function() {
-    //     if(xhr.readyState === 4 && xhr.status === 200) {
-    //       availableTags = xhr.responseText;
-    //       availableTags = JSON.parse(availableTags);
-    //       availableTags = availableTags.array;
-    //       prepareList();
-    //     } else {
-    //       alert("Error: " + xhr.responseText);
-    //     }
-    //   };
-    //   xhr.open("POST", "/", true);
-    //   xhr.setRequestHeader("Content-Type", "text/plain");
-    //   xhr.send(json);
-    //   console.dir(json);
-
-    //   function split(val) {
-    //     return val.split(/,\s*/);
-    //   }
-
-    //   function extractLast(term) {
-    //     return split(term).pop();
-    //   }
-    //   $("#tags")
-    //     // don't navigate away from the field on tab when selecting an item
-    //     .on("keydown", function(event) {
-    //       if(event.keyCode === $.ui.keyCode.TAB &&
-    //         $(this).autocomplete("instance").menu.active) {
-    //         event.preventDefault();
-    //       }
-    //     })
-    //     .autocomplete({
-    //       minLength: 0,
-    //       source: function(request, response) {
-    //         // delegate back to autocomplete, but extract the last term
-    //         response($.ui.autocomplete.filter(
-    //           availableTags, extractLast(request.term)));
-    //       },
-    //       focus: function() {
-    //         // prevent value inserted on focus
-    //         return false;
-    //       },
-    //       select: function(event, ui) {
-    //         var terms = split(this.value);
-    //         // remove the current input
-    //         terms.pop();
-    //         // add the selected item
-    //         terms.push(ui.item.value);
-    //         // add placeholder to get the comma-and-space at the end
-    //         terms.push("");
-    //         this.value = terms.join(", ");
-    //         return false;
-    //       }
-    //     });
-    // });
-    const dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
+    var email = "";
+    const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -309,17 +248,20 @@
       xhr.open("POST", "/", true);
       xhr.setRequestHeader("Content-Type", "text/plain");
       xhr.send(tree);
-      console.dir(tree);
+      console.dir(folderjson);
     };
 
     function addfolder(googleUser) {
       "use strict";
       modal2.style.display = "none";
       //retrieve folder path
+      if(gapi.auth2.getAuthInstance()){
       var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-      var id_token = profile.getID();
+      email = profile.getEmail();
+      }
       var name = document.getElementById("addfoldername").value;
       var path = document.getElementById("pathtoadd").value;
+      var permissions = document.getElementById("tags").value;
       if(path == "") {
         path = dataDir + name;
       } else {
@@ -329,7 +271,8 @@
         "id": "addFolder",
         "name": name,
         "filepaths": path,
-        "id_token": id_token
+        "email": email,
+        "permissions": permissions
       };
       folderjson = JSON.stringify(folderjson);
       //send folder to create path to nodejs
@@ -340,8 +283,6 @@
           modal.style.display = "block";
           document.getElementById("tree").innerHTML = xhr.responseText;
           prepareList();
-        } else {
-          alert("Error: " + xhr.responseText);
         }
       };
       xhr.open("POST", "/", true);
@@ -362,9 +303,7 @@
             document.getElementById("tree").innerHTML = xhr.responseText;
             prepareList();
           }
-        } else {
-          alert("Error: " + xhr.responseText);
-        }
+        } 
       };
       xhr.open("POST", "/", true);
       xhr.setRequestHeader("Content-Type", "text/plain");
@@ -378,7 +317,6 @@
     console.log('User signed out.');
   });
 }
-
     $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
       $('#hide').toggle();

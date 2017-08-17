@@ -45,9 +45,9 @@ public class Searcher{
 	public ArrayList<String> searchIndex(JSONObject json, String indexDir, String number, String email) throws Exception {
 
 		String searchString = json.getString("searchterm").toLowerCase();       //convert searchterm to lowercase
-		String[] terms = searchString.split(" ");                                                       //get individual words in searchString
-		String queryString = "";                                                                                        //use OR in parentheses for each term's synonyms
-		for (String term: terms){                                                                                       //find the synonyms
+		String[] terms = searchString.split(" ");                               //get individual words in searchString
+		String queryString = "";                                                //use OR in parentheses for each term's synonyms
+		for (String term: terms){                                               //find the synonyms
 			ArrayList<String> synonyms = synonymfind(term);
 			queryString += "(" + term;
 			if(synonyms.size()>0){
@@ -61,7 +61,7 @@ public class Searcher{
 		System.out.println(queryString);
 		String[] fields = {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME, LuceneConstants.FILE_TOKENS};
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();         //construct booleanquery
-		HashMap<String,Float> boosts = new HashMap<String,Float>();                     //assigns more weight/importance to titles
+		HashMap<String,Float> boosts = new HashMap<String,Float>();             //assigns more weight/importance to titles
 		boosts.put(LuceneConstants.CONTENTS, 1.0f);
 		boosts.put(LuceneConstants.FILE_NAME, 2.0f);
 		boosts.put(LuceneConstants.FILE_TOKENS, 2.5f);
@@ -71,8 +71,8 @@ public class Searcher{
 
 		Query query = qp.parse(queryString);
 		booleanQuery.add(query, BooleanClause.Occur.MUST);
-		IndexSearcher searcher = createSearcher(indexDir);                                      //Create Lucene searcher. It searches over a single IndexReader.
-		TopDocs found = searchInContent(searcher, booleanQuery, 20);    //Search indexed contents using search term
+		IndexSearcher searcher = createSearcher(indexDir);                      //Create Lucene searcher. It searches over a single IndexReader.
+		TopDocs found = searchInContent(searcher, booleanQuery, 20);    		//Search indexed contents using search term
 		TopDocs foundDocs;
 		if(number.equals("")){
 			foundDocs = searchInContent(searcher,booleanQuery, 20);
@@ -208,11 +208,8 @@ public class Searcher{
 			return true;
 		}
 		else if(!email.isEmpty()){
-			String url = "jdbc:mysql://10.0.55.100:3306/";
-			String username = "ibisua";
-			String password = "ibisua";
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(url, username, password);
+			Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
 			if(rs.absolute(1) && rs.getInt(email)>=1){
