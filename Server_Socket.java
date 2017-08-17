@@ -194,6 +194,23 @@ public class Server_Socket {
 								}
 								os.println(tree);								
 							}
+							else if(json.getString("id").equals("deleteFile")){
+								File file = new File (json.getString("filepath"));
+								if(DirectoryReader.checkEditPermission(file.getParent(), json.getString(email))){
+									if(!file.isDirectory() || (file.isDirectory()&&file.list().length == 0)){
+										Path path = Paths.get(json.getString("filepath"));
+										Files.deleteIfExists(path);
+										String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
+										os.println(tree);
+									}
+									else{
+										os.println("You can only delete a folder if it is empty");
+									}
+								}
+								else{
+									os.println("You do not have permission to delete this file.");
+								}
+							}
 						}
 						if (line.equals("bye")){ 
 							csock.close();	

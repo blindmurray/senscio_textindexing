@@ -29,7 +29,7 @@ public class DirectoryReader {
 					}
 					html += "<ul>";
 					if(count==0){
-						html += "<li class=\"folder\">" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
+						html += "<li class=\"folder\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
 					}
 					else{
 						html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
@@ -41,7 +41,7 @@ public class DirectoryReader {
 				}
 				
 				else if(!fileEntry.isHidden()){
-					html+= "<li class =\"file\">" +  fileEntry.getName() + "</li>";
+					html+= "<li class =\"file\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
 				}
 				
 			}
@@ -91,6 +91,40 @@ public class DirectoryReader {
 			else{
 				return false;
 			}
+		}
+	}
+	public static boolean checkEditPermission(String path, String email) throws ClassNotFoundException, SQLException{
+		if(path.startsWith(LuceneConstants.dataDir + "/public")){
+			return true;
+		}
+		else{
+			String url = "jdbc:mysql://10.0.55.100:3306/";
+			String username = "ibisua";
+			String password = "ibisua";
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(url, username, password);
+			Statement st = conn.createStatement();
+			File f = new File(path);
+			ResultSet rs;
+			if(f.isDirectory()){
+				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
+				if(rs.absolute(1) && rs.getInt(email)>=2){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.files WHERE `filepath` = '" + path + "'");
+				if(rs.absolute(1) && rs.getString("owner").equals(email)){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			
 		}
 	}
 }

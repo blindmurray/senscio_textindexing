@@ -295,7 +295,36 @@
       xhr.send(folderjson);
       console.dir(folderjson);
     }
-    
+    var deletebtn = document.getElementById("deletefile");
+    deletebtn.onclick(function{
+      var path = document.getElementById("pathtoadd").value;
+      var folderjson = {
+        "id": "deleteFile",
+        "filepath": path,
+        "email": email
+      };
+      folderjson = JSON.stringify(folderjson);
+      var xhr = ajax();
+      xhr.onload = function() {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+          if((xhr.responseText).startsWith("Y")){
+            alert(xhr.responseText);
+          }
+          else {
+            alert("File Deleted!");
+            modal.style.display = "block";
+            document.getElementById("tree").innerHTML = xhr.responseText;
+            prepareList();
+          }
+        } else {
+          alert("Error: " + xhr.responseText);
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(folderjson);
+      console.dir(folderjson);
+    });
     $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
       $('#hide').toggle();
