@@ -192,7 +192,7 @@ public class Server_Socket {
 									String[] per = permissions.split("\\s+");
 									
 									for(String e: per){
-										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "';");
+										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 2 WHERE folderpath = '" + path + "';");
 										}
 								}
 
@@ -204,7 +204,12 @@ public class Server_Socket {
 							else if(json.getString("id").equals("deleteFile")){
 								email = json.getString("email");
 								File file = new File (json.getString("filepath"));
-								if(DirectoryReader.checkEditPermission(file.getParent(), json.getString("email"))){
+								System.out.println(file.getParent() + "!!!!!!");
+								
+								if(json.getString("email").equals("")){
+									os.println("You do not have permission to delete this file.");
+								}
+								else if(DirectoryReader.checkEditPermission(file.getPath(), json.getString("email"))){
 									if(!file.isDirectory() || (file.isDirectory()&&file.list().length == 0)){
 										Path path = Paths.get(json.getString("filepath"));
 										Files.deleteIfExists(path);
@@ -220,7 +225,7 @@ public class Server_Socket {
 										os.println(tree);
 									}
 									else{
-										os.println("You can only delete a folder if it is empty");
+										os.println("You can only delete a folder if it is empty.");
 									}
 								}
 								else{

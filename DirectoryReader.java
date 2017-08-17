@@ -6,11 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DirectoryReader {
-	public static void main(String[] args) throws Exception {
-		String html = "<ul id=\"expList\">";
-		html = listFilesForFolder(new File(LuceneConstants.dataDir), html, "michelle@sensciosystems.com");
-		System.out.println(html);
-	}
 	//constructs html ul from reading folder directory
 	public static String listFilesForFolder(File folder, String html, String email) throws ClassNotFoundException, SQLException {
 		for (File fileEntry : folder.listFiles()) {
@@ -77,11 +72,8 @@ public class DirectoryReader {
 			return true;
 		}
 		else if(!email.isEmpty()){
-			String url = "jdbc:mysql://10.0.55.100:3306/";
-			String username = "ibisua";
-			String password = "ibisua";
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(url, username, password);
+			Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
 			if(rs.absolute(1) && rs.getInt(email)>=1){
@@ -97,18 +89,20 @@ public class DirectoryReader {
 		if(path.startsWith(LuceneConstants.dataDir + "/public")){
 			return true;
 		}
+		else if(email.equals("")){
+			return false;
+		}
 		else{
-			String url = "jdbc:mysql://10.0.55.100:3306/";
-			String username = "ibisua";
-			String password = "ibisua";
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(url, username, password);
+			Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 			Statement st = conn.createStatement();
 			File f = new File(path);
 			ResultSet rs;
 			if(f.isDirectory()){
 				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
-				if(rs.absolute(1) && rs.getInt(email)>=2){
+				rs.absolute(1);
+				System.out.println(rs.getInt(email));
+				if(rs.absolute(1) && rs.getInt(email)==2){
 					return true;
 				}
 				else{
@@ -116,7 +110,7 @@ public class DirectoryReader {
 				}
 			}
 			else{
-				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.files WHERE `filepath` = '" + path + "'");
+				rs = st.executeQuery("SELECT `owner` FROM indexer.files WHERE `filepath` = '" + path + "'");
 				if(rs.absolute(1) && rs.getString("owner").equals(email)){
 					return true;
 				}

@@ -51,12 +51,9 @@ public class FixDirectory {
 		String url = "jdbc:mysql://10.0.55.100:3306/";
 		String username = "ibisua";
 		String password = "ibisua";
+		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection(url, username, password);
 		Statement st = conn.createStatement();
-
-		Class.forName("com.mysql.jdbc.Driver");
-
-
 		//Check for file type and call appropriate method to convert the file.
 		for (File f: files) {
 			System.out.println(f.getName());

@@ -229,8 +229,10 @@
     var deletebtn = document.getElementById("deletefile");
       
     deletebtn.onclick = function(){
-      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-      var email = profile.getEmail();
+      if(gapi.auth2.getAuthInstance()){
+        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        email = profile.getEmail();
+      }
       console.log(email);
       var path = document.getElementById("pathtoadd").value;
       var folderjson = {
@@ -249,8 +251,8 @@
             }
             else{
               alert("Deleted!");
-            document.getElementById("tree").innerHTML = xhr.responseText;
-            prepareList();
+              document.getElementById("tree").innerHTML = xhr.responseText;
+              prepareList();
             }
           } else {
             alert("Error: " + xhr.responseText);
