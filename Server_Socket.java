@@ -141,6 +141,7 @@ public class Server_Socket {
 								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
+								email = json.getString("email");
 								File file = new File(LuceneConstants.dataDir);
 								//writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html, email);

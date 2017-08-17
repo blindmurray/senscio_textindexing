@@ -87,7 +87,7 @@
   <script src="jquery-3.2.1.min.js"></script>
   <script>
     var email = "";
-    const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
+    const dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -180,10 +180,15 @@
     btn.onclick = function() {
       "use strict";
       modal.style.display = "block";
+      if(gapi.auth2.getAuthInstance()){
+      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        email = profile.getEmail();
+      }
       var tree = {
-        "id": "tree"
+        "id": "tree",
+        "email": email
       };
-      tree = JSON.stringify(tree);
+      var json = JSON.stringify(tree);
       var xhr = ajax();
       xhr.onload = function() {
         if(xhr.readyState === 4) {
@@ -197,8 +202,7 @@
       };
       xhr.open("POST", "/", true);
       xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(tree);
-      console.dir(tree);
+      xhr.send(json);
     };
     //Close button
     var span1 = document.getElementById("closeA");
@@ -283,7 +287,7 @@
         "email": email,
         "permissions": permissions
       };
-      folderjson = JSON.stringify(folderjson);
+      var json = JSON.stringify(folderjson);
       //send folder to create path to nodejs
       var xhr = ajax();
       xhr.onload = function() {
@@ -296,28 +300,7 @@
       };
       xhr.open("POST", "/", true);
       xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(folderjson);
-      console.dir(folderjson);
-    
-      folderjson = JSON.stringify(folderjson);
-      var xhr = ajax();
-      xhr.onload = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-          if((xhr.responseText).startsWith("Y")){
-            alert(xhr.responseText);
-          }
-          else {
-            alert("File Deleted!");
-            modal.style.display = "block";
-            document.getElementById("tree").innerHTML = xhr.responseText;
-            prepareList();
-          }
-        } 
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(folderjson);
-      console.dir(folderjson);
+      xhr.send(json);
     };
 
     function signOut() {
