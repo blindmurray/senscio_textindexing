@@ -183,7 +183,6 @@ public class Server_Socket {
 					        	dir = Files.createDirectory(dir);
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
-								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
@@ -193,11 +192,12 @@ public class Server_Socket {
 									String[] per = permissions.split("\\s+");
 									
 									for(String e: per){
-										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "'");
+										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "';");
 										}
 								}
 
-								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + path + "'");
+								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + path + "';");
+								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 								os.println(tree);							
 								conn.close();
 							}
