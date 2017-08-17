@@ -40,6 +40,7 @@ function b1click() {
     "dateTo": dateTo,
     "num": num,
     "email": email
+
   };
   search = JSON.stringify(search);
   var xhr = ajax();
