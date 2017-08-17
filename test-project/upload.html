@@ -8,7 +8,7 @@
   <title>Upload</title>
 
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script data-main="app/main" src="node_modules/requirejs/require.js"></script> 
+<!--   <script data-main="app/main" src="node_modules/requirejs/require.js"></script>  -->
   <link rel="stylesheet" href="css/jquery-ui.css">
   <link rel="shortcut icon" href="">
 </head>
@@ -38,9 +38,10 @@
       <div id="myModal" class="modal">
         <div class="modal-content">
           <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
-          <br><br>
           <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
                      <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
+          <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span>
+          <br><br>
           <span id="tree"> </span>
           <input type="button" value="Choose Location" onclick="onChooseLocation()">
           <span class="closeBABA" id="closeA">&times;</span>
@@ -72,70 +73,71 @@
     </p>
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
-    $(function() {
-      var availableTags = [];
-      var json = {
-        "id": "autofillarray"
-      };
-      json = JSON.stringify(json);
-      //send folder to create path to nodejs
-      var xhr = ajax();
-      xhr.onload = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-          availableTags = xhr.responseText;
-          availableTags = JSON.parse(availableTags);
-          availableTags = availableTags.array;
-          prepareList();
-        } else {
-          alert("Error: " + xhr.responseText);
-        }
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(json);
-      console.dir(json);
+    // $(function() {
+    //   var availableTags = [];
+    //   var json = {
+    //     "id": "autofillarray"
+    //   };
+    //   json = JSON.stringify(json);
+    //   //send folder to create path to nodejs
+    //   var xhr = ajax();
+    //   xhr.onload = function() {
+    //     if(xhr.readyState === 4 && xhr.status === 200) {
+    //       availableTags = xhr.responseText;
+    //       availableTags = JSON.parse(availableTags);
+    //       availableTags = availableTags.array;
+    //       prepareList();
+    //     } else {
+    //       alert("Error: " + xhr.responseText);
+    //     }
+    //   };
+    //   xhr.open("POST", "/", true);
+    //   xhr.setRequestHeader("Content-Type", "text/plain");
+    //   xhr.send(json);
+    //   console.dir(json);
 
-      function split(val) {
-        return val.split(/,\s*/);
-      }
+    //   function split(val) {
+    //     return val.split(/,\s*/);
+    //   }
 
-      function extractLast(term) {
-        return split(term).pop();
-      }
-      $("#tags")
-        // don't navigate away from the field on tab when selecting an item
-        .on("keydown", function(event) {
-          if(event.keyCode === $.ui.keyCode.TAB &&
-            $(this).autocomplete("instance").menu.active) {
-            event.preventDefault();
-          }
-        })
-        .autocomplete({
-          minLength: 0,
-          source: function(request, response) {
-            // delegate back to autocomplete, but extract the last term
-            response($.ui.autocomplete.filter(
-              availableTags, extractLast(request.term)));
-          },
-          focus: function() {
-            // prevent value inserted on focus
-            return false;
-          },
-          select: function(event, ui) {
-            var terms = split(this.value);
-            // remove the current input
-            terms.pop();
-            // add the selected item
-            terms.push(ui.item.value);
-            // add placeholder to get the comma-and-space at the end
-            terms.push("");
-            this.value = terms.join(", ");
-            return false;
-          }
-        });
-    });
+    //   function extractLast(term) {
+    //     return split(term).pop();
+    //   }
+    //   $("#tags")
+    //     // don't navigate away from the field on tab when selecting an item
+    //     .on("keydown", function(event) {
+    //       if(event.keyCode === $.ui.keyCode.TAB &&
+    //         $(this).autocomplete("instance").menu.active) {
+    //         event.preventDefault();
+    //       }
+    //     })
+    //     .autocomplete({
+    //       minLength: 0,
+    //       source: function(request, response) {
+    //         // delegate back to autocomplete, but extract the last term
+    //         response($.ui.autocomplete.filter(
+    //           availableTags, extractLast(request.term)));
+    //       },
+    //       focus: function() {
+    //         // prevent value inserted on focus
+    //         return false;
+    //       },
+    //       select: function(event, ui) {
+    //         var terms = split(this.value);
+    //         // remove the current input
+    //         terms.pop();
+    //         // add the selected item
+    //         terms.push(ui.item.value);
+    //         // add placeholder to get the comma-and-space at the end
+    //         terms.push("");
+    //         this.value = terms.join(", ");
+    //         return false;
+    //       }
+    //     });
+    // });
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -293,6 +295,7 @@
       xhr.send(folderjson);
       console.dir(folderjson);
     }
+    
     $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
       $('#hide').toggle();

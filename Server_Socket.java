@@ -68,9 +68,9 @@ public class Server_Socket {
 						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
+							String email = "michelle@sensciosystems.com";
 							//if the message is a search
 							if(json.getString("id").equals("search")){
-								String email = null;
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
@@ -95,7 +95,7 @@ public class Server_Socket {
 					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 					            
 					            String userName = (String) payLoad.get("name");
-					            String email = payLoad.getEmail();
+					            email = payLoad.getEmail();
 					            System.out.println("User name: " + userName);
 					            System.out.println("User email: " + email);
 					            //if it is a senscio email, save into database
@@ -124,7 +124,6 @@ public class Server_Socket {
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
-								String email = null;
 								JSONArray filepaths = json.getJSONArray("filepaths");
 								String pathnew = json.getString("path_new");
 								for(int x = 0; x< filepaths.length(); x++){
@@ -141,7 +140,6 @@ public class Server_Socket {
 								os.println("Indexed!");
 							}
 							else if(json.getString("id").equals("tree")){
-								String email = null;
 								File file = new File(LuceneConstants.dataDir);
 								//writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html, email);
@@ -164,7 +162,7 @@ public class Server_Socket {
 								os.println(data);
 							}
 							else if(json.getString("id").equals("addFolder")){
-								String email = null;
+								
 								String path = json.getString("filepaths");
 								System.out.println(path);
 								if(path.equals("")){

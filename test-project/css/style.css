@@ -272,6 +272,10 @@ input#file {
     cursor: pointer;
 }
 
+
+.buttons_upload {
+	width: 33%;
+}
 .buttons_upload {
     color: #aaaaaa;
     float: right;

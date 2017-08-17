@@ -93,7 +93,7 @@ public class Searcher{
 		String dateFrom = json.getString("dateFrom").replace("-", "");
 		String dateTo = json.getString("dateTo").replace("-", "");
 		String extensions = json.getString("exten");
-
+		
 		//only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
