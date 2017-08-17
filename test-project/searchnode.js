@@ -3,6 +3,7 @@ var http = require("http");
 var url = require("url");
 var fs = require("fs-extra");
 var util = require("util");
+const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
 var svr = http.createServer(requesthandler);
 svr.listen(8888);
 var formidable = require("formidable");
@@ -126,7 +127,7 @@ function requesthandler(request, response) {
           var f = file.name;
           var oldpath = file.path;
           var dup = false;
-          var npath = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/Temporary/" + f;
+          var npath = dataDir + f;
           //get all filepaths
           saved.filepaths.push(npath);
           fs.rename(oldpath, npath, function(err) {

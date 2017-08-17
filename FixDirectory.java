@@ -58,16 +58,22 @@ public class FixDirectory {
 
 
 		//Check for file type and call appropriate method to convert the file.
-		for (int i = 0; i < files.length; i++) {
-			File f = files[i];
+		for (File f: files) {
+			System.out.println(f.getName());
 			if (f.isDirectory()){
 				ResultSet rs = st.executeQuery("SELECT * FROM indexer.permissions WHERE folderpath = '" + f.getPath() + "'");
 				if(!rs.first()){
 					st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + f.getPath() + "');");
-					readToSQL(f.getPath());
 				}
 				rs.close();
-
+				readToSQL(f.getPath());
+			}
+			else{
+				ResultSet rs = st.executeQuery("SELECT * FROM indexer.files WHERE filepath = '" + f.getPath() + "'");
+				if(!rs.first()){
+					st.executeUpdate("INSERT INTO indexer.files (`filepath`) VALUES ('" + f.getPath() + "');");
+				}
+				rs.close();
 			}
 		}
 		conn.close();

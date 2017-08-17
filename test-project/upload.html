@@ -147,6 +147,7 @@
     //       }
     //     });
     // });
+    const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -319,7 +320,7 @@
       var name = document.getElementById("addfoldername").value;
       var path = document.getElementById("pathtoadd").value;
       if(path == "") {
-        path = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/" + name;
+        path = dataDir + name;
       } else {
         path = path + "/" + name;
       }
