@@ -2,22 +2,33 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
+  <meta charset = "utf-8">
   <title>mytest</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script data-main="main" src="node_modules/requirejs/require.js"></script> 
-  <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
-</head>
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/requirejs/require.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="https://apis.google.com/js/client.js"></script>
+  <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com"></head>
 
 <body>
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a class="active" href="upload.html">Upload</a></li>
+        <li><a  href="upload.html">Upload</a></li>
         <li><a href="search.html">Search</a></li>
-        <li><div class="g-signin2" data-onsuccess="onSignIn"></div></li>
-        <li><a href="#" onclick="signOut();">Sign out</a></li>
+        <li><span id="account">My Account</span>
+         <li><span id="account">My Account</span>
+        <div id="myModal4" class="modal">
+        <div class="modal-content">
+          <span class="closeBABA" id="close6">&times;</span>
+          <div>Please Sign In With a Senscio Systems Email:</div>
+          <div id = "signIn3" class="g-signin2" data-onsuccess="onSignIn"></div>
+          <div>Please Sign Out Here:</div>
+          <div onclick="signOut();">Sign out</li></div>
+        </div>
+        </div>
+        </li>
       </ul>
     </div>
     <br>
@@ -44,6 +55,19 @@
   </div>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type="text/javascript" src="index.js"></script>
+    <script>
+    var acc = document.getElementById("account")
+    var modal4 = document.getElementById("myModal4");
+
+    acc.onclick = function() {
+      "use strict";
+      modal4.style.display = "block";
+    };
+    var span4 = document.getElementById("close6");
+    span4.onclick = function() {
+      modal4.style.display = "none";
+    }
+    </script>
 </body>
 
 </html>

@@ -42,9 +42,7 @@ public class Server_Socket {
 	static String html = "<ul id=\"expList\">";
 
 	public static void main(String[] args) throws Exception {
-		String url = "jdbc:mysql://10.0.55.100:3306/";
-        String username = "ibisua";
-        String password = "ibisua";
+		
         Class.forName("com.mysql.jdbc.Driver");
 		try {
 			ssock = new ServerSocket(port);
@@ -59,7 +57,7 @@ public class Server_Socket {
 					os = new PrintStream(csock.getOutputStream());
 					ArrayList<String> stuff = new ArrayList<String>();
 					String message = "";
-					
+					String email = "";
 					//listen for message from node.js
 					while(true){
 						//tries to read message
@@ -68,9 +66,10 @@ public class Server_Socket {
 						JSONObject json = new JSONObject(line);
 						//if there is a message, check what kind of message 
 						if(!line.isEmpty()){
-							String email = "michelle@sensciosystems.com";
 							//if the message is a search
 							if(json.getString("id").equals("search")){
+								String idToken = json.getString("idtoken");
+								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
 								try {  			
 									//Call Searcher class to search for the string
 									Searcher s = new Searcher();
@@ -88,7 +87,7 @@ public class Server_Socket {
 								System.out.println("Search Results" + "\n"+ message);
 							}
 							else if(json.getString("id").equals("signIn")){
-								Connection conn = DriverManager.getConnection(url, username, password);
+								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 					            System.out.println("Connecting database...");
 					            String idToken = json.getString("idtoken");
 					            System.out.println(idToken.length());
@@ -125,6 +124,8 @@ public class Server_Socket {
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
 								JSONArray filepaths = json.getJSONArray("filepaths");
+								String idToken = json.getString("idtoken");
+								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
 								String pathnew = json.getString("path_new");
 								for(int x = 0; x< filepaths.length(); x++){
 									//for each file, check for duplicates, then move to destination folder and add to index
@@ -133,7 +134,7 @@ public class Server_Socket {
 									String filename = duplicateCheck(file.getName(), pathnew);
 									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename), StandardCopyOption.REPLACE_EXISTING);
 									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"), LuceneConstants.indexDir);
-									Connection conn = DriverManager.getConnection(url, username, password);
+									Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 									Statement st = conn.createStatement();
 									st.executeUpdate("INSERT INTO indexer.files (filepath, owner) VALUES ('" + filepath + "', '" + email + "');");
 								}
@@ -148,7 +149,7 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("autofillarray")){
 								JSONObject array = new JSONObject();
-								Connection conn = DriverManager.getConnection(url, username, password);
+								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 								Statement st = conn.createStatement();
 								ResultSet rs = st.executeQuery("SELECT `email` FROM indexer.account;");
 								ArrayList<String> al = new ArrayList<String>();
@@ -162,8 +163,9 @@ public class Server_Socket {
 								os.println(data);
 							}
 							else if(json.getString("id").equals("addFolder")){
-								
 								String path = json.getString("filepaths");
+								String idToken = json.getString("idtoken");
+								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
 								System.out.println(path);
 								if(path.equals("")){
 									 path = LuceneConstants.dataDir + "/" + json.getString("name");
@@ -182,7 +184,7 @@ public class Server_Socket {
 							    //redo tree so that user can see new folder
 					        	System.out.println(dir);
 								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
-								Connection conn = DriverManager.getConnection(url, username, password);
+								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 					            System.out.println("Connecting database...");
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");

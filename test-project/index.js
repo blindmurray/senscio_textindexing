@@ -21,6 +21,8 @@ function ajax() {
 function b1click() {
   //when search button is clicked, sends all info thru ajax to nodejs
   "use strict";
+  var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+  var id_token = profile.getID();
   var searchterm = document.getElementById("t1").value;
   var exten = document.getElementById("t2").value;
   var dateFrom = document.getElementById("t3").value;
@@ -33,7 +35,8 @@ function b1click() {
     "exten": exten,
     "dateFrom": dateFrom,
     "dateTo": dateTo,
-    "num": num
+    "num": num,
+    "id_token": id_token
   };
   search = JSON.stringify(search);
   var xhr = ajax();

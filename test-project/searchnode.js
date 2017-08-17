@@ -110,11 +110,16 @@ function requesthandler(request, response) {
         if(!Array.isArray(filearray)) {
           filearray = [filearray];
         }
+        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        var id_token = profile.getID();
+        var name = document.getElementById("addfoldername").value;
+        var path = document.getElementById("pathtoadd").value;
         var saved = {
           "id": "upload",
           "filepaths": [],
           "path_new": newthing,
-          "terms": fields.keyterms
+          "terms": fields.keyterms,
+          "id_token": id_token
         };
         filearray = filearray.map(function(file) {
           //save all files in temporary folder
@@ -168,23 +173,3 @@ var client = net.connect({
   });
 });
 console.log("sending...");
-const GoogleAuth = require('google-auth-library');
-const Auth = new GoogleAuth();
-const oauth = new Auth.OAuth2('953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com', 'XmMSaeVM6IsROwf3Xzgn3Ioa');
-const acceptableISSs = new Set(
-  ['accounts.google.com', 'https://accounts.google.com']);
-const validateToken = (token) => {
-  return new Promise((resolve, reject) => {
-    if(!token) {
-      reject();
-    }
-    oauth.verifyIdToken(token, null, (err, ticket) => {
-      if(err) {
-        return reject(err);
-      }
-      const payload = ticket.getPayload();
-      const tokenIsOK = payload && payload.aud === authData.web.client_id && new Date(payload.exp * 1000) > new Date() && acceptableISSs.has(payload.iss) && payload.hd === 'sensciosystems.com';
-      return tokenIsOK ? resolve() : reject();
-    });
-  });
-};

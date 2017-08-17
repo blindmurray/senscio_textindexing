@@ -76,7 +76,7 @@ public class DirectoryReader {
 		if(path.startsWith(LuceneConstants.dataDir + "/public")){
 			return true;
 		}
-		else{
+		else if(!email.isEmpty()){
 			String url = "jdbc:mysql://10.0.55.100:3306/";
 			String username = "ibisua";
 			String password = "ibisua";
@@ -92,6 +92,7 @@ public class DirectoryReader {
 				return false;
 			}
 		}
+		return false;
 	}
 	public static boolean checkEditPermission(String path, String email) throws ClassNotFoundException, SQLException{
 		if(path.startsWith(LuceneConstants.dataDir + "/public")){
