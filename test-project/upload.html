@@ -36,7 +36,9 @@
     <div> <span class="title">Upload a Document</span> <br>
       <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
         <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br> <input type="button" id="myBtn" value="Choose Location"> <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span><br><br>
-        <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div> <input type="submit" value="Submit"> </form>
+        <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div> 
+        <input type="hidden" id="email" name="email" value="">
+        <input type="submit" value="Submit"> </form>
       <div id="myModal" class="modal">
         <div class="modal-content"> 
           <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span><span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
@@ -150,6 +152,7 @@
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
+      document.getElementById("email").value = email;
       var tree = {
         "id": "tree",
         "email": email

@@ -113,16 +113,12 @@ function requesthandler(request, response) {
       if(!Array.isArray(filearray)) {
         filearray = [filearray];
       }
-      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-      var id_token = profile.getID();
-      var name = document.getElementById("addfoldername").value;
-      var path = document.getElementById("pathtoadd").value;
       var saved = {
         "id": "upload",
         "filepaths": [],
         "path_new": newthing,
         "terms": fields.keyterms,
-        "id_token": id_token
+        "email": fields.email
       };
       filearray = filearray.map(function (file) {
         //save all files in temporary folder
