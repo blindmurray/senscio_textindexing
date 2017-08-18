@@ -40,9 +40,9 @@
       <div id="myModal5" class="modal">
           <div class="modal-content"> <span class="closeBABA" id="close7">&times;</span>
             <div>Share Access With:</div>
-            <input type="text" value="@sensciosystems" name= "include">
+            <input type="text" id="include">
             <div>Remove Access From:</div>
-            <input type="text" value="@sensciosystems" name= "exclude">
+            <input type="text" id="exclude">
             <input type="button" id="s" value="Submit" onclick="shareClick()">
           </div>
         </div>
@@ -169,17 +169,19 @@
       }
       var include = document.getElementById("include").value;
       var exclude = document.getElementById("exclude").value;
+      var path = document.getElementById("pathtoadd").value;
       var share = {
         "id": "share",
         "include": include,
         "exclude": exclude,
-        "email": email
+        "email": email,
+        "path": path
       };
       share = JSON.stringify(share);
       var xhr = ajax();
       xhr.onload = function () {
         if(xhr.readyState === 4 && xhr.status === 200) {
-          alert("Success!");
+          alert("Permissions changed!");
         }
         else {
           alert("Error: " + xhr.responseText);
@@ -187,8 +189,7 @@
       };
       xhr.open("POST", "/", true);
       xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(search);
-      console.dir(search);
+      xhr.send(share);
     }
 
 

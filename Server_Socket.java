@@ -189,13 +189,38 @@ public class Server_Socket {
 									String[] per = permissions.split("\\s+");
 
 									for(String e: per){
-										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 2 WHERE folderpath = '" + path + "';");
+										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "';");
 									}
 								}
-
-								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + path + "';");
+								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 2 WHERE folderpath = '" + path + "';");
 								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
 								os.println(tree);							
+								conn.close();
+							}
+							else if(json.getString("id").equals("share")){
+								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
+								Statement st = conn.createStatement();
+								if(DirectoryReader.checkEditPermission(json.getString("path"), json.getString("email"))){
+									String[] exclude = json.getString("exclude").split("\\s+");
+									for(String e: exclude){
+										ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + e + "';");
+										if(rs.next()){
+											st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 0 WHERE folderpath = '" + json.getString("path") + "';");
+										}
+									}
+									String[] include = json.getString("include").split("\\s+");
+									for(String e: include){
+										ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + e + "';");
+										if(rs.next()){
+										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + json.getString("path") + "';");
+										}
+									}
+									st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 2 WHERE folderpath = '" + json.getString("path") + "';");
+									os.println("Permissions changed!");
+								}
+								else{
+									os.println("You do not have permission to share this folder.");
+								}
 								conn.close();
 							}
 							else if(json.getString("id").equals("deleteFile")){
