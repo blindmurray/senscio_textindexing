@@ -10,11 +10,6 @@ public class DirectoryReader {
 	public static String listFilesForFolder(File folder, String html, String email)
 			throws ClassNotFoundException, SQLException {
 		for (File fileEntry : folder.listFiles()) {
-			System.out.println(fileEntry.getName() + fileEntry.isDirectory());
-			if (fileEntry.isDirectory()) {
-				System.out.print(((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))));
-				System.out.println(checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden());
-			}
 			if ((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public")) || (fileEntry.isDirectory()
 					&& checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden())) {
 				if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
@@ -32,7 +27,7 @@ public class DirectoryReader {
 						html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">"
 								+ fileEntry.getName() + "</span>";
 					}
-
+					System.out.println(fileEntry.getName());
 					html = listFilesForFolder(fileEntry, html, email);
 					html += "</li>";
 					html += "</ul>";
@@ -59,7 +54,6 @@ public class DirectoryReader {
 			} else if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
 				for (File file : fileEntry.listFiles()) {
 					if (file.isDirectory() && checkPermission(file.getPath(), email)) {
-						System.out.println("hello here" + file.getName());
 						int count = 0;
 						for (File f : file.listFiles()) {
 							if (f.isDirectory()) {
@@ -88,11 +82,6 @@ public class DirectoryReader {
 	public static String listFilesForFolderR(File folder, String html, String email)
 			throws ClassNotFoundException, SQLException {
 		for (File fileEntry : folder.listFiles()) {
-			System.out.println(fileEntry.getName() + fileEntry.isDirectory());
-			if (fileEntry.isDirectory()) {
-				System.out.print(((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))));
-				System.out.println(checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden());
-			}
 			if ((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public")) || (fileEntry.isDirectory()
 					&& checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden())) {
 				if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
@@ -137,7 +126,6 @@ public class DirectoryReader {
 			} else if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
 				for (File file : fileEntry.listFiles()) {
 					if (file.isDirectory() && checkPermission(file.getPath(), email)) {
-						System.out.println("hello here" + file.getName());
 						int count = 0;
 						for (File f : file.listFiles()) {
 							if (f.isDirectory()) {
@@ -152,7 +140,7 @@ public class DirectoryReader {
 							html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + file.getPath() + "\">"
 									+ file.getName() + "</span>";
 						}
-
+						System.out.println(file.getName());
 						html = listFilesForFolderR(file, html, email);
 						html += "</li>";
 						html += "</ul>";
@@ -171,11 +159,13 @@ public class DirectoryReader {
 			Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username,
 					LuceneConstants.password);
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery(
-					"SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
+			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "';");
+			rs.absolute(1);
 			if (rs.absolute(1) && rs.getInt(email) >= 1) {
+				System.out.println(path + true);
 				return true;
 			} else {
+				System.out.println(path + false);
 				return false;
 			}
 		}
@@ -191,6 +181,7 @@ public class DirectoryReader {
 					LuceneConstants.password);
 			Statement st = conn.createStatement();
 			File f = new File(path);
+			System.out.print(f.getName());
 			ResultSet rs;
 			if (f.isDirectory()) {
 				rs = st.executeQuery(
@@ -198,8 +189,10 @@ public class DirectoryReader {
 				rs.absolute(1);
 				System.out.println(rs.getInt(email));
 				if (rs.absolute(1) && rs.getInt(email) == 2) {
+					System.out.println(1);
 					return true;
 				} else {
+					System.out.println(2);
 					return false;
 				}
 			} else {
@@ -208,11 +201,14 @@ public class DirectoryReader {
 				String owner = rs.getString("owner");
 				if (owner != null) {
 					if (rs.absolute(1) && rs.getString("owner").equals(email)) {
+						System.out.println(3);
 						return true;
 					} else {
+						System.out.println(4);
 						return false;
 					}
 				}
+				System.out.println(5);
 				return false;
 			}
 		}

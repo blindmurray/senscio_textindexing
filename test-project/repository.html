@@ -260,8 +260,13 @@
     var perbtn = document.getElementById("viewpermissions");
     perbtn.onclick = function() {
         //when view permissions is clicked, ask java for list of users
+
         var path = document.getElementById("pathtoadd").value;
-        var folderjson = {
+        if(path.startsWith(dataDir + "public")){
+          alert("Everyone has access to this folder.");
+        }
+        else{
+           var folderjson = {
           "id": "viewpermissions",
           "path": oldId
         };
@@ -280,6 +285,7 @@
         xhr.open("POST", "/", true);
         xhr.setRequestHeader("Content-Type", "text/plain");
         xhr.send(folderjson);
+        }
       }
       //get user email and path to check permission and delete file
     var deletebtn = document.getElementById("deletefile");

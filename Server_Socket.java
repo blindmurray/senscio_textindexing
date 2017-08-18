@@ -80,26 +80,20 @@ public class Server_Socket {
 								// send results back to node.js
 								os.println(message);
 								line = "";
-								System.out.println("Search Results" + "\n" + message);
 							}
 							// adds user to database
 							else if (json.getString("id").equals("signIn")) {
 								Connection conn = DriverManager.getConnection(LuceneConstants.url,
 										LuceneConstants.username, LuceneConstants.password);
-								System.out.println("Connecting database...");
 								String idToken = json.getString("idtoken");
-								System.out.println(idToken.length());
 								GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 
 								String userName = (String) payLoad.get("name");
 								email = payLoad.getEmail();
-								System.out.println("User name: " + userName);
-								System.out.println("User email: " + email);
 								// if it is a senscio email, save into database
 								if (email.length() > 19
 										&& email.substring(email.length() - 19).equals("@sensciosystems.com")) {
 									try {
-										System.out.println("Database connected!");
 										Statement st = conn.createStatement();
 										ResultSet rs = st.executeQuery(
 												"SELECT * FROM indexer.account WHERE email = '" + email + "';");
@@ -181,19 +175,16 @@ public class Server_Socket {
 											path = path.replace(c, '_');
 										}
 									}
-									System.out.println("renamed");
 									Path dir = Paths.get(path);
 									// creates folder
 									dir = Files.createDirectory(dir);
 									// redo tree so that user can see new folder
-									System.out.println(dir);
 									Connection conn = DriverManager.getConnection(LuceneConstants.url,
 											LuceneConstants.username, LuceneConstants.password);
 									Statement st = conn.createStatement();
 									st.executeUpdate(
 											"INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
 									String permissions = json.getString("permissions");
-									System.out.println(permissions);
 									if (!permissions.equals("")) {
 										String[] per = permissions.split("\\s+");
 										for (String e : per) {

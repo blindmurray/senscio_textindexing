@@ -241,8 +241,8 @@
       var name = document.getElementById("addfoldername").value;
       var path = document.getElementById("pathtoadd3").value;
       var permissions = document.getElementById("tags").value;
-      if (path == "") {
-        path = dataDir;
+      if (path == "" || path == "No Path Selected") {
+        path = dataDir.substring(0, dataDir.length - 1);
       }
       console.log(path);
       console.log(name);
