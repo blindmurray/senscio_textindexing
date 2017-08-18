@@ -46,6 +46,8 @@
             <input type="button" id="s" value="Submit" onclick="shareClick()">
           </div>
         </div>
+      <span class="buttons_upload" id="viewpermissions">
+        <img src="/images/viewpermissions.jpg"> View Permissions</span><br>
       <span class="buttons_upload" id="show_hide">
         <img src = /images/show_hide.jpg>
         <span id="hide">Hide All Files</span>
@@ -229,6 +231,29 @@
     }
     //Add a Folder functionality
     var modal2 = document.getElementById("myModal2");
+    var perbtn = document.getElementById("viewpermissions");
+    perbtn.onclick = function() {
+      var path = document.getElementById("pathtoadd").value;
+      var folderjson = {
+        "id": "viewpermissions",
+        "path": path,
+      };
+      folderjson = JSON.stringify(folderjson);
+      var xhr = ajax();
+      xhr.onload = function () {
+        if(xhr.readyState === 4) {
+          if(xhr.status === 200) {
+              alert(xhr.responseText);
+          }
+          else {
+            alert("Error: " + xhr.responseText);
+          }
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(folderjson);
+    }
     //reveal textbox to enter folder name
     var deletebtn = document.getElementById("deletefile");
     deletebtn.onclick = function () {

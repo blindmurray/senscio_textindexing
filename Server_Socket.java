@@ -197,10 +197,33 @@ public class Server_Socket {
 								os.println(tree);							
 								conn.close();
 							}
+							else if(json.getString("id").equals("viewpermissions")){
+								File f = new File(json.getString("path"));
+								String path = json.getString("path");
+								if(!f.isDirectory()){
+									path = f.getParent();
+								}
+								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
+								Statement st = conn.createStatement();
+								ResultSet rs = st.executeQuery("SELECT * FROM indexer.permissions WHERE folderpath = '" + path + "';");
+								ResultSetMetaData metadata = rs.getMetaData();
+								int columnCount = metadata.getColumnCount();
+								rs.first();
+								String html = "The following people have access to " + f.getName() + ":\n";
+								for(int x = 3; x<=columnCount; x++){
+									if(rs.getInt(columnCount) >=1){
+										html += metadata.getColumnName(x) + "\n";
+									}
+								}
+								os.println(html);
+							}
 							else if(json.getString("id").equals("share")){
 								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 								Statement st = conn.createStatement();
-								if(DirectoryReader.checkEditPermission(json.getString("path"), json.getString("email"))){
+								if(!new File(json.getString("path")).isDirectory()){
+									os.println("You cannot share a file.");
+								}
+								else if(DirectoryReader.checkEditPermission(json.getString("path"), json.getString("email"))){
 									String[] exclude = json.getString("exclude").split("\\s+");
 									for(String e: exclude){
 										ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + e + "';");
