@@ -65,7 +65,7 @@
       <div id="myModal2" class="modal2">
         <div class="modal-content2">
           <form action="addFolder" method="post">
-            <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
+            <input type="hidden" name="path" value="" id="pathtoadd3" class="path_to_add">
             <div>Name of Folder:
               <input id="addfoldername" type="text" name="name">
             </div>
@@ -92,15 +92,15 @@
   <script>
     var email = "";
     const dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
-    var oldId = "No Path Selected";
+    var oldId = "/73/2/*";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
         "use strict";
         var el = document.getElementById(clicked_ID);
-        document.getElementById("pathtoadd").value = clicked_ID;
+        document.getElementById("pathtoadd3").value = clicked_ID;
         el.style.fontWeight = "bold";
         el.classList.add("checked");
-        if (oldId !== "No Path Selected") {
+        if (oldId !== "/73/2/*") {
           var p = document.getElementById(oldId);
           p.style.fontWeight = "normal";
           p.classList.remove("checked");
@@ -239,14 +239,13 @@
         email = profile.getEmail();
       }
       var name = document.getElementById("addfoldername").value;
-      var path = document.getElementById("pathtoadd").value;
+      var path = document.getElementById("pathtoadd3").value;
       var permissions = document.getElementById("tags").value;
       if (path == "") {
-        path = dataDir + name;
+        path = dataDir;
       }
-      else {
-        path = path + "/" + name;
-      }
+      console.log(path);
+      console.log(name);
       var folderjson = {
         "id": "addFolder",
         "name": name,
@@ -264,8 +263,8 @@
           }
           else {
             alert("Folder Created!");
-            modal.style.display = "none";
             document.getElementById("tree").innerHTML = xhr.responseText;
+            modal.style.display = "block";
             prepareList();
           }
         }

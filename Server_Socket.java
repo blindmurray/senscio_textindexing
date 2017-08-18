@@ -169,6 +169,7 @@ public class Server_Socket {
 								if (!new File(path).isDirectory()) {
 									os.println("You cannot create a folder under a file.");
 								} else {
+									path += "/" + json.getString("name");
 									email = json.getString("email");
 									if (path.equals("")) {
 										path = LuceneConstants.dataDir + "/" + json.getString("name");
