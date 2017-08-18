@@ -48,11 +48,8 @@ public class FixDirectory {
 	}
 	public static String readToSQL(String dir) throws SQLException, ClassNotFoundException{
 		File[] files = new File(dir).listFiles();
-		String url = "jdbc:mysql://10.0.55.100:3306/";
-		String username = "ibisua";
-		String password = "ibisua";
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = DriverManager.getConnection(url, username, password);
+		Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 		Statement st = conn.createStatement();
 		//Check for file type and call appropriate method to convert the file.
 		for (File f: files) {
