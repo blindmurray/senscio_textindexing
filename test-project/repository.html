@@ -49,6 +49,7 @@
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="index.js"></script>
   <script>
     var email = "";
     var oldId = "No Path Selected";
@@ -134,6 +135,7 @@
     }
     //Choose Location: make tree
     function onPageLoad() {
+
       if(gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
