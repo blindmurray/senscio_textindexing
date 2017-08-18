@@ -123,8 +123,7 @@ public class Server_Socket {
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
 								JSONArray filepaths = json.getJSONArray("filepaths");
-								String idToken = json.getString("idtoken");
-								email = IdTokenVerifierAndParser.getVerifiedEmail(idToken);
+								email = json.getString("email");
 								String pathnew = json.getString("path_new");
 								for(int x = 0; x< filepaths.length(); x++){
 									//for each file, check for duplicates, then move to destination folder and add to index
