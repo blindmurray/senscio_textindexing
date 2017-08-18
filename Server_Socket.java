@@ -1,16 +1,15 @@
 /* different types of queries (phrase, etc)
  * try tomcat server connect directly to javascript
  * add instructions for search
- 	* don't use punctuation 
- 	* search for key words only
- 	* if using extensions, list with periods, NO SPACES
- 	* maybe use drop down menu instead for extensions
+ * don't use punctuation 
+ * search for key words only
+ * if using extensions, list with periods, NO SPACES
+ * maybe use drop down menu instead for extensions
  * spellcheck
  * give option for exact phrase search (use quotes??)
  * at some point, go through and add try catches so the program keeps running in case of error
  * alert if only one date entered, or if first is after second
  * search by created date
- * put in metadata key words when uploading (who uploaded, upload date)
  * folder permissions
  * plurals (stemming), reindex with word stems
  * scanned documents
@@ -42,8 +41,8 @@ public class Server_Socket {
 	static String html = "<ul id=\"expList\">";
 
 	public static void main(String[] args) throws Exception {
-		
-        Class.forName("com.mysql.jdbc.Driver");
+
+		Class.forName("com.mysql.jdbc.Driver");
 		try {
 			ssock = new ServerSocket(port);
 			System.out.println("SockServer waiting for connections on 1221...");
@@ -87,38 +86,38 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("signIn")){
 								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
-					            System.out.println("Connecting database...");
-					            String idToken = json.getString("idtoken");
-					            System.out.println(idToken.length());
-					            GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
-					            
-					            String userName = (String) payLoad.get("name");
-					            email = payLoad.getEmail();
-					            System.out.println("User name: " + userName);
-					            System.out.println("User email: " + email);
-					            //if it is a senscio email, save into database
-					            if(email.length()>19 && email.substring(email.length()-19).equals("@sensciosystems.com")){
-						            try{
-						            	System.out.println("Database connected!");
-						                Statement st = conn.createStatement();
-						                ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + email + "';");
-						                if(!rs.first()){
-						                	st.executeUpdate("ALTER TABLE indexer.permissions ADD `" + email + "` TINYINT(1) NOT NULL DEFAULT 0;");
-						                	st.executeUpdate("INSERT INTO indexer.account (email, name) VALUES ('" + email + "', '" + userName + "');");; 
-						                	st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath LIKE '" + LuceneConstants.dataDir + "/Public%';");
-						                	os.println("done");
-						                }
-						                rs.close();
-						                
+								System.out.println("Connecting database...");
+								String idToken = json.getString("idtoken");
+								System.out.println(idToken.length());
+								GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 
-						            } catch (SQLException e) {
-						                throw new IllegalStateException("Cannot connect the database!", e);
-						            }
-					            }
-					            else{
-					            	os.print("Not a Senscio email.");
-					            }
-					            conn.close();
+								String userName = (String) payLoad.get("name");
+								email = payLoad.getEmail();
+								System.out.println("User name: " + userName);
+								System.out.println("User email: " + email);
+								//if it is a senscio email, save into database
+								if(email.length()>19 && email.substring(email.length()-19).equals("@sensciosystems.com")){
+									try{
+										System.out.println("Database connected!");
+										Statement st = conn.createStatement();
+										ResultSet rs = st.executeQuery("SELECT * FROM indexer.account WHERE email = '" + email + "';");
+										if(!rs.first()){
+											st.executeUpdate("ALTER TABLE indexer.permissions ADD `" + email + "` TINYINT(1) NOT NULL DEFAULT 0;");
+											st.executeUpdate("INSERT INTO indexer.account (email, name) VALUES ('" + email + "', '" + userName + "');");; 
+											st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath LIKE '" + LuceneConstants.dataDir + "/Public%';");
+											os.println("done");
+										}
+										rs.close();
+
+
+									} catch (SQLException e) {
+										throw new IllegalStateException("Cannot connect the database!", e);
+									}
+								}
+								else{
+									os.print("Not a Senscio email.");
+								}
+								conn.close();
 							}
 							//if there was a file upload
 							else if(json.getString("id").equals("upload")){
@@ -166,21 +165,21 @@ public class Server_Socket {
 								email = json.getString("email");
 								System.out.println(path);
 								if(path.equals("")){
-									 path = LuceneConstants.dataDir + "/" + json.getString("name");
+									path = LuceneConstants.dataDir + "/" + json.getString("name");
 								}
 								//replace spaces with underscores
-					        	for (int j = 0; j < path.length(); j++){
-					       		    char c = path.charAt(j);        
-					       		    if(c == ' '){
-					       		    	path = path.replace(c, '_');
-					       		    }
-					      		}
-					        	System.out.println("renamed");
-					        	Path dir = Paths.get(path);
-					        	//creates folder
-					        	dir = Files.createDirectory(dir);
-							    //redo tree so that user can see new folder
-					        	System.out.println(dir);
+								for (int j = 0; j < path.length(); j++){
+									char c = path.charAt(j);        
+									if(c == ' '){
+										path = path.replace(c, '_');
+									}
+								}
+								System.out.println("renamed");
+								Path dir = Paths.get(path);
+								//creates folder
+								dir = Files.createDirectory(dir);
+								//redo tree so that user can see new folder
+								System.out.println(dir);
 								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
 								Statement st = conn.createStatement();
 								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
@@ -188,10 +187,10 @@ public class Server_Socket {
 								System.out.println(permissions);
 								if(!permissions.equals("")){
 									String[] per = permissions.split("\\s+");
-									
+
 									for(String e: per){
 										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 2 WHERE folderpath = '" + path + "';");
-										}
+									}
 								}
 
 								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 1 WHERE folderpath = '" + path + "';");
@@ -215,6 +214,7 @@ public class Server_Socket {
 											st.executeUpdate("DELETE FROM indexer.permissions WHERE folderpath = '" + path + "';");
 										}
 										else{
+											Indexer.deleteIndex(file.getPath());
 											st.executeUpdate("DELETE FROM indexer.files WHERE filepath = '" + path + "';");
 										}
 										String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
@@ -256,7 +256,7 @@ public class Server_Socket {
 					check = false;
 				}
 			}
-		//returns filename if no duplicates
+			//returns filename if no duplicates
 			if (check){
 				return filename;
 			}
@@ -274,20 +274,20 @@ public class Server_Socket {
 		f = f.substring(0, f.length()-ext.length()-1);
 		if(f.contains("(")){
 			String noparen = f.substring(0, f.length() - 1);
-		    String[] vnum = noparen.split("(");
-		    String vnum2 = vnum[vnum.length-1];
-		    int vint;
-		        try { 
-		        	vint = Integer.parseInt(vnum2);
-		        } catch(NumberFormatException e) { 
-		        	return f + "(1)" + ext;
-		        } catch(NullPointerException e) {
-		        	return f + "(1)" + ext;
-		        }
-		        vint++;
-		        String newname = noparen.substring(0, noparen.length()-vnum2.length()) + "(" + vint + ")." + ext;
-		        return newname;
-		    }
+			String[] vnum = noparen.split("(");
+			String vnum2 = vnum[vnum.length-1];
+			int vint;
+			try { 
+				vint = Integer.parseInt(vnum2);
+			} catch(NumberFormatException e) { 
+				return f + "(1)" + ext;
+			} catch(NullPointerException e) {
+				return f + "(1)" + ext;
+			}
+			vint++;
+			String newname = noparen.substring(0, noparen.length()-vnum2.length()) + "(" + vint + ")." + ext;
+			return newname;
+		}
 		else{
 			return f + "(1)." + ext;
 		}
