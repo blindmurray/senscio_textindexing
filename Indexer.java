@@ -208,7 +208,7 @@ public class Indexer {
 		Document document = getDocument(newFile, tokens, oldFile); //call getDocument method
 		writer.addDocument(document); //adds document to indexWriter
 	}
-	public static void indexFileNot(File newFile, File oldFile ) throws IOException {
+	public static void indexFileNot(File newFile, File oldFile) throws IOException {
 		System.out.println("Indexing "+ oldFile.getCanonicalPath());
 		Document document = getDocumentNot(newFile, oldFile); //call getDocument method
 		writer.addDocument(document); //adds document to indexWriter

@@ -1,19 +1,16 @@
 /* different types of queries (phrase, etc)
  * try tomcat server connect directly to javascript
  * add instructions for search
- * don't use punctuation 
+ * don't use punctuation
  * search for key words only
  * if using extensions, list with periods, NO SPACES
- * maybe use drop down menu instead for extensions
+ * emails to share: list with spaces only inbetween
  * spellcheck
  * give option for exact phrase search (use quotes??)
  * at some point, go through and add try catches so the program keeps running in case of error
  * alert if only one date entered, or if first is after second
- * search by created date
- * folder permissions
  * plurals (stemming), reindex with word stems
  * scanned documents
- * comment searchnode code
  */
 import java.io.*;
 import java.net.*;

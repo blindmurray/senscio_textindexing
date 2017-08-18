@@ -64,7 +64,7 @@ public class Searcher{
 		HashMap<String,Float> boosts = new HashMap<String,Float>();             //assigns more weight/importance to titles
 		boosts.put(LuceneConstants.CONTENTS, 1.0f);
 		boosts.put(LuceneConstants.FILE_NAME, 2.0f);
-		boosts.put(LuceneConstants.FILE_TOKENS, 2.5f);
+		boosts.put(LuceneConstants.FILE_TOKENS, 2.0f);
 
 		//multifieldqueryparser in order to search in title and contents of files
 		MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, new StandardAnalyzer(), boosts);
