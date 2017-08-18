@@ -157,6 +157,12 @@ public class Server_Socket {
 								// return to nodejs
 								os.println(tree);
 							}
+							else if (json.getString("id").equals("download")) {
+								String file = json.getString("path");
+								StringBuffer sBuffer = new StringBuffer(file);
+								String str= sBuffer.toString().replace(LuceneConstants.dataDir, "/files");
+								os.println(str);
+							}
 							// creates folder and adds to database
 							else if (json.getString("id").equals("addFolder")) {
 								String path = json.getString("filepaths");

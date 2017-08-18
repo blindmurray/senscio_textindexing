@@ -42,14 +42,15 @@
           <div>Remove Access From:</div>
           <input type="text" id="exclude">
           <input type="button" id="s" value="Submit" onclick="shareClick()"> </div>
-      </div> <span class="buttons_upload" id="viewpermissions">
-        <img src="/images/viewpermissions.jpg"> View Permissions</span>
-      <br> <span class="buttons_upload" id="show_hide">
-        <img src = /images/show_hide.jpg>
-        <span id="hide">Hide All Files</span> <span id="show" style="display:none">Show All Files</span> </span> <span class="buttons_upload" id="deletefile">
-        <img src="/images/delete.jpg"> Delete a File</span>
+      </div>
+      <span class="buttons_upload" id="viewpermissions"><img src="/images/viewpermissions.jpg"> View Permissions</span>
+      <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
+        <span id="hide">Hide All Files</span> 
+        <span id="show" style="display:none">Show All Files</span> 
+      </span>
+      <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span><input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
+      <span class="buttons_upload" id="downloading"><img src="/images/download.jpg"> Download File</span>
       <br>
-      <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
       <div id="repositoryTree"><span id="tree">Loading...</span> </div>
       <br> </div>
   </div>
@@ -66,7 +67,7 @@
   <script>
     var email = "";
     var oldId = "No Path Selected";
-    var dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
+    var dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
         "use strict";
@@ -81,7 +82,32 @@
         }
         oldId = clicked_ID;
       }
-      //shows chosenfolder after button click
+    
+    var download = document.getElementById("downloading");
+    
+    download.onclick = function(){
+      "use strict";
+      var filePath = document.getElementById("pathtoadd").value;
+      var downloadPath = {
+          "id": "download",
+          "path": filePath
+        };
+        downloadPath = JSON.stringify(downloadPath);
+        var xhr = ajax();
+        var responding = "";
+        xhr.onload = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Downloading!")
+            window.location = xhr.responseText;
+          }
+          else {
+            alert("Error: " + xhr.responseText);
+          }
+        };
+        xhr.open("POST", responding, true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.send(downloadPath);
+      }
     function onChooseLocation() {
         "use strict";
         document.getElementById("chosenFolder").value = oldId;
@@ -237,7 +263,7 @@
         var path = document.getElementById("pathtoadd").value;
         var folderjson = {
           "id": "viewpermissions",
-          "path": path,
+          "path": oldId
         };
         folderjson = JSON.stringify(folderjson);
         var xhr = ajax();

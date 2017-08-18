@@ -84,6 +84,84 @@ public class DirectoryReader {
 		}
 		return html;
 	}
+	
+	public static String listFilesForFolderR(File folder, String html, String email)
+			throws ClassNotFoundException, SQLException {
+		for (File fileEntry : folder.listFiles()) {
+			System.out.println(fileEntry.getName() + fileEntry.isDirectory());
+			if (fileEntry.isDirectory()) {
+				System.out.print(((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public"))));
+				System.out.println(checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden());
+			}
+			if ((fileEntry.toString().startsWith(LuceneConstants.dataDir + "/public")) || (fileEntry.isDirectory()
+					&& checkPermission(fileEntry.getPath(), email) && !fileEntry.isHidden())) {
+				if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
+					int count = 0;
+					for (File file : fileEntry.listFiles()) {
+						if (file.isDirectory()) {
+							count++;
+						}
+					}
+					html += "<ul>";
+					if (count == 0) {
+						html += "<li class=\"folder\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span>";
+					} else {
+						html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">"
+								+ fileEntry.getName() + "</span>";
+					}
+
+					html = listFilesForFolderR(fileEntry, html, email);
+					html += "</li>";
+					html += "</ul>";
+				}
+
+				else if (!fileEntry.isHidden()) {
+					if (TXT.getExtension(fileEntry.toString()).equals("mp3|aac|mpeg|aiff|wav|mpg")) {
+						html += "<li class =\"audio\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					} else if (TXT.getExtension(fileEntry.toString()).equals("rar|zip")) {
+						html += "<li class =\"compressed\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					} else if (TXT.getExtension(fileEntry.toString()).equals("jpg|jpeg|png|gif")) {
+						html += "<li class =\"img\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					} else if (TXT.getExtension(fileEntry.toString()).equals("mp4|mv|mpg|mpeg|mpeg2|avi")) {
+						html += "<li class =\"video\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					} else {
+						html += "<li class =\"file\"><span onclick=\"triggerSelect(this.id)\" id= \""
+								+ fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
+				}
+			} else if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
+				for (File file : fileEntry.listFiles()) {
+					if (file.isDirectory() && checkPermission(file.getPath(), email)) {
+						System.out.println("hello here" + file.getName());
+						int count = 0;
+						for (File f : file.listFiles()) {
+							if (f.isDirectory()) {
+								count++;
+							}
+						}
+						html += "<ul>";
+						if (count == 0) {
+							html += "<li class=\"folder\">" + "<span onclick=\"triggerSelect(this.id)\" id= \""
+									+ file.getPath() + "\">" + file.getName() + "</span>";
+						} else {
+							html += "<li>" + "<span onclick=\"triggerSelect(this.id)\" id= \"" + file.getPath() + "\">"
+									+ file.getName() + "</span>";
+						}
+
+						html = listFilesForFolderR(file, html, email);
+						html += "</li>";
+						html += "</ul>";
+					}
+				}
+			}
+		}
+		return html;
+	}
 
 	public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException {
 		if (path.startsWith(LuceneConstants.dataDir + "/public")) {
