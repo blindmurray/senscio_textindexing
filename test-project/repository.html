@@ -31,17 +31,19 @@
         </li>
       </ul>
     </div> <br>
-    <div> <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span> <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
-                     <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span> <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span> <br><br>
+    <div>
+      <span class="buttons_upload" id="show_hide">
+        <img src = /images/show_hide.jpg>
+        <span id="hide">Hide All Files</span>
+        <span id="show" style="display:none">Show All Files</span>
+      </span>
+      <span class="buttons_upload" id="deletefile">
+        <img src="/images/delete.jpg"> Delete a File</span><br><br>
+      <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
       <div id="repositoryTree"><span id="tree"> </span></div> <br>
-      <div id="myModal2" class="modal2">
-        <div class="modal-content2">
-          <form action="addFolder" method="post"> <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
-            <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
-            <div>Who Can See This Folder: <input id="tags" type="text"></div> <input type="button" value="Add Folder" onclick="addfolder()"> <span class="closeBABA" id="closeB">&times;</span> </form>
-        </div> <br> </div>
     </div>
-  </div> <br> <br>
+  </div>
+  <br><br>
   <div class="foot">
     <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090 </p>
   </div>
@@ -74,7 +76,7 @@
     //tree
     function prepareList() {
       "use strict";
-      $("#repositoryTree").find("li:has(ul)").click(function(event) {
+      $("#repositoryTree").find("li:has(ul)").click(function (event) {
         if(this == event.target) {
           $(this).toggleClass("collapsed");
           $(this).toggleClass("expanded");
@@ -83,15 +85,15 @@
         return false;
       }).addClass("collapsed").children("ul").hide();
       //Hack to add links inside the cv
-      $("#expList a").unbind("click").click(function() {
+      $("#expList a").unbind("click").click(function () {
         window.open($(this).attr("href"));
         return false;
       });
       //Create the button funtionality
-      $("#expandList").unbind("click").click(function() {
+      $("#expandList").unbind("click").click(function () {
         $(".collapsed").children("ul").show("medium");
       });
-      $("#collapseList").unbind("click").click(function() {
+      $("#collapseList").unbind("click").click(function () {
         $(".expanded").children("ul").hide("medium");
       });
     }
@@ -122,12 +124,12 @@
     }
     var acc = document.getElementById("account")
     var modal4 = document.getElementById("myModal4");
-    acc.onclick = function() {
+    acc.onclick = function () {
       "use strict";
       modal4.style.display = "block";
     };
     var span4 = document.getElementById("close6");
-    span4.onclick = function() {
+    span4.onclick = function () {
       modal4.style.display = "none";
     }
     //Choose Location: make tree
@@ -142,7 +144,7 @@
       };
       var json = JSON.stringify(tree);
       var xhr = ajax();
-      xhr.onload = function() {
+      xhr.onload = function () {
         if(xhr.readyState === 4) {
           if(xhr.status === 200) {
             document.getElementById("tree").innerHTML = xhr.responseText;
@@ -158,18 +160,10 @@
       xhr.send(json);
     }
     //Add a Folder functionality
-    var folder = document.getElementById("addFolder");
     var modal2 = document.getElementById("myModal2");
     //reveal textbox to enter folder name
-    folder.onclick = function() {
-      modal2.style.display = "block";
-    };
-    var span2 = document.getElementById("closeB");
-    span2.onclick = function() {
-      modal2.style.display = "none";
-    };
     var deletebtn = document.getElementById("deletefile");
-    deletebtn.onclick = function() {
+    deletebtn.onclick = function () {
       if(gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
@@ -183,7 +177,7 @@
       };
       folderjson = JSON.stringify(folderjson);
       var xhr = ajax();
-      xhr.onload = function() {
+      xhr.onload = function () {
         if(xhr.readyState === 4) {
           if(xhr.status === 200) {
             if((xhr.responseText).startsWith("Y")) {
@@ -207,11 +201,11 @@
 
     function signOut() {
       var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function() {
+      auth2.signOut().then(function () {
         console.log('User signed out.');
       });
     }
-    $("#show_hide").click(function() {
+    $("#show_hide").click(function () {
       $("#repositoryTree ul .file").toggle();
       $('#hide').toggle();
       $('#show').toggle();
@@ -219,5 +213,4 @@
     });
   </script>
 </body>
-
 </html>
