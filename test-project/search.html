@@ -15,9 +15,12 @@
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a href="repository.html">Repository</a></li>
-        <li><a href="upload.html">Upload</a></li>
-        <li><a class="active" href="search.html">Search</a></li>
+        <li><a href="repository.html">Repository</a>
+        </li>
+        <li><a href="upload.html">Upload</a>
+        </li>
+        <li><a class="active" href="search.html">Search</a>
+        </li>
         <li><span id="account">My Account</span>
           <div id="myModal4" class="modal">
             <div class="modal-content"> <span class="closeBABA" id="close6">&times;</span>
@@ -25,38 +28,54 @@
               <div id="signIn3" class="g-signin2" data-onsuccess="onSignIn"></div>
               <div>Please Sign Out Here:</div>
               <div onclick="signOut();">Sign out</div>
-          </div>
+            </div>
           </div>
         </li>
       </ul>
     </div>
-    <br> 
-    <span class="title">Search</span> <br> <br>
+    <br> <span class="title">Search</span>
+    <br>
+    <br>
     <div class="c1">
-      <div>Term(s): <input type="text" id="t1" class="v1" required></div>
-      <div>Extension(s): <input type='text' id="t2"></div>
-      <div>Date (last modified): <input type="date" id="t3" placeholder="mm/dd/yyyy"> to <input type="date" id="t4" placeholder="mm/dd/yyyy"> </div>
-      <div>Number of Hits: <input type="number" id="t8" placeholder="# of results"></div> <br> <input type="button" id="b1" value="Search" onclick="b1click()"> <br>
+      <div>Term(s):
+        <input type="text" id="t1" class="v1" required>
+      </div>
+      <div>Extension(s):
+        <input type='text' id="t2">
+      </div>
+      <div>Date (last modified):
+        <input type="date" id="t3" placeholder="mm/dd/yyyy"> to
+        <input type="date" id="t4" placeholder="mm/dd/yyyy"> </div>
+      <div>Number of Hits:
+        <input type="number" id="t8" placeholder="# of results">
+      </div>
+      <br>
+      <input type="button" id="b1" value="Search" onclick="b1click()">
+      <br>
       <p id="demo">Results:</p>
     </div>
   </div>
   <div class="foot">
-    <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090 </p>
+    <p id="text">Senscio Systems, Inc.
+      <br> 1740 Massachusetts Ave
+      <br> Boxborough, MA 01719
+      <br> (978) 635-9090 </p>
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script type="text/javascript" src="index.js"></script>
   <script>
     var acc = document.getElementById("account")
+      //my account tab functionality
     var modal4 = document.getElementById("myModal4");
-    acc.onclick = function () {
+    acc.onclick = function() {
       "use strict";
       modal4.style.display = "block";
     };
     var span4 = document.getElementById("close6");
-    span4.onclick = function () {
+    span4.onclick = function() {
       modal4.style.display = "none";
     }
+
   </script>
 </body>
-
 </html>

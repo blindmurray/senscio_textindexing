@@ -14,17 +14,18 @@ function route(request, response, data, path) {
   var results = "";
   var p = path.lastIndexOf(".");
   var ext = "";
-  if(data.length > 0) {
-    //communication with search engine for search, tree, and folder add
+  if (data.length > 0) {
+    //communication with search engine for everything except file upload
     client.write(data + "\n");
     console.log("data recieved:" + data);
-    client.on("data", function (data) {
+    client.on("data", function(data) {
       results = data.toString();
       console.log("received:" + results);
       response.end(results);
     });
   }
-  else if(p > -1) {
+  else if (p > -1) {
+    //responsible for loading web page graphics
     ext = path.slice(p + 1);
     var mimeType = {
       //DOCUMENT TYPES & CODE
@@ -50,38 +51,38 @@ function route(request, response, data, path) {
       "pages": "application/x-iWork-pages-sffkey",
       "key": "application/x-iWork-keynote-sffkey",
       "numbers": "application/x-iWork-numbers-sffkey",
-     //IMAGE TYPES
+      //IMAGE TYPES
       "jpg": "image/jpg",
       "jpeg": "image/jpeg",
       "png": "image/png",
       "gif": "image/gif",
-     //AUDIO TYPES
+      //AUDIO TYPES
       "aac": "audio/aac",
       "mp3": "aduio/mp3",
       "mpeg": "audio/mpeg",
-      "mpg":"audio/mpg",
+      "mpg": "audio/mpg",
       "aiff": "sound/aiff",
       "wav": "audio/x-wav",
       //VIDEO TYPES
-      "mp4":"video/mp4",
+      "mp4": "video/mp4",
       "mv": "video/mpv",
-      "mpg":"video/mpg",
-      "mpeg": "video/mpeg"
-      "mpeg2":"video/mpeg2",
+      "mpg": "video/mpg",
+      "mpeg": "video/mpeg",
+      "mpeg2": "video/mpeg2",
       "avi": "video/avi",
       //COMPRESSED FILES
       "zip": "application/x-zip-compressed",
       "rar": "application/x-rar-compressed"
     };
-    if(mimeType[ext] !== undefined) {
+    if (mimeType[ext] !== undefined) {
       //load webpage
       var fn = path.slice(1);
-      fs.readFile(fn, function (err, content) {
+      fs.readFile(fn, function(err, content) {
         response.writeHead(200, {
           "Content-Type": mimeType[ext],
           "content-Length": content.length
         });
-        response.write(content, function () {
+        response.write(content, function() {
           setTimeout(function endit() {
             response.end();
           }, 0);
@@ -95,100 +96,74 @@ function route(request, response, data, path) {
 }
 
 function requesthandler(request, response) {
-  "use strict";
-  switch(request.url) {
-  case "/login":
-    var mysql = require("mysql");
-    var connection = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "",
-      database: "indexer"
-    });
-    console.log("reached");
-    var form = new formidable.IncomingForm();
-    form.multiples = "true";
-    form.parse(request, function (err, fields, files) {
-      var user = fields.uname;
-      var pass = fields.psw;
-      var sql = "INSERT INTO `indexer`.`account` (`username`, `userpass`) VALUES (?, ?)";
-      var values = [user, pass];
-      console.log(values);
-      var query = mysql.format(sql, values);
-      connection.query(query, function (error, results, fields) {
-        if(error) {
-          throw error;
-        }
-        console.log(error);
-      });
-    });
-    break;
-  case "/fileupload":
-    //communication with search engine for fileupload
-    var form = new formidable.IncomingForm();
-    form.multiples = "true";
-    form.parse(request, function (err, fields, files) {
-      //retrieve info from form
-      var newthing = fields.chosenFolder;
-      var filearray = files.filetoupload;
-      if(!Array.isArray(filearray)) {
-        filearray = [filearray];
-      }
-      var saved = {
-        "id": "upload",
-        "filepaths": [],
-        "path_new": newthing,
-        "terms": fields.keyterms,
-        "email": fields.email
-      };
-      filearray = filearray.map(function (file) {
-        //save all files in temporary folder
-        var f = file.name;
-        var oldpath = file.path;
-        var dup = false;
-        var npath = dataDir + f;
-        //get all filepaths
-        saved.filepaths.push(npath);
-        fs.rename(oldpath, npath, function (err) {
-          if(err) {
-            throw err;
+    "use strict";
+    switch (request.url) {
+      case "/fileupload":
+        //communication with search engine for fileupload
+        var form = new formidable.IncomingForm();
+        form.multiples = "true";
+        form.parse(request, function(err, fields, files) {
+          //retrieve info from form
+          var newthing = fields.chosenFolder;
+          var filearray = files.filetoupload;
+          if (!Array.isArray(filearray)) {
+            filearray = [filearray];
           }
-          return npath;
+          var saved = {
+            "id": "upload",
+            "filepaths": [],
+            "path_new": newthing,
+            "terms": fields.keyterms,
+            "email": fields.email
+          };
+          filearray = filearray.map(function(file) {
+            //save all files in temporary folder
+            var f = file.name;
+            var oldpath = file.path;
+            var dup = false;
+            var npath = dataDir + f;
+            //get all filepaths
+            saved.filepaths.push(npath);
+            fs.rename(oldpath, npath, function(err) {
+              if (err) {
+                throw err;
+              }
+              return npath;
+            });
+          });
+          //send data
+          saved = JSON.stringify(saved);
+          console.log(client.write(saved + "\n"));
+          console.log(saved);
+          client.on("data", function(data) {
+            console.log("2" + data);
+            response.end("File(s) uploaded");
+          });
         });
-      });
-      //send data
-      saved = JSON.stringify(saved);
-      console.log(client.write(saved + "\n"));
-      console.log(saved);
-      client.on("data", function (data) {
-        console.log("2" + data);
-        response.end("File(s) uploaded");
-      });
-    });
-    break;
-  default:
-    var postdata = "";
-    var path = url.parse(request.url).pathname;
-    request.setEncoding("utf8");
-    request.addListener("data", function (postDataChunk) {
-      postdata += postDataChunk;
-    });
-    // end of any data sent with the HTTP request, go to our request handler and return a webpage:
-    request.addListener("end", function () {
-      route(request, response, postdata, path);
-      //client.write(postdata + "\n");
-    });
+        break;
+      default:
+        var postdata = "";
+        var path = url.parse(request.url).pathname;
+        request.setEncoding("utf8");
+        request.addListener("data", function(postDataChunk) {
+          postdata += postDataChunk;
+        });
+        // end of any data sent with the HTTP request, go to our request handler and return a webpage:
+        request.addListener("end", function() {
+          route(request, response, postdata, path);
+          //client.write(postdata + "\n");
+        });
+    }
   }
-}
-//open socket
+  //open socket
 console.log("sockclnt.js");
 var client = net.connect({
   port: 1221
-}, function () { //"connect" listener
+}, function() { //"connect" listener
   "use strict";
   console.log("client connected");
   client.setNoDelay();
-  client.on("end", function () {
+  client.on("end", function() {
     console.log("client disconnected");
   });
 });

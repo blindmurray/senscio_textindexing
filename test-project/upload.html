@@ -11,15 +11,19 @@
   <script src="https://apis.google.com/js/client.js"></script>
   <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
   <link rel="stylesheet" href="css/jquery-ui.css">
-  <link rel="shortcut icon" href=""> </head>
+  <link rel="shortcut icon" href="">
+</head>
 
 <body>
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a href="repository.html">Repository</a></li>
-        <li><a class="active" href="upload.html">Upload</a></li>
-        <li><a href="search.html">Search</a></li>
+        <li><a href="repository.html">Repository</a>
+        </li>
+        <li><a class="active" href="upload.html">Upload</a>
+        </li>
+        <li><a href="search.html">Search</a>
+        </li>
         <li><span id="account">My Account</span>
           <div id="myModal4" class="modal">
             <div class="modal-content"> <span class="closeBABA" id="close6">&times;</span>
@@ -32,28 +36,55 @@
         </div>
         </li>
       </ul>
-    </div> <br>
-    <div> <span class="title">Upload a Document</span> <br>
-      <form action="fileupload" method="post" enctype="multipart/form-data" required><br>
-        <div><input type="file" name="filetoupload" id="t6" class="v5" multiple required></div><br> <input type="button" id="myBtn" value="Choose Location"> <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span><br><br>
-        <div>Key Terms: <input type="text" name="keyterms" id="keyterms"></div> 
+    </div>
+    <br>
+    <div> <span class="title">Upload a Document</span>
+      <br>
+      <form action="fileupload" method="post" enctype="multipart/form-data" required>
+        <br>
+        <div>
+          <input type="file" name="filetoupload" id="t6" class="v5" multiple required>
+        </div>
+        <br>
+        <input type="button" id="myBtn" value="Choose Location">
+        <input type="hidden" id="chosenFolder" name="chosenFolder" value=""><span id="location"></span>
+        <br>
+        <br>
+        <div>Key Terms:
+          <input type="text" name="keyterms" id="keyterms">
+        </div>
         <input type="hidden" id="email" name="email" value="">
         <input type="submit" value="Submit"> </form>
       <div id="myModal" class="modal">
-        <div class="modal-content"> 
-          <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span><span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
-          <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span> <br><br> <span id="tree">Loading...</span> <input type="button" value="Choose Location" onclick="onChooseLocation()"> <span class="closeBABA" id="closeA">&times;</span> </div> <br> </div>
+        <div class="modal-content"> <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span><span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
+          <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
+          <br>
+          <br> <span id="tree">Loading...</span>
+          <input type="button" value="Choose Location" onclick="onChooseLocation()"> <span class="closeBABA" id="closeA">&times;</span> </div>
+        <br> </div>
       <div id="myModal2" class="modal2">
         <div class="modal-content2">
-          <form action="addFolder" method="post"> <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
-            <div>Name of Folder: <input id="addfoldername" type="text" name="name"></div>
-            <div>Who Can See This Folder: <input id="tags" type="text"></div> <input type="button" value="Add Folder" onclick="addfolder()"> <span class="closeBABA" id="closeB">&times;</span> </form>
-        </div> <br> </div>
+          <form action="addFolder" method="post">
+            <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
+            <div>Name of Folder:
+              <input id="addfoldername" type="text" name="name">
+            </div>
+            <div>Who Can See This Folder:
+              <input id="tags" type="text">
+            </div>
+            <input type="button" value="Add Folder" onclick="addfolder()"> <span class="closeBABA" id="closeB">&times;</span> </form>
+        </div>
+        <br> </div>
     </div>
-  </div> <br> <br> </div>
+  </div>
+  <br>
+  <br> </div>
   </div>
   <div class="foot">
-    <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090 </p>
+    <p id="text">Senscio Systems, Inc.
+      <br> 1740 Massachusetts Ave
+      <br> Boxborough, MA 01719
+      <br> (978) 635-9090 </p>
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
@@ -64,91 +95,93 @@
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
-      "use strict";
-      var el = document.getElementById(clicked_ID);
-      document.getElementById("pathtoadd").value = clicked_ID;
-      el.style.fontWeight = "bold";
-      el.classList.add("checked");
-      if(oldId !== "No Path Selected") {
-        var p = document.getElementById(oldId);
-        p.style.fontWeight = "normal";
-        p.classList.remove("checked");
+        "use strict";
+        var el = document.getElementById(clicked_ID);
+        document.getElementById("pathtoadd").value = clicked_ID;
+        el.style.fontWeight = "bold";
+        el.classList.add("checked");
+        if (oldId !== "No Path Selected") {
+          var p = document.getElementById(oldId);
+          p.style.fontWeight = "normal";
+          p.classList.remove("checked");
+        }
+        oldId = clicked_ID;
       }
-      oldId = clicked_ID;
-    }
-    //shows chosenfolder after button click
+      //shows chosenfolder after button click
     function onChooseLocation() {
-      "use strict";
-      document.getElementById("chosenFolder").value = oldId;
-      document.getElementById("location").innerHTML = oldId;
-      modal.style.display = "none";
-    }
-    //tree
+        "use strict";
+        document.getElementById("chosenFolder").value = oldId;
+        document.getElementById("location").innerHTML = oldId;
+        modal.style.display = "none";
+      }
+      //tree
     function prepareList() {
-      "use strict";
-      $("#myModal #expList").find("li:has(ul)").click(function (event) {
-        if(this == event.target) {
-          $(this).toggleClass("collapsed");
-          $(this).toggleClass("expanded");
-          $(this).children("ul").toggle("medium");
-        }
-        return false;
-      }).addClass("collapsed").children("ul").hide();
-      //Hack to add links inside the cv
-      $("#expList a").unbind("click").click(function () {
-        window.open($(this).attr("href"));
-        return false;
-      });
-      //Create the button funtionality
-      $("#expandList").unbind("click").click(function () {
-        $(".collapsed").children("ul").show("medium");
-      });
-      $("#collapseList").unbind("click").click(function () {
-        $(".expanded").children("ul").hide("medium");
-      });
-    }
-
+        "use strict";
+        $("#myModal #expList").find("li:has(ul)").click(function(event) {
+          if (this == event.target) {
+            $(this).toggleClass("collapsed");
+            $(this).toggleClass("expanded");
+            $(this).children("ul").toggle("medium");
+          }
+          return false;
+        }).addClass("collapsed").children("ul").hide();
+        //Hack to add links inside the cv
+        $("#expList a").unbind("click").click(function() {
+          window.open($(this).attr("href"));
+          return false;
+        });
+        //Create the button funtionality
+        $("#expandList").unbind("click").click(function() {
+          $(".collapsed").children("ul").show("medium");
+        });
+        $("#collapseList").unbind("click").click(function() {
+          $(".expanded").children("ul").hide("medium");
+        });
+      }
+      //creates xmlhttprequest 
+      //enables communication with node.js
     function ajax() {
-      "use strict";
-      if(window.XMLHttpRequest) {
-        return new XMLHttpRequest();
-      }
-      else if(window.ActiveXObject) {
-        try {
-          return new ActiveXObject("Msxml2.DOMDocument.6.0");
+        "use strict";
+        if (window.XMLHttpRequest) {
+          return new XMLHttpRequest();
         }
-        catch(e) {}
-        try {
-          return new ActiveXObject("Msxml2.DOMDocument.3.0");
+        else if (window.ActiveXObject) {
+          try {
+            return new ActiveXObject("Msxml2.DOMDocument.6.0");
+          }
+          catch (e) {}
+          try {
+            return new ActiveXObject("Msxml2.DOMDocument.3.0");
+          }
+          catch (f) {}
+          try {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          catch (g) {}
         }
-        catch(f) {}
-        try {
-          return new ActiveXObject("Microsoft.XMLHTTP");
+        else {
+          alert("newxhr XMLHTTPRequest object failed");
+          return null;
         }
-        catch(g) {}
       }
-      else {
-        alert("newxhr XMLHTTPRequest object failed");
-        return null;
-      }
-    }
+      //My Accout tab functionality
     var acc = document.getElementById("account")
     var modal4 = document.getElementById("myModal4");
-    acc.onclick = function () {
+    acc.onclick = function() {
       "use strict";
       modal4.style.display = "block";
     };
     var span4 = document.getElementById("close6");
-    span4.onclick = function () {
+    span4.onclick = function() {
       modal4.style.display = "none";
     }
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
     //Choose Location: make tree
-    btn.onclick = function () {
+    btn.onclick = function() {
       "use strict";
       modal.style.display = "block";
-      if(gapi.auth2.getAuthInstance()) {
+      if (gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
@@ -159,9 +192,9 @@
       };
       var json = JSON.stringify(tree);
       var xhr = ajax();
-      xhr.onload = function () {
-        if(xhr.readyState === 4) {
-          if(xhr.status === 200) {
+      xhr.onload = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
             document.getElementById("tree").innerHTML = xhr.responseText;
             prepareList();
           }
@@ -176,38 +209,39 @@
     };
     //Close button
     var span1 = document.getElementById("closeA");
-    span1.onclick = function () {
-      modal.style.display = "none";
-    }
-    //Add a Folder functionality
+    span1.onclick = function() {
+        modal.style.display = "none";
+      }
+      //Add a Folder functionality
     var folder = document.getElementById("addFolder");
     var modal2 = document.getElementById("myModal2");
     //reveal textbox to enter folder name
-    folder.onclick = function () {
+    folder.onclick = function() {
       modal2.style.display = "block";
     }
     var span2 = document.getElementById("closeB");
-    span2.onclick = function () {
+    span2.onclick = function() {
       modal2.style.display = "none";
     }
-    window.onclick = function (event) {
-      if(event.target == modal) {
+    window.onclick = function(event) {
+      if (event.target == modal) {
         modal.style.display = "none";
       }
     };
 
     function addfolder(googleUser) {
+      //send info to java to create folder + add to database
       "use strict";
       modal2.style.display = "none";
       //retrieve folder path
-      if(gapi.auth2.getAuthInstance()) {
+      if (gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
       var name = document.getElementById("addfoldername").value;
       var path = document.getElementById("pathtoadd").value;
       var permissions = document.getElementById("tags").value;
-      if(path == "") {
+      if (path == "") {
         path = dataDir + name;
       }
       else {
@@ -223,12 +257,17 @@
       var json = JSON.stringify(folderjson);
       //send folder to create path to nodejs
       var xhr = ajax();
-      xhr.onload = function () {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-          alert("Folder Created!");
-          //modal.style.display = "block";
-          document.getElementById("tree").innerHTML = xhr.responseText;
-          prepareList();
+      xhr.onload = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          if ((xhr.responseText).startsWith("Y")) {
+            alert(xhr.responseText);
+          }
+          else {
+            alert("Folder Created!");
+            modal.style.display = "none";
+            document.getElementById("tree").innerHTML = xhr.responseText;
+            prepareList();
+          }
         }
       };
       xhr.open("POST", "/", true);
@@ -237,17 +276,20 @@
     };
 
     function signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
-    }
-    $("#show_hide").click(function () {
+        //signs user out
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
+          console.log('User signed out.');
+        });
+      }
+      //show/hide toggling
+    $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
       $('#hide').toggle();
       $('#show').toggle();
       $('#myModal #expList li .folder').toggleClass('toggled');
     });
+
   </script>
 </body>
 

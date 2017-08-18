@@ -162,40 +162,43 @@ public class Server_Socket {
 							}
 							else if(json.getString("id").equals("addFolder")){
 								String path = json.getString("filepaths");
-								email = json.getString("email");
-								System.out.println(path);
-								if(path.equals("")){
-									path = LuceneConstants.dataDir + "/" + json.getString("name");
+								if(!new File(path).isDirectory()){
+									os.println("You cannot create a folder under a file.");
 								}
-								//replace spaces with underscores
-								for (int j = 0; j < path.length(); j++){
-									char c = path.charAt(j);        
-									if(c == ' '){
-										path = path.replace(c, '_');
+								else{
+									email = json.getString("email");
+									if(path.equals("")){
+										path = LuceneConstants.dataDir + "/" + json.getString("name");
 									}
-								}
-								System.out.println("renamed");
-								Path dir = Paths.get(path);
-								//creates folder
-								dir = Files.createDirectory(dir);
-								//redo tree so that user can see new folder
-								System.out.println(dir);
-								Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
-								Statement st = conn.createStatement();
-								st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
-								String permissions = json.getString("permissions");
-								System.out.println(permissions);
-								if(!permissions.equals("")){
-									String[] per = permissions.split("\\s+");
-
-									for(String e: per){
-										st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "';");
+									//replace spaces with underscores
+									for (int j = 0; j < path.length(); j++){
+										char c = path.charAt(j);        
+										if(c == ' '){
+											path = path.replace(c, '_');
+										}
 									}
+									System.out.println("renamed");
+									Path dir = Paths.get(path);
+									//creates folder
+									dir = Files.createDirectory(dir);
+									//redo tree so that user can see new folder
+									System.out.println(dir);
+									Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
+									Statement st = conn.createStatement();
+									st.executeUpdate("INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
+									String permissions = json.getString("permissions");
+									System.out.println(permissions);
+									if(!permissions.equals("")){
+										String[] per = permissions.split("\\s+");
+										for(String e: per){
+											st.executeUpdate("UPDATE indexer.permissions SET `" + e + "` = 1 WHERE folderpath = '" + path + "';");
+										}
+									}
+									st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 2 WHERE folderpath = '" + path + "';");
+									String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
+									os.println(tree);							
+									conn.close();
 								}
-								st.executeUpdate("UPDATE indexer.permissions SET `" + email + "` = 2 WHERE folderpath = '" + path + "';");
-								String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
-								os.println(tree);							
-								conn.close();
 							}
 							else if(json.getString("id").equals("viewpermissions")){
 								File f = new File(json.getString("path"));

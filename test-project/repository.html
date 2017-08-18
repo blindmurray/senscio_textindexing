@@ -10,16 +10,15 @@
   <script src="https://apis.google.com/js/api.js"></script>
   <script src="https://apis.google.com/js/client.js"></script>
   <meta name="google-signin-client_id" content="953997974940-6oclg8f4hefo52qlufnb7bj1j0jscuoc.apps.googleusercontent.com">
-  <link rel="stylesheet" href="css/jquery-ui.css">
-</head>
-<!-- <body onload="onPageLoad()"> -->
+  <link rel="stylesheet" href="css/jquery-ui.css"> </head>
+
 <body>
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a class="active" href="repository.html">Repository</a></li>
-        <li><a href="upload.html">Upload</a></li>
-        <li><a href="search.html">Search</a></li>
+        <li><a class="active" href="repository.html">Repository</a> </li>
+        <li><a href="upload.html">Upload</a> </li>
+        <li><a href="search.html">Search</a> </li>
         <li><span id="account">My Account</span>
           <div id="myModal4" class="modal">
             <div class="modal-content"> <span class="closeBABA" id="close6">&times;</span>
@@ -31,38 +30,36 @@
           </div>
         </li>
       </ul>
-    </div> <br>
-    <div>
-
-      <span class = "buttons_upload" id="share">
+    </div>
+    <br>
+    <div> <span class="buttons_upload" id="share">
         <img src = "/images/share.jpg">Share Preferences
       </span>
       <div id="myModal5" class="modal">
-          <div class="modal-content"> <span class="closeBABA" id="close7">&times;</span>
-            <div>Share Access With:</div>
-            <input type="text" id="include">
-            <div>Remove Access From:</div>
-            <input type="text" id="exclude">
-            <input type="button" id="s" value="Submit" onclick="shareClick()">
-          </div>
-        </div>
-      <span class="buttons_upload" id="viewpermissions">
-        <img src="/images/viewpermissions.jpg"> View Permissions</span><br>
-      <span class="buttons_upload" id="show_hide">
+        <div class="modal-content"> <span class="closeBABA" id="close7">&times;</span>
+          <div>Share Access With:</div>
+          <input type="text" id="include">
+          <div>Remove Access From:</div>
+          <input type="text" id="exclude">
+          <input type="button" id="s" value="Submit" onclick="shareClick()"> </div>
+      </div> <span class="buttons_upload" id="viewpermissions">
+        <img src="/images/viewpermissions.jpg"> View Permissions</span>
+      <br> <span class="buttons_upload" id="show_hide">
         <img src = /images/show_hide.jpg>
-        <span id="hide">Hide All Files</span>
-        <span id="show" style="display:none">Show All Files</span>
-      </span>
-      <span class="buttons_upload" id="deletefile">
-        <img src="/images/delete.jpg"> Delete a File</span><br>
-
+        <span id="hide">Hide All Files</span> <span id="show" style="display:none">Show All Files</span> </span> <span class="buttons_upload" id="deletefile">
+        <img src="/images/delete.jpg"> Delete a File</span>
+      <br>
       <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
-      <div id="repositoryTree"><span id="tree">Loading...</span></div> <br>
-    </div>
+      <div id="repositoryTree"><span id="tree">Loading...</span> </div>
+      <br> </div>
   </div>
-  <br><br>
+  <br>
+  <br>
   <div class="foot">
-    <p id="text">Senscio Systems, Inc.<br> 1740 Massachusetts Ave<br> Boxborough, MA 01719<br> (978) 635-9090 </p>
+    <p id="text">Senscio Systems, Inc.
+      <br> 1740 Massachusetts Ave
+      <br> Boxborough, MA 01719
+      <br> (978) 635-9090 </p>
   </div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
@@ -72,112 +69,115 @@
     var dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
-      "use strict";
-      var el = document.getElementById(clicked_ID);
-      document.getElementById("pathtoadd").value = clicked_ID;
-      el.style.fontWeight = "bold";
-      el.classList.add("checked");
-      if(oldId !== "No Path Selected") {
-        var p = document.getElementById(oldId);
-        p.style.fontWeight = "normal";
-        p.classList.remove("checked");
+        "use strict";
+        var el = document.getElementById(clicked_ID);
+        document.getElementById("pathtoadd").value = clicked_ID;
+        el.style.fontWeight = "bold";
+        el.classList.add("checked");
+        if (oldId !== "No Path Selected") {
+          var p = document.getElementById(oldId);
+          p.style.fontWeight = "normal";
+          p.classList.remove("checked");
+        }
+        oldId = clicked_ID;
       }
-      oldId = clicked_ID;
-    }
-    //shows chosenfolder after button click
+      //shows chosenfolder after button click
     function onChooseLocation() {
-      "use strict";
-      document.getElementById("chosenFolder").value = oldId;
-      document.getElementById("location").innerHTML = oldId;
-      modal.style.display = "none";
-    }
-    //tree
+        "use strict";
+        document.getElementById("chosenFolder").value = oldId;
+        document.getElementById("location").innerHTML = oldId;
+        modal.style.display = "none";
+      }
+      //tree
     function prepareList() {
-      "use strict";
-      $("#repositoryTree").find("li:has(ul)").click(function (event) {
-        if(this == event.target) {
-          $(this).toggleClass("collapsed");
-          $(this).toggleClass("expanded");
-          $(this).children("ul").toggle("medium");
-        }
-        return false;
-      }).addClass("collapsed").children("ul").hide();
-      //Hack to add links inside the cv
-      $("#expList a").unbind("click").click(function () {
-        window.open($(this).attr("href"));
-        return false;
-      });
-      //Create the button funtionality
-      $("#expandList").unbind("click").click(function () {
-        $(".collapsed").children("ul").show("medium");
-      });
-      $("#collapseList").unbind("click").click(function () {
-        $(".expanded").children("ul").hide("medium");
-      });
-    }
-
+        "use strict";
+        $("#repositoryTree").find("li:has(ul)").click(function(event) {
+          if (this == event.target) {
+            $(this).toggleClass("collapsed");
+            $(this).toggleClass("expanded");
+            $(this).children("ul").toggle("medium");
+          }
+          return false;
+        }).addClass("collapsed").children("ul").hide();
+        //Hack to add links inside the cv
+        $("#expList a").unbind("click").click(function() {
+          window.open($(this).attr("href"));
+          return false;
+        });
+        //Create the button funtionality
+        $("#expandList").unbind("click").click(function() {
+          $(".collapsed").children("ul").show("medium");
+        });
+        $("#collapseList").unbind("click").click(function() {
+          $(".expanded").children("ul").hide("medium");
+        });
+      }
+      //creates xmlhttprequest 
+      //enables communication with node.js
     function ajax() {
-      "use strict";
-      if(window.XMLHttpRequest) {
-        return new XMLHttpRequest();
-      }
-      else if(window.ActiveXObject) {
-        try {
-          return new ActiveXObject("Msxml2.DOMDocument.6.0");
+        "use strict";
+        if (window.XMLHttpRequest) {
+          return new XMLHttpRequest();
         }
-        catch(e) {}
-        try {
-          return new ActiveXObject("Msxml2.DOMDocument.3.0");
+        else if (window.ActiveXObject) {
+          try {
+            return new ActiveXObject("Msxml2.DOMDocument.6.0");
+          }
+          catch (e) {}
+          try {
+            return new ActiveXObject("Msxml2.DOMDocument.3.0");
+          }
+          catch (f) {}
+          try {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+          }
+          catch (g) {}
         }
-        catch(f) {}
-        try {
-          return new ActiveXObject("Microsoft.XMLHTTP");
+        else {
+          alert("newxhr XMLHTTPRequest object failed");
+          return null;
         }
-        catch(g) {}
       }
-      else {
-        alert("newxhr XMLHTTPRequest object failed");
-        return null;
-      }
-    }
+      //My Account tab
     var acc = document.getElementById("account")
     var modal4 = document.getElementById("myModal4");
-    acc.onclick = function () {
+    acc.onclick = function() {
+      //when clicked, open google sign in
       "use strict";
       modal4.style.display = "block";
     };
     var span4 = document.getElementById("close6");
-    span4.onclick = function () {
+    span4.onclick = function() {
+      //closes google sign in
       modal4.style.display = "none";
     }
-
     var share = document.getElementById("share")
     var modal5 = document.getElementById("myModal5");
-    share.onclick = function () {
+    share.onclick = function() {
+      //opens permissions/sharing
       "use strict";
       modal5.style.display = "block";
     };
     var span5 = document.getElementById("close7");
-    span5.onclick = function () {
+    span5.onclick = function() {
       modal5.style.display = "none";
     }
 
     function shareClick() {
-  //when search button is clicked, sends all info thru ajax to nodejs
-     
+      //when share is submitted, send info to java
       "use strict";
       var email = "";
-      if(gapi.auth2.getAuthInstance()) {
+      if (gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile() //IF STATEMENT TO CHECK IF LOGGED IN FIRST
         email = profile.getEmail();
       }
       var include = document.getElementById("include").value;
       var exclude = document.getElementById("exclude").value;
       var path = document.getElementById("pathtoadd").value;
-      if(path.startsWith(dataDir + "public")){
+      if (path.startsWith(dataDir + "public")) {
         alert("You cannot change the permissions of a public folder.")
       }
-      else{
+      else {
         var share = {
           "id": "share",
           "include": include,
@@ -187,8 +187,8 @@
         };
         share = JSON.stringify(share);
         var xhr = ajax();
-        xhr.onload = function () {
-          if(xhr.readyState === 4 && xhr.status === 200) {
+        xhr.onload = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
             alert(xhr.responseText);
             modal5.style.display = "none";
           }
@@ -201,63 +201,64 @@
         xhr.send(share);
       }
     }
-    //Choose Location: make tree
-    function onPageLoad() {
 
-      if(gapi.auth2.getAuthInstance()) {
-        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-        email = profile.getEmail();
-      }
-      var tree = {
-        "id": "tree",
-        "email": email
-      };
-      var json = JSON.stringify(tree);
-      var xhr = ajax();
-      xhr.onload = function () {
-        if(xhr.readyState === 4) {
-          if(xhr.status === 200) {
-            document.getElementById("tree").innerHTML = xhr.responseText;
-            prepareList();
-          }
-          else {
-            alert("Error: " + xhr.responseText);
-          }
+    function onPageLoad() {
+        //makes the tree as soon as page loads and automatic sign in is done
+        if (gapi.auth2.getAuthInstance()) {
+          var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+          email = profile.getEmail();
         }
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(json);
-    }
-    //Add a Folder functionality
+        var tree = {
+          "id": "tree",
+          "email": email
+        };
+        var json = JSON.stringify(tree);
+        var xhr = ajax();
+        xhr.onload = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              document.getElementById("tree").innerHTML = xhr.responseText;
+              prepareList();
+            }
+            else {
+              alert("Error: " + xhr.responseText);
+            }
+          }
+        };
+        xhr.open("POST", "/", true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.send(json);
+      }
+      //view permissions functionality
     var modal2 = document.getElementById("myModal2");
     var perbtn = document.getElementById("viewpermissions");
     perbtn.onclick = function() {
-      var path = document.getElementById("pathtoadd").value;
-      var folderjson = {
-        "id": "viewpermissions",
-        "path": path,
-      };
-      folderjson = JSON.stringify(folderjson);
-      var xhr = ajax();
-      xhr.onload = function () {
-        if(xhr.readyState === 4) {
-          if(xhr.status === 200) {
+        //when view permissions is clicked, ask java for list of users
+        var path = document.getElementById("pathtoadd").value;
+        var folderjson = {
+          "id": "viewpermissions",
+          "path": path,
+        };
+        folderjson = JSON.stringify(folderjson);
+        var xhr = ajax();
+        xhr.onload = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
               alert(xhr.responseText);
+            }
+            else {
+              alert("Error: " + xhr.responseText);
+            }
           }
-          else {
-            alert("Error: " + xhr.responseText);
-          }
-        }
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(folderjson);
-    }
-    //reveal textbox to enter folder name
+        };
+        xhr.open("POST", "/", true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.send(folderjson);
+      }
+      //get user email and path to check permission and delete file
     var deletebtn = document.getElementById("deletefile");
-    deletebtn.onclick = function () {
-      if(gapi.auth2.getAuthInstance()) {
+    deletebtn.onclick = function() {
+      if (gapi.auth2.getAuthInstance()) {
         var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
@@ -270,10 +271,10 @@
       };
       folderjson = JSON.stringify(folderjson);
       var xhr = ajax();
-      xhr.onload = function () {
-        if(xhr.readyState === 4) {
-          if(xhr.status === 200) {
-            if((xhr.responseText).startsWith("Y")) {
+      xhr.onload = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            if ((xhr.responseText).startsWith("Y")) {
               alert(xhr.responseText);
             }
             else {
@@ -293,27 +294,26 @@
     };
 
     function signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
-    }
-    $("#show_hide").click(function () {
+        //signs user out
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
+          console.log('User signed out.');
+        });
+      }
+      //show/hide functionality
+    $("#show_hide").click(function() {
       $("#repositoryTree ul .file").toggle();
       $('#hide').toggle();
       $('#show').toggle();
       $('#repositoryTree li .folder').toggleClass('toggled');
     });
+
     function onSignIn(googleUser) {
+      //on user sign in, send id back to java to verify email and save into database
       var profile = googleUser.getBasicProfile();
       var id_token = googleUser.getAuthResponse().id_token;
-      var name = profile.getName();
       var email = profile.getEmail();
-      if(email.length > 19 && email.substring(email.length - 19, email.length) == "@sensciosystems.com") {
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      if (email.length > 19 && email.substring(email.length - 19, email.length) == "@sensciosystems.com") {
         var signIn = {
           "id": "signIn",
           "idtoken": id_token
@@ -322,8 +322,8 @@
         var xhr = ajax();
         xhr.open('POST', '/');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-          if(xhr.readyState === 4 && xhr.status === 200) {
+        xhr.onload = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
             console.log('Signed in as: ' + xhr.responseText);
           }
           else {
@@ -334,18 +334,11 @@
       }
       else {
         var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
+        auth2.signOut().then(function() {
           alert("You must sign in with a Senscio email.");
         });
       }
       onPageLoad();
-    }
-
-    function signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
     }
   </script>
 </body>
