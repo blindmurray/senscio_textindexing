@@ -86,10 +86,7 @@ public class DirectoryReader {
 		return false;
 	}
 	public static boolean checkEditPermission(String path, String email) throws ClassNotFoundException, SQLException{
-		if(path.startsWith(LuceneConstants.dataDir + "/public")){
-			return true;
-		}
-		else if(email.equals("")){
+		if(email.equals("")){
 			return false;
 		}
 		else{
@@ -99,7 +96,7 @@ public class DirectoryReader {
 			File f = new File(path);
 			ResultSet rs;
 			if(f.isDirectory()){
-				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
+				rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "';");
 				rs.absolute(1);
 				System.out.println(rs.getInt(email));
 				if(rs.absolute(1) && rs.getInt(email)==2){
@@ -110,13 +107,18 @@ public class DirectoryReader {
 				}
 			}
 			else{
-				rs = st.executeQuery("SELECT `owner` FROM indexer.files WHERE `filepath` = '" + path + "'");
-				if(rs.absolute(1) && rs.getString("owner").equals(email)){
-					return true;
+				rs = st.executeQuery("SELECT `owner` FROM indexer.files WHERE `filepath` = '" + path + "';");
+				rs.absolute(1);
+				String owner = rs.getString("owner");
+				if(owner != null){
+					if(rs.absolute(1) && rs.getString("owner").equals(email)){
+						return true;
+					}
+					else{
+						return false;
+					}
 				}
-				else{
-					return false;
-				}
+				return false;
 			}
 		}
 	}
