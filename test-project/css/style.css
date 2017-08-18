@@ -315,8 +315,20 @@ input#file {
 
 /* Collapsed state for list element */
 
-#myModal #expList ul .file {
+#myModal #expList ul .file{
     list-style-image:url(../images/file.jpg) ;
+}
+#myModal #expList ul .compressed{
+    list-style-image:url(../images/compressed.jpg) ;
+}
+#myModal #expList ul .video{
+    list-style-image:url(../images/video.jpg) ;
+}
+#myModal #expList ul .img{
+    list-style-image:url(../images/image.jpg) ;
+}
+#myModal #expList ul .audio{
+    list-style-image:url(../images/audio.jpg) ;
 }
 #myModal #expList li .folder {
     list-style-image:url(../images/folder.jpg) ;
@@ -347,8 +359,20 @@ input#file {
     cursor: pointer;
  }
 
- #repositoryTree ul .file {
+ #repositoryTree ul .file{
     list-style-image:url(../images/file.jpg) ;
+}
+ #repositoryTree ul .compressed{
+    list-style-image:url(../images/compressed.jpg) ;
+}
+ #repositoryTree ul .video{
+    list-style-image:url(../images/video.jpg) ;
+}
+ #repositoryTree ul .img{
+    list-style-image:url(../images/image.jpg) ;
+}
+ #repositoryTree ul .audio{
+    list-style-image:url(../images/audio.jpg) ;
 }
  #repositoryTree li .folder {
     list-style-image:url(../images/folder.jpg) ;

@@ -27,12 +27,11 @@ function route(request, response, data, path) {
   else if(p > -1) {
     ext = path.slice(p + 1);
     var mimeType = {
+      //DOCUMENT TYPES & CODE
       "html": "text/html",
       "htm": "text/htm",
       "js": "text/javascript",
       "css": "text/css",
-      "jpg": "image/jpg",
-      "jpeg": "image/jpeg",
       "txt": "text/plain",
       "doc": "application/msword",
       "dot": "application/msword",
@@ -50,7 +49,29 @@ function route(request, response, data, path) {
       "pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
       "pages": "application/x-iWork-pages-sffkey",
       "key": "application/x-iWork-keynote-sffkey",
-      "numbers": "application/x-iWork-numbers-sffkey"
+      "numbers": "application/x-iWork-numbers-sffkey",
+     //IMAGE TYPES
+      "jpg": "image/jpg",
+      "jpeg": "image/jpeg",
+      "png": "image/png",
+      "gif": "image/gif",
+     //AUDIO TYPES
+      "aac": "audio/aac",
+      "mp3": "aduio/mp3",
+      "mpeg": "audio/mpeg",
+      "mpg":"audio/mpg",
+      "aiff": "sound/aiff",
+      "wav": "audio/x-wav",
+      //VIDEO TYPES
+      "mp4":"video/mp4",
+      "mv": "video/mpv",
+      "mpg":"video/mpg",
+      "mpeg": "video/mpeg"
+      "mpeg2":"video/mpeg2",
+      "avi": "video/avi",
+      //COMPRESSED FILES
+      "zip": "application/x-zip-compressed",
+      "rar": "application/x-rar-compressed"
     };
     if(mimeType[ext] !== undefined) {
       //load webpage

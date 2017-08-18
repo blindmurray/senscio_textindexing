@@ -63,6 +63,12 @@ public static int writeIndexUpdate(String dataDirPath, FileFilter filter) throws
 				}
 			}	
 			else{
+				Parse.parse(file.toString());
+				convertedFile = new File(TXT.editExtension(file.toString()));
+				if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+					indexFileNot(convertedFile, file);
+					convertedFile.delete();
+				}
 			}
 		return writer.numDocs();
 	}
@@ -87,6 +93,14 @@ public static int writeIndexUpdate(String dataDirPath, String tokens, FileFilter
 				convertedFile.delete();
 			}
 		}	
+		else{
+			Parse.parse(file.toString());
+			convertedFile = new File(TXT.editExtension(file.toString()));
+			if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+				indexFileNot(convertedFile, file);
+				convertedFile.delete();
+			}
+		}
 	return writer.numDocs();
 	}
 }

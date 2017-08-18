@@ -36,9 +36,22 @@ public class DirectoryReader {
 				}
 				
 				else if(!fileEntry.isHidden()){
+					if(TXT.getExtension(fileEntry.toString()).equals("mp3|aac|mpeg|aiff|wav|mpg")){
+						html+= "<li class =\"audio\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
+					else if(TXT.getExtension(fileEntry.toString()).equals("rar|zip")){
+						html+= "<li class =\"compressed\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
+					else if(TXT.getExtension(fileEntry.toString()).equals("jpg|jpeg|png|gif")){
+						html+= "<li class =\"img\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
+					else if(TXT.getExtension(fileEntry.toString()).equals("mp4|mv|mpg|mpeg|mpeg2|avi")){
+						html+= "<li class =\"video\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
+					else{
 					html+= "<li class =\"file\"><span onclick=\"triggerSelect(this.id)\" id= \"" + fileEntry.getPath() + "\">" + fileEntry.getName() + "</span></li>";
+					}
 				}
-				
 			}
 			else if(fileEntry.isDirectory() && !fileEntry.isHidden()){
 				for(File file : fileEntry.listFiles()){

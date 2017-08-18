@@ -131,6 +131,56 @@ public class Indexer {
 		}
 	}
 
+	public static Document getDocumentNot(File newFile, File oldFile) throws IOException {
+		Document document = new Document();
+		try (InputStream stream = Files.newInputStream(newFile.toPath())) {
+
+			String content = "";
+
+			//Creates file Path field, extension field, concent field, and file name field
+			Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, content, Field.Store.YES);
+			Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
+			Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);
+			Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
+			Field fileNameField = new StringField(LuceneConstants.FILE_NAME, oldFile.getName(), Field.Store.YES);
+
+			//Adds them to document objects
+			document.add(previewField);
+			document.add(contentField);
+			document.add(extField);
+			document.add(fileNameField);
+			document.add(filePathField);
+
+			//Returns document object
+			return document;
+		}
+	}
+	public static Document getDocumentNot(File newFile, String tokens, File oldFile) throws IOException {
+		Document document = new Document();
+		try (InputStream stream = Files.newInputStream(newFile.toPath())) {
+
+			String content = "";
+			//Creates file Path field, extension field, content field, and file name field
+			Field previewField = new StringField(LuceneConstants.FILE_PREVIEW, content, Field.Store.YES);
+			Field terms = new StringField(LuceneConstants.FILE_TOKENS, tokens, Field.Store.YES);
+			Field filePathField = new StringField(LuceneConstants.FILE_PATH, oldFile.getAbsolutePath(), Field.Store.YES);
+			Field extField = new TextField(LuceneConstants.FILE_EXT, TXT.getExtension(oldFile.toString()), Field.Store.YES);
+			Field contentField = new TextField(LuceneConstants.CONTENTS, content, Field.Store.YES);
+			Field fileNameField = new StringField(LuceneConstants.FILE_NAME, oldFile.getName(), Field.Store.YES);
+
+			//Adds them to document objects
+			document.add(previewField);
+			document.add(terms);
+			document.add(contentField);
+			document.add(extField);
+			document.add(fileNameField);
+			document.add(filePathField);
+
+			//Returns document object
+			return document;
+		}
+	}
+	
 	public static void deleteIndex(String file) {
 
 		System.out.println("Deleting index...."+ file);
@@ -156,6 +206,17 @@ public class Indexer {
 	public static void indexFile(File newFile, String tokens, File oldFile ) throws IOException {
 		System.out.println("Indexing "+ oldFile.getCanonicalPath());
 		Document document = getDocument(newFile, tokens, oldFile); //call getDocument method
+		writer.addDocument(document); //adds document to indexWriter
+	}
+	public static void indexFileNot(File newFile, File oldFile ) throws IOException {
+		System.out.println("Indexing "+ oldFile.getCanonicalPath());
+		Document document = getDocumentNot(newFile, oldFile); //call getDocument method
+		writer.addDocument(document); //adds document to indexWriter
+	}
+
+	public static void indexFileNot(File newFile, String tokens, File oldFile ) throws IOException {
+		System.out.println("Indexing "+ oldFile.getCanonicalPath());
+		Document document = getDocumentNot(newFile, tokens, oldFile); //call getDocument method
 		writer.addDocument(document); //adds document to indexWriter
 	}
 
@@ -221,6 +282,12 @@ public class Indexer {
 				}
 			}
 			else{
+				Parse.parse(file.toString());
+				convertedFile = new File(TXT.editExtension(file.toString()));
+				if(!convertedFile.isDirectory() && !convertedFile.isHidden() && convertedFile.exists() && convertedFile.canRead() && filter.accept(convertedFile)){
+					indexFileNot(convertedFile, file);
+					convertedFile.delete();
+				}
 			}
 		}
 		return writer.numDocs();
