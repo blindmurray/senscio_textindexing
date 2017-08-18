@@ -87,7 +87,9 @@ public class Searcher{
 			}
 		}
 		ArrayList<String> results = new ArrayList<String>();
-		results.add("Total Results: "+ found.totalHits +"\n");
+		ArrayList<String> res = new ArrayList<String>();
+//		results.add("Total Results: "+ found.totalHits +"\n");
+		int counter = 0;
 
 		//gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
@@ -106,6 +108,7 @@ public class Searcher{
 							//if no dates specified
 							if(dateFrom.length()==0 || dateTo.length()==0){
 								String s = changePath(d);
+								counter++;
 								results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 							}
 							//check if it is between those dates
@@ -120,6 +123,7 @@ public class Searcher{
 								if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 									String s = changePath(d);
 									System.out.println(s);
+									counter++;
 									results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 								}
 							}
@@ -136,6 +140,7 @@ public class Searcher{
 				if((email == null && temp.getPath().startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(temp.getParent(), email)){
 					if(dateFrom.length()==0 || dateTo.length()==0){
 						String s = changePath(d);
+						counter++;
 						results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 					}
 					else{
@@ -148,13 +153,16 @@ public class Searcher{
 						date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 						if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 							String s = changePath(d);
+							counter++;
 							results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
 						}
 					}
 				}
 			}
 		}
-		return results;
+		res.add("Total Results: "+ counter +"\n");
+		res.addAll(results);
+		return res;
 	}
 
 	private static TopDocs searchInContent(IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
