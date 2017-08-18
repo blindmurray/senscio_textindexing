@@ -88,14 +88,14 @@ public class Searcher{
 		}
 		ArrayList<String> results = new ArrayList<String>();
 		ArrayList<String> res = new ArrayList<String>();
-//		results.add("Total Results: "+ found.totalHits +"\n");
+		//		results.add("Total Results: "+ found.totalHits +"\n");
 		int counter = 0;
 
 		//gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
 		String dateTo = json.getString("dateTo").replace("-", "");
 		String extensions = json.getString("exten");
-		
+
 		//only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");

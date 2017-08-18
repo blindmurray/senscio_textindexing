@@ -10,24 +10,24 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 public class Parse {
-	//autodetects file type and call TXT class to create txt file
+	// autodetects file type and call TXT class to create txt file
 
-	public static void parse(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException{
+	public static void parse(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException {
 
-		//detecting the file type
+		// detecting the file type
 		BodyContentHandler handler = new BodyContentHandler(-1);
 		Metadata metadata = new Metadata();
 		FileInputStream inputstream = new FileInputStream(filePath);
 		ParseContext pcontext = new ParseContext();
 
-		//PDF parser
-		Parser parser = new AutoDetectParser(); 
-		parser.parse(inputstream, handler, metadata,pcontext);
+		// PDF parser
+		Parser parser = new AutoDetectParser();
+		parser.parse(inputstream, handler, metadata, pcontext);
 
-		//getting the content of the document
+		// getting the content of the document
 		String content = handler.toString();
 
-		//call TXT class to create the .txt document
+		// call TXT class to create the .txt document
 		TXT.createTXT(content, filePath);
 	}
 }
