@@ -41,7 +41,6 @@ public class FixDirectory {
 				File f1 = new File (s);
 				f.renameTo(f1);
 				System.out.println(f.toString());
-
 			}
 		}
 		return null;

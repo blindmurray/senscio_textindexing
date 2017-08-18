@@ -33,13 +33,27 @@
       </ul>
     </div> <br>
     <div>
+
+      <span class = "buttons_upload" id="share">
+        <img src = "/images/share.jpg">Share Preferences
+      </span>
+      <div id="myModal5" class="modal">
+          <div class="modal-content"> <span class="closeBABA" id="close7">&times;</span>
+            <div>Share Access With:</div>
+            <input type="text" value="@sensciosystems" name= "include">
+            <div>Remove Access From:</div>
+            <input type="text" value="@sensciosystems" name= "exclude">
+            <input type="button" id="s" value="Submit" onclick="shareClick()">
+          </div>
+        </div>
       <span class="buttons_upload" id="show_hide">
         <img src = /images/show_hide.jpg>
         <span id="hide">Hide All Files</span>
         <span id="show" style="display:none">Show All Files</span>
       </span>
       <span class="buttons_upload" id="deletefile">
-        <img src="/images/delete.jpg"> Delete a File</span><br><br>
+        <img src="/images/delete.jpg"> Delete a File</span><br>
+
       <input type="hidden" name="path" value="" id="pathtoadd" class="path_to_add">
       <div id="repositoryTree"><span id="tree">Loading...</span></div> <br>
     </div>
@@ -133,6 +147,52 @@
     span4.onclick = function () {
       modal4.style.display = "none";
     }
+
+    var share = document.getElementById("share")
+    var modal5 = document.getElementById("myModal5");
+    share.onclick = function () {
+      "use strict";
+      modal5.style.display = "block";
+    };
+    var span5 = document.getElementById("close7");
+    span5.onclick = function () {
+      modal5.style.display = "none";
+    }
+
+    function shareClick() {
+  //when search button is clicked, sends all info thru ajax to nodejs
+      "use strict";
+      var email = "";
+      if(gapi.auth2.getAuthInstance()) {
+        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile() //IF STATEMENT TO CHECK IF LOGGED IN FIRST
+        email = profile.getEmail();
+      }
+      var include = document.getElementById("include").value;
+      var exclude = document.getElementById("exclude").value;
+      var share = {
+        "id": "share",
+        "include": include,
+        "exclude": exclude,
+        "email": email
+      };
+      share = JSON.stringify(share);
+      var xhr = ajax();
+      xhr.onload = function () {
+        if(xhr.readyState === 4 && xhr.status === 200) {
+          alert("Success!");
+        }
+        else {
+          alert("Error: " + xhr.responseText);
+        }
+      };
+      xhr.open("POST", "/", true);
+      xhr.setRequestHeader("Content-Type", "text/plain");
+      xhr.send(search);
+      console.dir(search);
+    }
+
+
+
     //Choose Location: make tree
     function onPageLoad() {
 

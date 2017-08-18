@@ -259,15 +259,12 @@ input#file {
     cursor: pointer;
 }
 
-
-.buttons_upload {
-	width: 50%;
-}
 .buttons_upload {
     color: #aaaaaa;
-    float: right;
+    padding-right: 15%;
     font-weight: bold;
 }
+
 .buttons_upload:hover {
     color: #000;
     text-decoration: none;
