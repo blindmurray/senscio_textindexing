@@ -204,8 +204,6 @@ public class Server_Socket {
 							else if(json.getString("id").equals("deleteFile")){
 								email = json.getString("email");
 								File file = new File (json.getString("filepath"));
-								System.out.println(file.getParent() + "!!!!!!");
-								
 								if(json.getString("email").equals("")){
 									os.println("You do not have permission to delete this file.");
 								}
@@ -295,8 +293,5 @@ public class Server_Socket {
 		else{
 			return f + "(1)." + ext;
 		}
-		
-		
 	}
-	
 }
