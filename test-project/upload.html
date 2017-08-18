@@ -19,7 +19,7 @@
   <div class="news">
     <div class="nav">
       <ul>
-        <li><a  href="respository.html">Repository</a></li>
+        <li><a  href="repository.html">Repository</a></li>
         <li><a  class = "active" href="upload.html">Upload</a></li>
         <li><a href="search.html">Search</a></li>
         <li><span id="account">My Account</span>
@@ -50,9 +50,9 @@
         <div class="modal-content">
           <span class="buttons_upload" id="addFolder"><img src=/images/folder_add.jpg> Add a Folder</span>
           <span class="buttons_upload" id="show_hide"><img src = /images/show_hide.jpg>
-                     <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
-          <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span>
-          <br><br>
+          <span id="hide">Hide All Files</span><span id="show" style="display:none">Show All Files</span></span>
+<!--           <span class="buttons_upload" id="deletefile"><img src="/images/delete.jpg"> Delete a File</span>
+ -->          <br><br>
           <span id="tree"> </span>
           <input type="button" value="Choose Location" onclick="onChooseLocation()">
           <span class="closeBABA" id="closeA">&times;</span>
@@ -87,7 +87,7 @@
   <script src="jquery-3.2.1.min.js"></script>
   <script>
     var email = "";
-    const dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
+    const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
     var oldId = "No Path Selected";
     //stores bolded folder id
     function triggerSelect(clicked_ID) {
@@ -181,7 +181,7 @@
       "use strict";
       modal.style.display = "block";
       if(gapi.auth2.getAuthInstance()){
-      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
       var tree = {
@@ -226,84 +226,47 @@
       }
     };
 
-    var deletebtn = document.getElementById("deletefile");
+    // var deletebtn = document.getElementById("deletefile");
       
-    deletebtn.onclick = function(){
-      if(gapi.auth2.getAuthInstance()){
-        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-        email = profile.getEmail();
-      }
-      console.log(email);
-      var path = document.getElementById("pathtoadd").value;
-      var folderjson = {
-        "id": "deleteFile",
-        "filepath": path,
-        "email": email
-      };
+    // deletebtn.onclick = function(){
+    //   if(gapi.auth2.getAuthInstance()){
+    //     var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+    //     email = profile.getEmail();
+    //   }
+    //   console.log(email);
+    //   var path = document.getElementById("pathtoadd").value;
+    //   var folderjson = {
+    //     "id": "deleteFile",
+    //     "filepath": path,
+    //     "email": email
+    //   };
+    // 
+    //   folderjson = JSON.stringify(folderjson);
+    //   var xhr = ajax();
+    //   xhr.onload = function() {
+    //     if(xhr.readyState === 4) {
+    //       if(xhr.status === 200) {
+    //         if((xhr.responseText).startsWith("Y")){
+    //           alert(xhr.responseText);
+    //         }
+    //         else{
+    //           alert("Deleted!");
+    //           document.getElementById("tree").innerHTML = xhr.responseText;
+    //           prepareList();
+    //         }
+    //       } else {
+    //         alert("Error: " + xhr.responseText);
+    //       }
+    //     }
+    //   };
+    //   xhr.open("POST", "/", true);
+    //   xhr.setRequestHeader("Content-Type", "text/plain");
 
-      folderjson = JSON.stringify(folderjson);
-      var xhr = ajax();
-      xhr.onload = function() {
-        if(xhr.readyState === 4) {
-          if(xhr.status === 200) {
-            if((xhr.responseText).startsWith("Y")){
-              alert(xhr.responseText);
-            }
-            else{
-              alert("Deleted!");
-              document.getElementById("tree").innerHTML = xhr.responseText;
-              prepareList();
-            }
-          } else {
-            alert("Error: " + xhr.responseText);
-          }
-        }
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
+    //   xhr.send(folderjson);
 
-      xhr.send(folderjson);
+    // };
 
-    };
-
-    function addfolder(googleUser) {
-      "use strict";
-      modal2.style.display = "none";
-      //retrieve folder path
-      if(gapi.auth2.getAuthInstance()){
-      var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-      email = profile.getEmail();
-      }
-      var name = document.getElementById("addfoldername").value;
-      var path = document.getElementById("pathtoadd").value;
-      var permissions = document.getElementById("tags").value;
-      if(path == "") {
-        path = dataDir + name;
-      } else {
-        path = path + "/" + name;
-      }
-      var folderjson = {
-        "id": "addFolder",
-        "name": name,
-        "filepaths": path,
-        "email": email,
-        "permissions": permissions
-      };
-      var json = JSON.stringify(folderjson);
-      //send folder to create path to nodejs
-      var xhr = ajax();
-      xhr.onload = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-          alert("Folder Created!");
-          //modal.style.display = "block";
-          document.getElementById("tree").innerHTML = xhr.responseText;
-          prepareList();
-        }
-      };
-      xhr.open("POST", "/", true);
-      xhr.setRequestHeader("Content-Type", "text/plain");
-      xhr.send(json);
-    };
+    
 
     function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
