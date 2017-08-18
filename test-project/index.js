@@ -2,17 +2,22 @@ function ajax() {
   "use strict";
   if(window.XMLHttpRequest) {
     return new XMLHttpRequest();
-  } else if(window.ActiveXObject) {
+  }
+  else if(window.ActiveXObject) {
     try {
       return new ActiveXObject("Msxml2.DOMDocument.6.0");
-    } catch(e) {}
+    }
+    catch(e) {}
     try {
       return new ActiveXObject("Msxml2.DOMDocument.3.0");
-    } catch(f) {}
+    }
+    catch(f) {}
     try {
       return new ActiveXObject("Microsoft.XMLHTTP");
-    } catch(g) {}
-  } else {
+    }
+    catch(g) {}
+  }
+  else {
     alert("newxhr XMLHTTPRequest object failed");
     return null;
   }
@@ -22,10 +27,10 @@ function b1click() {
   //when search button is clicked, sends all info thru ajax to nodejs
   "use strict";
   var email = "";
-  if(gapi.auth2.getAuthInstance()){
-  var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()  //IF STATEMENT TO CHECK IF LOGGED IN FIRST
+  if(gapi.auth2.getAuthInstance()) {
+    var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile() //IF STATEMENT TO CHECK IF LOGGED IN FIRST
     email = profile.getEmail();
-  } 
+  }
   var searchterm = document.getElementById("t1").value;
   var exten = document.getElementById("t2").value;
   var dateFrom = document.getElementById("t3").value;
@@ -40,14 +45,14 @@ function b1click() {
     "dateTo": dateTo,
     "num": num,
     "email": email
-
   };
   search = JSON.stringify(search);
   var xhr = ajax();
-  xhr.onload = function() {
+  xhr.onload = function () {
     if(xhr.readyState === 4 && xhr.status === 200) {
       document.getElementById("demo").innerHTML = xhr.responseText;
-    } else {
+    }
+    else {
       alert("Error: " + xhr.responseText);
     }
   };
@@ -75,17 +80,19 @@ function onSignIn(googleUser) {
     var xhr = ajax();
     xhr.open('POST', '/');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
+    xhr.onload = function () {
       if(xhr.readyState === 4 && xhr.status === 200) {
         console.log('Signed in as: ' + xhr.responseText);
-      } else {
+      }
+      else {
         alert("Error: " + xhr.responseText);
       }
     };
     xhr.send(signIn);
-  } else {
+  }
+  else {
     var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
+    auth2.signOut().then(function () {
       alert("You must sign in with a Senscio email.");
     });
   }
@@ -93,7 +100,7 @@ function onSignIn(googleUser) {
 
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function() {
+  auth2.signOut().then(function () {
     console.log('User signed out.');
   });
 }
