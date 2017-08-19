@@ -8,13 +8,25 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
-
+/**
+ * The Parse class will parse files to retrieve their content and metadata. In addition, it calls
+ * the TXT class to create a temporary .txt file with the same name for future purposes.
+ * @author Gina
+ *
+ */
 public class Parse {
-	// autodetects file type and call TXT class to create txt file
+	/**
+	 * Parses the files contents and metadata as well as detecting file type and creating a .txt file.
+	 * @param filePath Path of the file that needs to be parsed
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws TikaException
+	 * @throws SAXException
+	 */
 
 	public static void parse(String filePath) throws IOException, FileNotFoundException, TikaException, SAXException {
 
-		// detecting the file type
+		// Detecting the file type
 		BodyContentHandler handler = new BodyContentHandler(-1);
 		Metadata metadata = new Metadata();
 		FileInputStream inputstream = new FileInputStream(filePath);
@@ -24,10 +36,10 @@ public class Parse {
 		Parser parser = new AutoDetectParser();
 		parser.parse(inputstream, handler, metadata, pcontext);
 
-		// getting the content of the document
+		// Getting the content of the document
 		String content = handler.toString();
 
-		// call TXT class to create the .txt document
-		TXT.createTXT(content, filePath);
+		// Call TXT class to create the .txt document
+		FileNames.createTXT(content, filePath);
 	}
 }

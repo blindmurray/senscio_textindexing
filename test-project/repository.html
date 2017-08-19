@@ -65,10 +65,12 @@
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script src="jquery-3.2.1.min.js"></script>
   <script>
+  //CONSTANTS
     var email = "";
     var oldId = "No Path Selected";
     var dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
-    //stores bolded folder id
+    
+  //stores bolded folder id
     function triggerSelect(clicked_ID) {
         "use strict";
         var el = document.getElementById(clicked_ID);
@@ -82,7 +84,7 @@
         }
         oldId = clicked_ID;
       }
-    
+  //On the click of the download button, send an xhr request to download the file
     var download = document.getElementById("downloading");
     
     download.onclick = function(){
@@ -108,13 +110,16 @@
         xhr.setRequestHeader("Content-Type", "text/plain");
         xhr.send(downloadPath);
       }
+
+  //Updates the input with the chosen location
     function onChooseLocation() {
         "use strict";
         document.getElementById("chosenFolder").value = oldId;
         document.getElementById("location").innerHTML = oldId;
         modal.style.display = "none";
       }
-      //tree
+
+  //Prepares the directory tree
     function prepareList() {
         "use strict";
         $("#repositoryTree").find("li:has(ul)").click(function(event) {
@@ -194,7 +199,7 @@
       "use strict";
       var email = "";
       if (gapi.auth2.getAuthInstance()) {
-        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile() //IF STATEMENT TO CHECK IF LOGGED IN FIRST
+        var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
         email = profile.getEmail();
       }
       var include = document.getElementById("include").value;
@@ -227,9 +232,8 @@
         xhr.send(share);
       }
     }
-
+    //makes the tree as soon as page loads and automatic sign in is done
     function onPageLoad() {
-        //makes the tree as soon as page loads and automatic sign in is done
         if (gapi.auth2.getAuthInstance()) {
           var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
           email = profile.getEmail();

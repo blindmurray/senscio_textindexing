@@ -1,17 +1,3 @@
-/* different types of queries (phrase, etc)
- * try tomcat server connect directly to javascript
- * add instructions for search
- * don't use punctuation
- * search for key words only
- * if using extensions, list with periods, NO SPACES
- * emails to share: list with spaces only inbetween
- * spellcheck
- * give option for exact phrase search (use quotes??)
- * at some point, go through and add try catches so the program keeps running in case of error
- * alert if only one date entered, or if first is after second
- * plurals (stemming), reindex with word stems
- * scanned documents
- */
 import java.io.*;
 import java.net.*;
 import java.sql.*;
@@ -25,6 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 
+/**
+ * The Server Socket allows the Java script to talk to the Node.js. The socket requires a valid port to open up.
+ * To complete the socket request, make sure to run the node file. The server on the Java side recognizes the 
+ * request based on the "id" given in the JSON object on the Node.js side.
+ * @author Gina
+ *
+ */
 public class Server_Socket {
 
 	private static int port = 1221;
@@ -34,9 +27,14 @@ public class Server_Socket {
 	public static PrintStream os;
 	public static Date lastcheck = new Date();
 	static Indexer indexer = null;
-	static File indexDirFile = new File(LuceneConstants.indexDir);
 	static String html = "<ul id=\"expList\">";
 
+	/**
+	 * Whenever the server socket is run, it will remain open unless the connection is interrupted or the 
+	 * Node.js sends back "bye"
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 
 		Class.forName("com.mysql.jdbc.Driver");
@@ -45,7 +43,7 @@ public class Server_Socket {
 			System.out.println("SockServer waiting for connections on 1221...");
 			while (true) {
 				try {
-					// creates socket and input/output streams
+					// Creates socket and input/output streams
 					Socket csock = ssock.accept();
 					System.out.println("incoming...");
 					is = new DataInputStream(csock.getInputStream());
@@ -54,22 +52,25 @@ public class Server_Socket {
 					ArrayList<String> stuff = new ArrayList<String>();
 					String message = "";
 					String email = "";
-					// listen for message from node.js
+					
+					// Listen for message from node.js
 					while (true) {
-						// tries to read message
+						
+						// Tries to read message
 						line = lines.readLine();
 						System.out.println(line);
 						JSONObject json = new JSONObject(line);
-						// if there is a message, check what kind of message
+						
+						// If there is a message, check what kind of message
 						if (!line.isEmpty()) {
-							// search
+							
+							// Search
 							if (json.getString("id").equals("search")) {
 								email = json.getString("email");
 								try {
-									// Call Searcher class to search for the
-									// string
+									// Call Searcher class to search for the string
 									Searcher s = new Searcher();
-									stuff = s.searchIndex(json, LuceneConstants.indexDir, json.getString("num"), email);
+									stuff = s.searchIndex(json, Constants.indexDir, json.getString("num"), email);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -77,19 +78,19 @@ public class Server_Socket {
 								for (String st : stuff) {
 									message = message + st + "<br>";
 								}
-								// send results back to node.js
+								// Send results back to node.js
 								os.println(message);
 								line = "";
 							}
-							// adds user to database
+							// Adds user to database
 							else if (json.getString("id").equals("signIn")) {
-								Connection conn = DriverManager.getConnection(LuceneConstants.url,
-										LuceneConstants.username, LuceneConstants.password);
+								Connection conn = DriverManager.getConnection(Constants.url, Constants.username, Constants.password);
 								String idToken = json.getString("idtoken");
 								GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
 
 								String userName = (String) payLoad.get("name");
 								email = payLoad.getEmail();
+								
 								// if it is a senscio email, save into database
 								if (email.length() > 19
 										&& email.substring(email.length() - 19).equals("@sensciosystems.com")) {
@@ -104,7 +105,7 @@ public class Server_Socket {
 													+ email + "', '" + userName + "');");
 											;
 											st.executeUpdate("UPDATE indexer.permissions SET `" + email
-													+ "` = 1 WHERE folderpath LIKE '" + LuceneConstants.dataDir
+													+ "` = 1 WHERE folderpath LIKE '" + Constants.dataDir
 													+ "/Public%';");
 											os.println("done");
 										}
@@ -124,40 +125,41 @@ public class Server_Socket {
 								email = json.getString("email");
 								String pathnew = json.getString("path_new");
 								for (int x = 0; x < filepaths.length(); x++) {
-									// for each file, check for duplicates, then
-									// move to destination folder and add to
-									// index
+									/*For each file, check for duplicates, then move to destination 
+									 * folder and add to index
+									 */
 									String filepath = filepaths.getString(x);
 									File file = new File(filepath);
-									String filename = duplicateCheck(file.getName(), pathnew);
+									String filename = FileNames.duplicateCheck(file.getName(), pathnew);
 									Files.move(Paths.get(filepath), Paths.get(pathnew + "/" + filename),
 											StandardCopyOption.REPLACE_EXISTING);
 									UpdateIndex.updateIndex(pathnew + "/" + filename, json.getString("terms"),
-											LuceneConstants.indexDir);
-									Connection conn = DriverManager.getConnection(LuceneConstants.url,
-											LuceneConstants.username, LuceneConstants.password);
+											Constants.indexDir);
+									Connection conn = DriverManager.getConnection(Constants.url,
+											Constants.username, Constants.password);
 									Statement st = conn.createStatement();
 									st.executeUpdate("INSERT INTO indexer.files (filepath, owner) VALUES ('" + filepath
 											+ "', '" + email + "');");
 								}
 								os.println("Indexed!");
 							}
-							// creates tree according to permissions
+							// Creates tree according to permissions
 							else if (json.getString("id").equals("tree")) {
 								email = json.getString("email");
-								File file = new File(LuceneConstants.dataDir);
+								File file = new File(Constants.dataDir);
 								// writes new html tree
 								String tree = DirectoryReader.listFilesForFolder(file, html, email);
 								// return to nodejs
 								os.println(tree);
 							}
+							// Downloads file
 							else if (json.getString("id").equals("download")) {
 								String file = json.getString("path");
 								StringBuffer sBuffer = new StringBuffer(file);
-								String str= sBuffer.toString().replace(LuceneConstants.dataDir, "/files");
+								String str= sBuffer.toString().replace(Constants.dataDir, "/files");
 								os.println(str);
 							}
-							// creates folder and adds to database
+							// Creates folder and adds to database
 							else if (json.getString("id").equals("addFolder")) {
 								String path = json.getString("filepaths");
 								if (!new File(path).isDirectory()) {
@@ -166,7 +168,7 @@ public class Server_Socket {
 									path += "/" + json.getString("name");
 									email = json.getString("email");
 									if (path.equals("")) {
-										path = LuceneConstants.dataDir + "/" + json.getString("name");
+										path = Constants.dataDir + "/" + json.getString("name");
 									}
 									// replace spaces with underscores
 									for (int j = 0; j < path.length(); j++) {
@@ -176,11 +178,11 @@ public class Server_Socket {
 										}
 									}
 									Path dir = Paths.get(path);
-									// creates folder
+									// Creates folder
 									dir = Files.createDirectory(dir);
-									// redo tree so that user can see new folder
-									Connection conn = DriverManager.getConnection(LuceneConstants.url,
-											LuceneConstants.username, LuceneConstants.password);
+									// Redo tree so that user can see new folder
+									Connection conn = DriverManager.getConnection(Constants.url,
+											Constants.username, Constants.password);
 									Statement st = conn.createStatement();
 									st.executeUpdate(
 											"INSERT INTO indexer.permissions (`folderpath`) VALUES ('" + path + "');");
@@ -194,39 +196,45 @@ public class Server_Socket {
 									}
 									st.executeUpdate("UPDATE indexer.permissions SET `" + email
 											+ "` = 2 WHERE folderpath = '" + path + "';");
-									String tree = DirectoryReader.listFilesForFolder(new File(LuceneConstants.dataDir),
+									String tree = DirectoryReader.listFilesForFolder(new File(Constants.dataDir),
 											"<ul id=\"expList\">", email);
 									os.println(tree);
 									conn.close();
 								}
 							}
-							// returns people with access to a file or folder
+							// Returns people with access to a file or folder
 							else if (json.getString("id").equals("viewpermissions")) {
 								File f = new File(json.getString("path"));
 								String path = json.getString("path");
+								String html = "";
+								if(path.toLowerCase().contains((Constants.dataDir + "/public").toLowerCase())){
+									 html += "Everyone has access";
+								}
+								else{
 								if (!f.isDirectory()) {
 									path = f.getParent();
 								}
-								Connection conn = DriverManager.getConnection(LuceneConstants.url,
-										LuceneConstants.username, LuceneConstants.password);
+								Connection conn = DriverManager.getConnection(Constants.url,
+										Constants.username, Constants.password);
 								Statement st = conn.createStatement();
 								ResultSet rs = st.executeQuery(
 										"SELECT * FROM indexer.permissions WHERE folderpath = '" + path + "';");
 								ResultSetMetaData metadata = rs.getMetaData();
 								int columnCount = metadata.getColumnCount();
 								rs.first();
-								String html = "The following people have access to " + f.getName() + ":\n";
+								html += "The following people have access to " + f.getName() + ":\n";
 								for (int x = 3; x <= columnCount; x++) {
 									if (rs.getInt(columnCount) >= 1) {
 										html += metadata.getColumnName(x) + "\n";
 									}
 								}
+								}
 								os.println(html);
 							}
-							// edit permissions of folders
+							// Edit permissions of folders
 							else if (json.getString("id").equals("share")) {
-								Connection conn = DriverManager.getConnection(LuceneConstants.url,
-										LuceneConstants.username, LuceneConstants.password);
+								Connection conn = DriverManager.getConnection(Constants.url,
+										Constants.username, Constants.password);
 								Statement st = conn.createStatement();
 								if (!new File(json.getString("path")).isDirectory()) {
 									os.println("You cannot share a file.");
@@ -258,7 +266,7 @@ public class Server_Socket {
 								}
 								conn.close();
 							}
-							// delete file if user has permission
+							// Delete file if user has permission
 							else if (json.getString("id").equals("deleteFile")) {
 								email = json.getString("email");
 								File file = new File(json.getString("filepath"));
@@ -269,8 +277,8 @@ public class Server_Socket {
 									if (!file.isDirectory() || (file.isDirectory() && file.list().length == 0)) {
 										Path path = Paths.get(json.getString("filepath"));
 										Files.deleteIfExists(path);
-										Connection conn = DriverManager.getConnection(LuceneConstants.url,
-												LuceneConstants.username, LuceneConstants.password);
+										Connection conn = DriverManager.getConnection(Constants.url,
+												Constants.username, Constants.password);
 										Statement st = conn.createStatement();
 										if (file.isDirectory()) {
 											st.executeUpdate("DELETE FROM indexer.permissions WHERE folderpath = '"
@@ -281,7 +289,7 @@ public class Server_Socket {
 													"DELETE FROM indexer.files WHERE filepath = '" + path + "';");
 										}
 										String tree = DirectoryReader.listFilesForFolder(
-												new File(LuceneConstants.dataDir), "<ul id=\"expList\">", email);
+												new File(Constants.dataDir), "<ul id=\"expList\">", email);
 										os.println(tree);
 									} else {
 										os.println("You can only delete a folder if it is empty.");
@@ -305,51 +313,4 @@ public class Server_Socket {
 		}
 	}
 
-	// end main
-	public static String duplicateCheck(String filename, String path) {
-		boolean check = true;
-		File[] files = new File(path).listFiles();
-		// check if uploaded file has same name as another in the same folder
-		for (int i = 0; i < files.length; i++) {
-			for (File file : files) {
-				String fname = file.getName();
-				if (fname.equals(filename)) {
-					check = false;
-				}
-			}
-			// returns filename if no duplicates
-			if (check) {
-				return filename;
-			} else {
-				// changes filename and rechecks for duplicates
-				filename = changeName(filename);
-				duplicateCheck(filename, path);
-			}
-		}
-		return filename;
-	}
-
-	public static String changeName(String f) {
-		// if there is a duplicate name, adds (1) or adds 1 to version number
-		String ext = TXT.getExtension(f);
-		f = f.substring(0, f.length() - ext.length() - 1);
-		if (f.contains("(")) {
-			String noparen = f.substring(0, f.length() - 1);
-			String[] vnum = noparen.split("(");
-			String vnum2 = vnum[vnum.length - 1];
-			int vint;
-			try {
-				vint = Integer.parseInt(vnum2);
-			} catch (NumberFormatException e) {
-				return f + "(1)" + ext;
-			} catch (NullPointerException e) {
-				return f + "(1)" + ext;
-			}
-			vint++;
-			String newname = noparen.substring(0, noparen.length() - vnum2.length()) + "(" + vint + ")." + ext;
-			return newname;
-		} else {
-			return f + "(1)." + ext;
-		}
-	}
 }

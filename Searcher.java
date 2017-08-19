@@ -34,14 +34,30 @@ import edu.mit.jwi.item.IWord;
 import edu.mit.jwi.item.IWordID;
 import edu.mit.jwi.item.POS;
 
+/**
+ * The Searcher class instantiates an IndexSearcher, QueryParser, IndexReader, and an array. The Searcher
+ * class makes it possible for users to search the index. The "public" folder is public to all people viewing
+ * the website. Otherwise, the Searcher class will check permissions.
+ * @author Gina
+ *
+ */
 public class Searcher{
 	IndexSearcher indexSearcher;
 	QueryParser queryParser;
-	Query query2;
 	IndexReader indexReader;
 	final POS[] pos = {POS.ADJECTIVE, POS.ADVERB, POS.NOUN, POS.VERB};
-	public Searcher(){
-	}
+	
+	/**
+	 * The searchIndex function is triggered from the Server_Socket. It will search the indexed files for relevant
+	 * search results, taking into account synonyms and givng a boost if the search term matches a key term or a
+	 * file name. 
+	 * @param json JSON object sent from the searcher with information about the particular query.
+	 * @param indexDir The directory where the index of the files are stored.
+	 * @param number Number of hits
+	 * @param email Email of the user
+	 * @return An ArrayList of strings with the search results in HTML
+	 * @throws Exception
+	 */
 	public ArrayList<String> searchIndex(JSONObject json, String indexDir, String number, String email) throws Exception {
 
 		String searchString = json.getString("searchterm").toLowerCase();       //convert searchterm to lowercase
@@ -58,13 +74,12 @@ public class Searcher{
 			queryString += ") AND ";
 		}
 		queryString = queryString.substring(0, queryString.length()-5);         //remove the last "AND"
-		System.out.println(queryString);
-		String[] fields = {LuceneConstants.CONTENTS, LuceneConstants.FILE_NAME, LuceneConstants.FILE_TOKENS};
+		String[] fields = {Constants.CONTENTS, Constants.FILE_NAME, Constants.FILE_TOKENS};
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();         //construct booleanquery
 		HashMap<String,Float> boosts = new HashMap<String,Float>();             //assigns more weight/importance to titles
-		boosts.put(LuceneConstants.CONTENTS, 1.0f);
-		boosts.put(LuceneConstants.FILE_NAME, 2.0f);
-		boosts.put(LuceneConstants.FILE_TOKENS, 2.0f);
+		boosts.put(Constants.CONTENTS, 1.0f);
+		boosts.put(Constants.FILE_NAME, 2.0f);
+		boosts.put(Constants.FILE_TOKENS, 2.0f);
 
 		//multifieldqueryparser in order to search in title and contents of files
 		MultiFieldQueryParser qp = new MultiFieldQueryParser(fields, new StandardAnalyzer(), boosts);
@@ -86,34 +101,34 @@ public class Searcher{
 				foundDocs = searchInContent(searcher,booleanQuery, num);
 			}
 		}
+		//Creates an Array for the results and an Array and counter for the total hits.
 		ArrayList<String> results = new ArrayList<String>();
 		ArrayList<String> res = new ArrayList<String>();
-		//		results.add("Total Results: "+ found.totalHits +"\n");
 		int counter = 0;
 
-		//gets user input dates and extensions
+		//Gets user input dates and extensions
 		String dateFrom = json.getString("dateFrom").replace("-", "");
 		String dateTo = json.getString("dateTo").replace("-", "");
 		String extensions = json.getString("exten");
 
-		//only add files that satisfy the extension and last modified date requirements
+		//Only add files that satisfy the extension and last modified date requirements
 		if(!extensions.equals("")){
 			String[] exts = extensions.split("\\.");
 			for (ScoreDoc sd : foundDocs.scoreDocs) {
 				Document d = searcher.doc(sd.doc);
-				File temp = new File(d.get(LuceneConstants.FILE_PATH));
-				if((email == null && temp.getPath().startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(temp.getParent(), email)){
+				File temp = new File(d.get(Constants.FILE_PATH));
+				if(temp.getPath().startsWith(Constants.dataDir + "/public") || checkPermission(temp.getParent(), email)){
 					for(String ext: exts){
-						if(ext.equals(TXT.getExtension(d.get(LuceneConstants.FILE_NAME)))){
-							//if no dates specified
+						if(ext.equals(FileNames.getExtension(d.get(Constants.FILE_NAME)))){
+							//If no dates specified
 							if(dateFrom.length()==0 || dateTo.length()==0){
 								String s = changePath(d);
 								counter++;
-								results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+								results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(Constants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(Constants.FILE_PREVIEW)+ "</i>\n <br>");
 							}
-							//check if it is between those dates
+							//Check if it is between those dates
 							else{
-								File f = new File(d.get(LuceneConstants.FILE_PATH));
+								File f = new File(d.get(Constants.FILE_PATH));
 								LocalDate ldt = Instant.ofEpochMilli(f.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
 								String date = Integer.toString(ldt.getYear());
 								if(ldt.getMonthValue() < 10){
@@ -122,9 +137,8 @@ public class Searcher{
 								date += Integer.toString(ldt.getMonthValue()) + ldt.getDayOfMonth();
 								if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 									String s = changePath(d);
-									System.out.println(s);
 									counter++;
-									results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+									results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(Constants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(Constants.FILE_PREVIEW)+ "</i>\n <br>");
 								}
 							}
 						}
@@ -132,19 +146,20 @@ public class Searcher{
 				}
 			}
 		}
-		//if there isn't an extension requirement
+		//If there isn't an extension requirement
 		else{
 			for(ScoreDoc sd: foundDocs.scoreDocs){
 				Document d = searcher.doc(sd.doc);
-				File temp = new File(d.get(LuceneConstants.FILE_PATH));
-				if((email == null && temp.getPath().startsWith(LuceneConstants.dataDir + "/public")) || checkPermission(temp.getParent(), email)){
+				File temp = new File(d.get(Constants.FILE_PATH));
+				//Checks if the user has permission to view those files
+				if(temp.getPath().startsWith(Constants.dataDir + "/public") || checkPermission(temp.getParent(), email)){
 					if(dateFrom.length()==0 || dateTo.length()==0){
 						String s = changePath(d);
 						counter++;
-						results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+						results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(Constants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(Constants.FILE_PREVIEW)+ "</i>\n <br>");
 					}
 					else{
-						File f = new File(d.get(LuceneConstants.FILE_PATH));
+						File f = new File(d.get(Constants.FILE_PATH));
 						LocalDate ldt = Instant.ofEpochMilli(f.lastModified()).atZone(ZoneId.systemDefault()).toLocalDate();
 						String date = Integer.toString(ldt.getYear());
 						if(ldt.getMonthValue() < 10){
@@ -154,7 +169,7 @@ public class Searcher{
 						if(date.compareTo(dateFrom)>=0 && date.compareTo(dateTo)<=0){
 							String s = changePath(d);
 							counter++;
-							results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(LuceneConstants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(LuceneConstants.FILE_PREVIEW)+ "</i>\n <br>");
+							results.add("<a href=\""+ s  + "\"> <img src=\"/images/download.jpg\"> </a>&nbsp&nbsp <b>"+ d.get(Constants.FILE_NAME) + "</b>\n <br> &nbsp" + "<i>"+d.get(Constants.FILE_PREVIEW)+ "</i>\n <br>");
 						}
 					}
 				}
@@ -164,24 +179,47 @@ public class Searcher{
 		res.addAll(results);
 		return res;
 	}
-
+	/**
+	 * Creates the hits relevant to the search results
+	 * @param searcher Searcher
+	 * @param booleanQuery Query
+	 * @param num Number of hits to render
+	 * @return TopDocs with hits
+	 * @throws Exception
+	 */
 	private static TopDocs searchInContent(IndexSearcher searcher, BooleanQuery.Builder booleanQuery, int num) throws Exception{
 		TopDocs hits = searcher.search(booleanQuery.build(), num);              //Search the index
 		return hits;
 	}
-
-	private static IndexSearcher createSearcher(String index) throws IOException {
-		Directory dir = FSDirectory.open(Paths.get(index));
+	/**
+	 * Creates a Searcher to be used.
+	 * @param indexDir The path of the index that is being searched
+	 * @return Searcher object
+	 * @throws IOException
+	 */
+	private static IndexSearcher createSearcher(String indexDir) throws IOException {
+		Directory dir = FSDirectory.open(Paths.get(indexDir));
 		IndexReader reader = DirectoryReader.open(dir);         //Interface for accessing a point-in-time view of a Lucene index
 		IndexSearcher searcher = new IndexSearcher(reader);
 		return searcher;
 	}
+	
+	/**
+	 * Changes the path of the document by removing part of its path. This function is used later on
+	 * in the download on the repository page.
+	 * @param d The Docuement whose file path is being edited. 
+	 * @return
+	 */
 	private static String changePath(Document d){
-		StringBuffer sBuffer = new StringBuffer(d.get(LuceneConstants.FILE_PATH));
-		String str= sBuffer.toString().replace(LuceneConstants.dataDir, "/files");
+		StringBuffer sBuffer = new StringBuffer(d.get(Constants.FILE_PATH));
+		String str= sBuffer.toString().replace(Constants.dataDir, "/files");
 		return str;
 	}
-	//find synonyms using wordnet database
+	/**
+	 * Finds synonyms using the WordNet database
+	 * @param synword Word that needs synonyms 
+	 * @return ArrayList of synonyms
+	 */
 	public ArrayList<String> synonymfind(String synword) {
 		ArrayList<String> syns = new ArrayList<String>();
 		try {
@@ -192,7 +230,7 @@ public class Searcher{
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-			//add synonyms to list
+			//Add synonyms to list
 			for(int x = 0; x < 4; x++){
 				IIndexWord idxWord = dict.getIndexWord(synword, pos[x]);
 				for(int i = 0; i<idxWord.getWordIDs().size(); i++){
@@ -211,13 +249,24 @@ public class Searcher{
 		}
 		return syns;
 	}
+	
+	/**
+	 * Checks if the user has permission to view the file by checking the MySQL database
+	 * @param path Filepath attempting to be viewed
+	 * @param email Email of the user
+	 * @return Boolean true/false
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public static boolean checkPermission(String path, String email) throws ClassNotFoundException, SQLException{
-		if(path.startsWith(LuceneConstants.dataDir + "/public")){
+		//All users by default have access to the public database
+		if(path.startsWith(Constants.dataDir + "/public")){
 			return true;
 		}
+		//If the email field isn't left empty
 		else if(!email.isEmpty()){
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(LuceneConstants.url, LuceneConstants.username, LuceneConstants.password);
+			Connection conn = DriverManager.getConnection(Constants.url, Constants.username, Constants.password);
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery("SELECT `" + email + "` FROM indexer.permissions WHERE `folderpath` = '" + path + "'");
 			if(rs.absolute(1) && rs.getInt(email)>=1){
@@ -227,6 +276,9 @@ public class Searcher{
 				return false;
 			}
 		}
+		//If the email field is left empty
+		else{
 		return false;
+		}
 	}
 }

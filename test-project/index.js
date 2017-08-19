@@ -25,8 +25,8 @@ function ajax() {
   }
 }
 
+//when search button is clicked, sends all info thru ajax to nodejs
 function b1click() {
-  //when search button is clicked, sends all info thru ajax to nodejs
   "use strict";
   var email = "";
   if (gapi.auth2.getAuthInstance()) {
@@ -64,8 +64,8 @@ function b1click() {
   console.dir(search);
 }
 
+//on user sign in, send info back to java to verify email and save into database
 function onSignIn(googleUser) {
-  //on user sign in, send info back to java to verify email and save into database
   var profile = googleUser.getBasicProfile();
   var id_token = googleUser.getAuthResponse().id_token;
   var name = profile.getName();
@@ -103,6 +103,7 @@ function onSignIn(googleUser) {
   }
 }
 
+//on signout, sign out the user
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function() {

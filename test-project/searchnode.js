@@ -3,7 +3,7 @@ var http = require("http");
 var url = require("url");
 var fs = require("fs-extra");
 var util = require("util");
-const dataDir = "/Users/linjiang/Documents/GitHub/senscio_textindexing/test-project/files/";
+const dataDir = "/Users/Gina/Documents/Files/GitHub/senscio_textindexing/test-project/files/";
 var svr = http.createServer(requesthandler);
 svr.listen(8888);
 var formidable = require("formidable");
