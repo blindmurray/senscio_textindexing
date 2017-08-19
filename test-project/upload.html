@@ -282,8 +282,12 @@
         });
       }
       //show/hide toggling
-    $("#show_hide").click(function() {
+      $("#show_hide").click(function() {
       $("#myModal #expList ul .file").toggle();
+      $("#myModal #expList ul .compressed").toggle();
+      $("#myModal #expList ul .video").toggle();
+      $("#myModal #expList ul .img").toggle();
+      $("#myModal #expList ul .audio").toggle();
       $('#hide').toggle();
       $('#show').toggle();
       $('#myModal #expList li .folder').toggleClass('toggled');

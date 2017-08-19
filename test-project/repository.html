@@ -339,6 +339,10 @@
       //show/hide functionality
     $("#show_hide").click(function() {
       $("#repositoryTree ul .file").toggle();
+      $("#repositoryTree ul .compressed").toggle();
+      $("#repositoryTree ul .video").toggle();
+      $("#repositoryTree ul .img").toggle();
+      $("#repositoryTree ul .audio").toggle();
       $('#hide').toggle();
       $('#show').toggle();
       $('#repositoryTree li .folder').toggleClass('toggled');

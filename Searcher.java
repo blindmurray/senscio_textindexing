@@ -175,7 +175,7 @@ public class Searcher{
 				}
 			}
 		}
-		res.add("Total Results: "+ counter +"\n");
+		res.add("Total Results Shown: "+ counter +"\n");
 		res.addAll(results);
 		return res;
 	}
